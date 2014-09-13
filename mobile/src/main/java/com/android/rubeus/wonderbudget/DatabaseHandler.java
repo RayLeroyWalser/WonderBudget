@@ -16,12 +16,17 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private final static int DATABASE_VERSION = 1;
     private final static String DATABASE_NAME = "WonderBudget";
     private final static String TABLE_TRANSACTION = "transactions";
+    private final static String TABLE_CATEGORY = "categories";
+
     private final static String KEY_ID = "id";
+
     private final static String KEY_AMOUNT = "amount";
     private final static String KEY_CATEGORY = "category";
     private final static String KEY_IS_DONE = "isDone";
     private final static String KEY_IS_REPEAT = "isRepeat";
     private final static String KEY_DATE = "date";
+    private final static String KEY_COMMENTARY = "commentary";
+    private final static String KEY_NAME = "name";
 
     public DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,21 +34,38 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_TRANSACTION + "("
+        String createTableCategory = "CREATE TABLE " + TABLE_CATEGORY + "("
+                + KEY_ID + " INTEGER PRIMARY KEY, "
+                + KEY_NAME + " TEXT"
+                + ")";
+
+        String createTableTransaction = "CREATE TABLE " + TABLE_TRANSACTION + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
                 + KEY_AMOUNT + " INTEGER, "
-                + KEY_CATEGORY + " TEXT, "
-                + KEY_IS_DONE + " TINYINT, "
-                + KEY_IS_REPEAT + " TINYINT, "
-                + KEY_DATE + " INTEGER" + ")";
-        db.execSQL(createTable);
+                + KEY_CATEGORY + " INTEGER, "
+                + KEY_IS_DONE + " INTEGER, "
+                + KEY_IS_REPEAT + " INTEGER, "
+                + KEY_DATE + " INTEGER, "
+                + KEY_COMMENTARY + " TEXT, "
+                + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
+                + ")";
+
+        db.execSQL(createTableCategory);
+        db.execSQL(createTableTransaction);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         onCreate(db);
     }
+
+    /***********************************************************************************
+
+                                   TRANSACTION
+
+     **********************************************************************************/
 
     public void addTransaction(Transaction t){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -54,6 +76,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_IS_DONE, t.isDone());
         values.put(KEY_IS_REPEAT, t.isRepeat());
         values.put(KEY_DATE, t.getDate());
+        values.put(KEY_COMMENTARY, t.getCommentary());
 
         // Inserting Row
         db.insert(TABLE_TRANSACTION, null, values);
@@ -64,17 +87,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_TRANSACTION, new String[] { KEY_ID,
-                        KEY_AMOUNT, KEY_CATEGORY, KEY_IS_DONE, KEY_IS_REPEAT, KEY_DATE }, KEY_ID + "=?",
+                        KEY_AMOUNT, KEY_CATEGORY, KEY_IS_DONE, KEY_IS_REPEAT, KEY_DATE , KEY_COMMENTARY}, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Transaction transaction = new Transaction(cursor.getInt(0),
                 cursor.getInt(1),
-                cursor.getString(2),
+                cursor.getInt(2),
                 cursor.getInt(3)>0?true:false,
                 cursor.getInt(4)>0?true:false,
-                cursor.getInt(5));
+                cursor.getInt(5),
+                cursor.getString(6));
 
         return transaction;
     }
@@ -93,10 +117,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 Transaction t = new Transaction();
                 t.setId(cursor.getInt(0));
                 t.setAmount(cursor.getInt(1));
-                t.setCategory(cursor.getString(2));
+                t.setCategory(cursor.getInt(2));
                 t.setDone(cursor.getInt(3)>0?true:false);
                 t.setRepeat(cursor.getInt(4)>0?true:false);
                 t.setDate(cursor.getLong(5));
+                t.setCommentary(cursor.getString(6));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());
@@ -125,6 +150,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_IS_DONE, t.isDone());
         values.put(KEY_IS_REPEAT, t.isRepeat());
         values.put(KEY_DATE, t.getDate());
+        values.put(KEY_COMMENTARY, t.getCommentary());
 
         // updating row
         return db.update(TABLE_TRANSACTION, values, KEY_ID + " = ?",
@@ -141,5 +167,53 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public void deleteAllTransactions(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TRANSACTION, null, null);
+    }
+
+    /***********************************************************************************
+
+                                    CATEGORIES
+
+     **********************************************************************************/
+
+    public void addCategory(Category c){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, c.getName());
+
+        db.insert(TABLE_CATEGORY, null, values);
+        db.close();
+    }
+
+    public Category getCategory(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_CATEGORY, new String[] {KEY_ID, KEY_NAME}, KEY_ID + "=?",
+                new String[] {String.valueOf(id)}, null, null, null, null);
+        if(cursor!=null)
+            cursor.moveToFirst();
+
+        Category category = new Category(cursor.getInt(0), cursor.getString(1));
+
+        return category;
+    }
+
+    public List<Category> getAllCategories(){
+        List<Category> list = new ArrayList<Category>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_CATEGORY;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Category c = new Category();
+                c.setId(cursor.getInt(0));
+                c.setName(cursor.getString(1));
+
+                list.add(c);
+            }
+            while(cursor.moveToNext());
+        }
+        return list;
     }
 }

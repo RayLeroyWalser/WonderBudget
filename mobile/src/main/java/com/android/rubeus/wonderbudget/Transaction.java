@@ -6,28 +6,31 @@ package com.android.rubeus.wonderbudget;
 public class Transaction {
     private int id;
     private int amount;
-    private String category;
+    private int category;
     private boolean isDone;
     private boolean isRepeat;
     private long date;
+    private String commentary;
 
     public Transaction(){}
 
-    public Transaction(int id, int amount, String category, boolean isDone, boolean isRepeat, long date){
+    public Transaction(int id, int amount, int category, boolean isDone, boolean isRepeat, long date, String commentary){
         this.id = id;
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
         this.isRepeat = isRepeat;
         this.date = date;
+        this.commentary = commentary;
     }
 
-    public Transaction(int amount, String category, boolean isDone, boolean isRepeat, long date){
+    public Transaction(int amount, int category, boolean isDone, boolean isRepeat, long date, String commentary){
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
         this.isRepeat = isRepeat;
         this.date = date;
+        this.commentary = commentary;
     }
 
     public int getId() {
@@ -46,11 +49,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
@@ -76,5 +79,13 @@ public class Transaction {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public String getCommentary() {
+        return commentary;
+    }
+
+    public void setCommentary(String commentary) {
+        this.commentary = commentary;
     }
 }

@@ -33,14 +33,21 @@ public class OverviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         DatabaseHandler db = new DatabaseHandler(this.getActivity());
+
+        db.addCategory(new Category("Courses"));
+        db.addCategory(new Category("Gadget"));
+        db.addCategory(new Category("APL"));
+
+
         db.deleteAllTransactions();
-        db.addTransaction(new Transaction(12, "Courses", true, false, System.currentTimeMillis()));
-        db.addTransaction(new Transaction(-36, "Gadget", false, false, System.currentTimeMillis()));
-        db.addTransaction(new Transaction(18, "Courses", true, true, System.currentTimeMillis()));
+        db.addTransaction(new Transaction(-12, 1, true, false, System.currentTimeMillis(), "SuperU"));
+        db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Amazon batterie"));
+        db.addTransaction(new Transaction(18, 2, true, true, System.currentTimeMillis(), ""));
 
         List<Transaction> list = db.getAllTransactions();
         for(Transaction t : list){
-            Log.d(TAG, "Id:"+t.getId()+"   Amount="+t.getAmount()+"   Done:"+t.isDone()+"   Repeat:"+t.isRepeat()+"   Date:"+t.getDate());
+            Log.d(TAG, "Id:"+t.getId()+"   Amount="+t.getAmount()+"   Done:"+t.isDone()+"   Repeat:"+t.isRepeat()+"   Date:"+t.getDate()+"  Commentary:"+t.getCommentary()
+            + "    Category:" + db.getCategory(t.getCategory()).getName());
         }
     }
 
