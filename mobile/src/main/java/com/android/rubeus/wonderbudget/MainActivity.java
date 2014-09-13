@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,9 +47,16 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        switch (position){
+            case 0:
+                ft.replace(R.id.container, OverviewFragment.newInstance());
+                break;
+            default:
+                ft.replace(R.id.container, PlaceholderFragment.newInstance(position+1));
+        }
+
+        ft.commit();
     }
 
     public void onSectionAttached(int number) {
