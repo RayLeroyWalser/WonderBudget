@@ -18,15 +18,20 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private final static String TABLE_TRANSACTION = "transactions";
     private final static String TABLE_CATEGORY = "categories";
 
+    //Common keys
     private final static String KEY_ID = "id";
 
+    //Transactions
     private final static String KEY_AMOUNT = "amount";
     private final static String KEY_CATEGORY = "category";
     private final static String KEY_IS_DONE = "isDone";
     private final static String KEY_IS_REPEAT = "isRepeat";
     private final static String KEY_DATE = "date";
     private final static String KEY_COMMENTARY = "commentary";
+
+    //Categories
     private final static String KEY_NAME = "name";
+    private final static String KEY_THUMB_URL = "thumbUrl";
 
     public DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +41,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         String createTableCategory = "CREATE TABLE " + TABLE_CATEGORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
-                + KEY_NAME + " TEXT"
+                + KEY_NAME + " TEXT, "
+                + KEY_THUMB_URL + " TEXT"
                 + ")";
 
         String createTableTransaction = "CREATE TABLE " + TABLE_TRANSACTION + "("
@@ -179,6 +185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, c.getName());
+        values.put(KEY_THUMB_URL, c.getThumbUrl());
 
         db.insert(TABLE_CATEGORY, null, values);
         db.close();
@@ -187,12 +194,12 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public Category getCategory(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_CATEGORY, new String[] {KEY_ID, KEY_NAME}, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_CATEGORY, new String[] {KEY_ID, KEY_NAME, KEY_THUMB_URL}, KEY_ID + "=?",
                 new String[] {String.valueOf(id)}, null, null, null, null);
         if(cursor!=null)
             cursor.moveToFirst();
 
-        Category category = new Category(cursor.getInt(0), cursor.getString(1));
+        Category category = new Category(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
 
         return category;
     }
@@ -209,6 +216,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 Category c = new Category();
                 c.setId(cursor.getInt(0));
                 c.setName(cursor.getString(1));
+                c.setThumbUrl(cursor.getString(2));
 
                 list.add(c);
             }

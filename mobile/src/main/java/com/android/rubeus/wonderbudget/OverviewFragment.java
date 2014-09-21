@@ -34,9 +34,11 @@ public class OverviewFragment extends Fragment {
 
         DatabaseHandler db = new DatabaseHandler(this.getActivity());
 
-        db.addCategory(new Category("Courses"));
-        db.addCategory(new Category("Gadget"));
-        db.addCategory(new Category("APL"));
+        String pathDebut = "android.resource://" + getActivity().getPackageName() + "/";
+
+        db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.ic_launcher).toString()));
+        db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.ic_launcher).toString()));
+        db.addCategory(new Category("APL", Uri.parse(pathDebut + R.drawable.ic_launcher).toString()));
 
 
         db.deleteAllTransactions();
@@ -48,6 +50,10 @@ public class OverviewFragment extends Fragment {
         for(Transaction t : list){
             Log.d(TAG, "Id:"+t.getId()+"   Amount="+t.getAmount()+"   Done:"+t.isDone()+"   Repeat:"+t.isRepeat()+"   Date:"+t.getDate()+"  Commentary:"+t.getCommentary()
             + "    Category:" + db.getCategory(t.getCategory()).getName());
+        }
+        List<Category> listCategories = db.getAllCategories();
+        for(Category c: listCategories){
+            Log.d(TAG, "Name: "+c.getName()+ "    Path: "+c.getThumbUrl());
         }
     }
 

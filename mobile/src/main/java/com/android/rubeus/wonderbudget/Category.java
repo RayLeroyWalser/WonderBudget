@@ -6,12 +6,19 @@ package com.android.rubeus.wonderbudget;
 public class Category {
     private int id;
     private String name;
+    private String thumbUrl;
 
     public Category(){}
 
-    public Category(int id, String name){
+    public Category(int id, String name, String thumbUrl){
         this.id = id;
         this.name = name;
+        this.thumbUrl = thumbUrl;
+    }
+
+    public Category(String name, String thumbUrl){
+        this.name = name;
+        this.thumbUrl = thumbUrl;
     }
 
     public Category(String name){
@@ -32,5 +39,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
     }
 }
