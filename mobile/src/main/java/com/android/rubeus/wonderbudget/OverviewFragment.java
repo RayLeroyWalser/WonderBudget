@@ -39,15 +39,18 @@ public class OverviewFragment extends Fragment {
 
         String pathDebut = "android.resource://" + getActivity().getPackageName() + "/";
 
-        db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.ic_launcher).toString()));
-        db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.ic_launcher).toString()));
-        db.addCategory(new Category("APL", Uri.parse(pathDebut + R.drawable.ic_launcher).toString()));
-
+        db.deleteAllCategories();
+        db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
+        db.addCategory(new Category("Electroménager", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+        db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+        db.addCategory(new Category("Salaire", Uri.parse(pathDebut + R.drawable.salaire).toString()));
+        db.addCategory(new Category("Banque", Uri.parse(pathDebut + R.drawable.banque).toString()));
 
         db.deleteAllTransactions();
         db.addTransaction(new Transaction(-12, 1, true, false, System.currentTimeMillis(), "SuperU"));
-        db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Amazon batterie"));
-        db.addTransaction(new Transaction(18, 2, true, true, System.currentTimeMillis(), ""));
+        db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
+        db.addTransaction(new Transaction(-18, 2, true, true, System.currentTimeMillis(), "Cuiseur à riz"));
+        db.addTransaction(new Transaction(40, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
 
         List<Transaction> list = db.getAllTransactions();
         for(Transaction t : list){
