@@ -1,4 +1,4 @@
-package com.android.rubeus.wonderbudget;
+package com.android.rubeus.wonderbudget.Entity;
 
 /**
  * Created by rubeus on 9/13/14.

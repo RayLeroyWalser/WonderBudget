@@ -52,6 +52,9 @@ public class MainActivity extends Activity
             case 0:
                 ft.replace(R.id.container, OverviewFragment.newInstance());
                 break;
+            case 1:
+                ft.replace(R.id.container, TransactionListFragment.newInstance());
+                break;
             default:
                 ft.replace(R.id.container, PlaceholderFragment.newInstance(position+1));
         }

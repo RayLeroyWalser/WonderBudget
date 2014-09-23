@@ -1,10 +1,13 @@
-package com.android.rubeus.wonderbudget;
+package com.android.rubeus.wonderbudget.DBHandler;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.android.rubeus.wonderbudget.Entity.Category;
+import com.android.rubeus.wonderbudget.Entity.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;

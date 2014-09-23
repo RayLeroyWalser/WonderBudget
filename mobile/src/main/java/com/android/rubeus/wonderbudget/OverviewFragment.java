@@ -1,7 +1,6 @@
 package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,19 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.Entity.Category;
+import com.android.rubeus.wonderbudget.Entity.Transaction;
+
 import java.util.List;
 
 public class OverviewFragment extends Fragment {
     private static final String TAG = "OverviewFragment";
 
     public static OverviewFragment newInstance() {
-        OverviewFragment fragment = new OverviewFragment();
+//        OverviewFragment fragment = ;
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
 //        fragment.setArguments(args);
 
-        return fragment;
+        return new OverviewFragment();
     }
     public OverviewFragment() {
         // Required empty public constructor
