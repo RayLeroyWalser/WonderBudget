@@ -6,7 +6,10 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,19 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.Entity.Category;
+import com.android.rubeus.wonderbudget.Entity.Transaction;
+
+import java.util.List;
+
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
+    private static final String TAG = "MainActivity";
+    private static final String PREF = "Preferences";
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
+    private DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,44 @@ public class MainActivity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        //Set custom font for the entire application
         FontsOverride.setDefaultFont(this, "SANS_SERIF", "Roboto-Thin.ttf");
+
+        //Store in Shared Preferences if this is the first time the app is launched
+        SharedPreferences settings = getSharedPreferences(PREF, 0);
+
+        if(settings.getBoolean("firstLaunch", true)){
+            db = new DatabaseHandler(this);
+            String pathDebut = "android.resource://" + getPackageName() + "/";
+
+            db.deleteAllCategories();
+            db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
+            db.addCategory(new Category("Electroménager", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+            db.addCategory(new Category("Salaire", Uri.parse(pathDebut + R.drawable.salaire).toString()));
+            db.addCategory(new Category("Banque", Uri.parse(pathDebut + R.drawable.banque).toString()));
+
+            db.deleteAllTransactions();
+            db.addTransaction(new Transaction(-12, 1, true, false, System.currentTimeMillis(), "SuperU"));
+            db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
+            db.addTransaction(new Transaction(-18, 2, true, true, System.currentTimeMillis(), "Cuiseur à riz"));
+            db.addTransaction(new Transaction(40, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
+
+
+            List<Transaction> list = db.getAllTransactions();
+            for(Transaction t : list){
+                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Repeat:" + t.isRepeat() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
+                        + "    Category:" + db.getCategory(t.getCategory()).getName());
+            }
+            List<Category> listCategories = db.getAllCategories();
+            for(Category c: listCategories){
+                Log.d(TAG, "Name: "+c.getName()+ "    Path: "+c.getThumbUrl());
+            }
+
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("firstLaunch", false);
+            editor.commit();
+        }
     }
 
     @Override
