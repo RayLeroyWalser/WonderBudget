@@ -16,25 +16,26 @@ import java.util.List;
  * Created by rubeus on 9/12/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper{
-    private final static int DATABASE_VERSION = 1;
-    private final static String DATABASE_NAME = "WonderBudget";
-    private final static String TABLE_TRANSACTION = "transactions";
-    private final static String TABLE_CATEGORY = "categories";
+    public final static int DATABASE_VERSION = 1;
+    public final static String DATABASE_NAME = "WonderBudget";
+    public final static String TABLE_TRANSACTION = "transactions";
+    public final static String TABLE_CATEGORY = "categories";
 
     //Common keys
-    private final static String KEY_ID = "id";
+    public final static String KEY_ID = "id";
+    public static final String _ID = "_id";
 
     //Transactions
-    private final static String KEY_AMOUNT = "amount";
-    private final static String KEY_CATEGORY = "category";
-    private final static String KEY_IS_DONE = "isDone";
-    private final static String KEY_IS_REPEAT = "isRepeat";
-    private final static String KEY_DATE = "date";
-    private final static String KEY_COMMENTARY = "commentary";
+    public final static String KEY_AMOUNT = "amount";
+    public final static String KEY_CATEGORY = "category";
+    public final static String KEY_IS_DONE = "isDone";
+    public final static String KEY_IS_REPEAT = "isRepeat";
+    public final static String KEY_DATE = "date";
+    public final static String KEY_COMMENTARY = "commentary";
 
     //Categories
-    private final static String KEY_NAME = "name";
-    private final static String KEY_THUMB_URL = "thumbUrl";
+    public final static String KEY_NAME = "name";
+    public final static String KEY_THUMB_URL = "thumbUrl";
 
     public DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -198,6 +199,34 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return 0;
     }
 
+    public List<Transaction> getTransactionsOfCategory(int id){
+        List<Transaction> transactionList = new ArrayList<Transaction>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Transaction t = new Transaction();
+                t.setId(cursor.getInt(0));
+                t.setAmount(cursor.getInt(1));
+                t.setCategory(cursor.getInt(2));
+                t.setDone(cursor.getInt(3)>0?true:false);
+                t.setRepeat(cursor.getInt(4)>0?true:false);
+                t.setDate(cursor.getLong(5));
+                t.setCommentary(cursor.getString(6));
+                // Adding transaction to list
+                transactionList.add(t);
+            } while (cursor.moveToNext());
+        }
+
+        // return transaction list
+        return transactionList;
+    }
+
     /***********************************************************************************
 
                                     CATEGORIES
@@ -246,6 +275,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             while(cursor.moveToNext());
         }
         return list;
+    }
+
+    public Cursor getAllCategoriesCursor(boolean adapter){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String id = KEY_ID;
+        if(adapter){
+            id = KEY_ID +" "+_ID;
+        }
+        String columns = id+", "+KEY_NAME;
+        String selectQuery = "SELECT " + columns + " FROM " + TABLE_CATEGORY;
+        return db.rawQuery(selectQuery, null);
     }
 
     public void deleteAllCategories(){
