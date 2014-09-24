@@ -41,6 +41,8 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        FontsOverride.setDefaultFont(this, "SANS_SERIF", "Raleway-ExtraLight.ttf");
     }
 
     @Override
