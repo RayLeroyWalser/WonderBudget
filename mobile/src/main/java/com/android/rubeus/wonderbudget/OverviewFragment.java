@@ -53,7 +53,7 @@ public class OverviewFragment extends Fragment {
         db.addTransaction(new Transaction(-12, 1, true, false, System.currentTimeMillis(), "SuperU"));
         db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
         db.addTransaction(new Transaction(-18, 2, true, true, System.currentTimeMillis(), "Cuiseur à riz"));
-        db.addTransaction(new Transaction(4000, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
+        db.addTransaction(new Transaction(40, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
 
         List<Transaction> list = db.getAllTransactions();
         for(Transaction t : list){

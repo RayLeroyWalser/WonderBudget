@@ -42,7 +42,7 @@ public class MainActivity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        FontsOverride.setDefaultFont(this, "SANS_SERIF", "Raleway-ExtraLight.ttf");
+        FontsOverride.setDefaultFont(this, "SANS_SERIF", "Roboto-Thin.ttf");
     }
 
     @Override
