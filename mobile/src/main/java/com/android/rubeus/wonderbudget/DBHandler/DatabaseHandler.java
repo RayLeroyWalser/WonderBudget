@@ -178,6 +178,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.delete(TABLE_TRANSACTION, null, null);
     }
 
+    public int getTotalAmount(){
+        String query = "SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_TRANSACTION;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+
+    public int getRealAmount(){
+        String query = "SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_TRANSACTION + " WHERE " + KEY_IS_DONE + " = 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+
     /***********************************************************************************
 
                                     CATEGORIES
@@ -226,5 +246,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             while(cursor.moveToNext());
         }
         return list;
+    }
+
+    public void deleteAllCategories(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CATEGORY, null, null);
     }
 }

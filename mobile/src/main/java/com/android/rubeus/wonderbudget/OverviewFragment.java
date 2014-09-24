@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
@@ -17,6 +19,7 @@ import java.util.List;
 
 public class OverviewFragment extends Fragment {
     private static final String TAG = "OverviewFragment";
+    private DatabaseHandler db;
 
     public static OverviewFragment newInstance() {
 //        OverviewFragment fragment = ;
@@ -35,7 +38,7 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DatabaseHandler db = new DatabaseHandler(this.getActivity());
+        db = new DatabaseHandler(this.getActivity());
 
         String pathDebut = "android.resource://" + getActivity().getPackageName() + "/";
 
@@ -50,7 +53,7 @@ public class OverviewFragment extends Fragment {
         db.addTransaction(new Transaction(-12, 1, true, false, System.currentTimeMillis(), "SuperU"));
         db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
         db.addTransaction(new Transaction(-18, 2, true, true, System.currentTimeMillis(), "Cuiseur à riz"));
-        db.addTransaction(new Transaction(40, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
+        db.addTransaction(new Transaction(4000, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
 
         List<Transaction> list = db.getAllTransactions();
         for(Transaction t : list){
@@ -67,7 +70,16 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_overview, container, false);
+        View view = inflater.inflate(R.layout.fragment_overview, container, false);
+        TextView totalAmount = (TextView) view.findViewById(R.id.totalAmount);
+        TextView realAmount = (TextView) view.findViewById(R.id.realAmount);
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
+        totalAmount.setText(db.getTotalAmount()+" €");
+        realAmount.setText(db.getRealAmount()+" €");
+        progressBar.setProgress(100);
+
+        return view;
     }
 
     @Override
