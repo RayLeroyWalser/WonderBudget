@@ -48,11 +48,11 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         TextView totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         TextView realAmount = (TextView) view.findViewById(R.id.realAmount);
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+//        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-        totalAmount.setText(db.getTotalAmount()+" €");
-        realAmount.setText(db.getRealAmount()+" €");
-        progressBar.setProgress(100);
+        totalAmount.setText(db.getTotalAmount()+"");
+        realAmount.setText(db.getRealAmount()+"");
+//        progressBar.setProgress(100);
 
         return view;
     }

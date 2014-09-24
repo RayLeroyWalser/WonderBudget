@@ -68,6 +68,7 @@ public class MainActivity extends Activity
             db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
             db.addTransaction(new Transaction(-18, 2, true, true, System.currentTimeMillis(), "Cuiseur à riz"));
             db.addTransaction(new Transaction(40, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
+            db.addTransaction(new Transaction(4000, 5, true, false, System.currentTimeMillis(), "Prime de fin d\'année"));
 
 
             List<Transaction> list = db.getAllTransactions();
