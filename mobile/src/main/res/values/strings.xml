@@ -13,6 +13,6 @@
     <string name="done">Done</string>
     <string name="repeat">Repeat</string>
     <string name="euro">€</string>
-    <string name="total_amount">What\'s left until the end of this month</string>
-    <string name="real_amount">What\'s left in your bank account</string>
+    <string name="total_amount">Total balance</string>
+    <string name="real_amount">Current balance</string>
 </resources>
