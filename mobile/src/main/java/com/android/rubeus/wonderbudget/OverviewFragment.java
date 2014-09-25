@@ -1,24 +1,20 @@
 package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
-import com.android.rubeus.wonderbudget.Entity.Category;
-import com.android.rubeus.wonderbudget.Entity.Transaction;
-
-import java.util.List;
 
 public class OverviewFragment extends Fragment {
     private static final String TAG = "OverviewFragment";
+    private static final int NEW_TRANSACTION = 1;
     private DatabaseHandler db;
 
     public static OverviewFragment newInstance() {
@@ -48,11 +44,17 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         TextView totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         TextView realAmount = (TextView) view.findViewById(R.id.realAmount);
-//        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        ImageButton addButton = (ImageButton) view.findViewById(R.id.addButton);
 
         totalAmount.setText(db.getTotalAmount()+"");
         realAmount.setText(db.getRealAmount()+"");
-//        progressBar.setProgress(100);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewTransaction();
+            }
+        });
 
         return view;
     }
@@ -67,4 +69,9 @@ public class OverviewFragment extends Fragment {
         super.onDetach();
     }
 
+    public void createNewTransaction(){
+        Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
+        intent.putExtra("typeOfDialog", TransactionActionActivity.ADD_NEW_TRANSACTIION);
+        startActivityForResult(intent, 1);
+    }
 }

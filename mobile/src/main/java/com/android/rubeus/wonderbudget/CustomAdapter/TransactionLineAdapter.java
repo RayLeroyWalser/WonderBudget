@@ -67,7 +67,7 @@ public class TransactionLineAdapter extends BaseAdapter {
         CacheView cache = (CacheView) view.getTag();
         String pathDebut = "android.resource://" + context.getPackageName() + "/";
         if(t.isDone()){
-            cache.cleared.setImageURI(Uri.parse(pathDebut + R.drawable.cleard));
+            cache.cleared.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
         }
         else{
             cache.cleared.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
