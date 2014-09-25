@@ -119,9 +119,7 @@ public class TransactionActionActivity extends Activity {
                             Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Transaction t = new Transaction(Integer.parseInt(amountText), category, isCleared, System.currentTimeMillis(), commentText);
-                            Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
-                                    + "    Category:" + db.getCategory(t.getCategory()).getName());
+                            Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, System.currentTimeMillis(), commentText);
                             db.addTransaction(t);
                             finish();
                         }

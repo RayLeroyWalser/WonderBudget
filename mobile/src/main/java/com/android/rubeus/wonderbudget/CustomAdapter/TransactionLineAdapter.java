@@ -75,7 +75,7 @@ public class TransactionLineAdapter extends BaseAdapter {
         cache.categoryIcon.setImageURI(Uri.parse(db.getCategory(t.getCategory()).getThumbUrl()));
         cache.category.setText(db.getCategory(t.getCategory()).getName());
         cache.comment.setText(t.getCommentary());
-        int amount = t.getAmount();
+        double amount = t.getAmount();
         if(amount>=0){
             cache.amount.setTextColor(context.getResources().getColor(R.color.positive_amount));
         }

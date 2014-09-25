@@ -50,7 +50,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
         String createTableTransaction = "CREATE TABLE " + TABLE_TRANSACTION + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
-                + KEY_AMOUNT + " INTEGER, "
+                + KEY_AMOUNT + " REAL, "
                 + KEY_CATEGORY + " INTEGER, "
                 + KEY_IS_DONE + " INTEGER, "
                 + KEY_DATE + " INTEGER, "
@@ -100,7 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             cursor.moveToFirst();
 
         Transaction transaction = new Transaction(cursor.getInt(0),
-                cursor.getInt(1),
+                cursor.getDouble(1),
                 cursor.getInt(2),
                 cursor.getInt(3)>0?true:false,
                 cursor.getInt(4),
@@ -122,7 +122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             do {
                 Transaction t = new Transaction();
                 t.setId(cursor.getInt(0));
-                t.setAmount(cursor.getInt(1));
+                t.setAmount(cursor.getDouble(1));
                 t.setCategory(cursor.getInt(2));
                 t.setDone(cursor.getInt(3)>0?true:false);
                 t.setDate(cursor.getLong(4));
@@ -173,22 +173,22 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.delete(TABLE_TRANSACTION, null, null);
     }
 
-    public int getTotalAmount(){
-        String query = "SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_TRANSACTION;
+    public double getTotalAmount(){
+        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
-            return cursor.getInt(0);
+            return cursor.getDouble(0);
         }
         return 0;
     }
 
-    public int getRealAmount(){
-        String query = "SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_TRANSACTION + " WHERE " + KEY_IS_DONE + " = 1";
+    public double getRealAmount(){
+        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION + " WHERE " + KEY_IS_DONE + " = 1";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
-            return cursor.getInt(0);
+            return cursor.getDouble(0);
         }
         return 0;
     }
@@ -206,7 +206,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             do {
                 Transaction t = new Transaction();
                 t.setId(cursor.getInt(0));
-                t.setAmount(cursor.getInt(1));
+                t.setAmount(cursor.getDouble(1));
                 t.setCategory(cursor.getInt(2));
                 t.setDone(cursor.getInt(3)>0?true:false);
                 t.setDate(cursor.getLong(4));

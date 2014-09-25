@@ -5,7 +5,7 @@ package com.android.rubeus.wonderbudget.Entity;
  */
 public class Transaction {
     private int id;
-    private int amount;
+    private double amount;
     private int category;
     private boolean isDone;
     private long date;
@@ -13,7 +13,7 @@ public class Transaction {
 
     public Transaction(){}
 
-    public Transaction(int id, int amount, int category, boolean isDone, long date, String commentary){
+    public Transaction(int id, double amount, int category, boolean isDone, long date, String commentary){
         this.id = id;
         this.amount = amount;
         this.category = category;
@@ -22,7 +22,7 @@ public class Transaction {
         this.commentary = commentary;
     }
 
-    public Transaction(int amount, int category, boolean isDone, long date, String commentary){
+    public Transaction(double amount, int category, boolean isDone, long date, String commentary){
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
@@ -38,11 +38,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

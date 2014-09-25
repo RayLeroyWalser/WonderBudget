@@ -60,10 +60,7 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
             db.addCategory(new Category("Electroménager", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
             db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-            db.addCategory(new Category("Salaire", Uri.parse(pathDebut + R.drawable.salaire).toString()));
             db.addCategory(new Category("Banque", Uri.parse(pathDebut + R.drawable.banque).toString()));
-
-            db.deleteCategory(db.getCategory(4));
             db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
 
             db.deleteAllTransactions();
@@ -71,7 +68,6 @@ public class MainActivity extends Activity
             db.addTransaction(new Transaction(-36, 3, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
             db.addTransaction(new Transaction(-18, 2, true, System.currentTimeMillis(), "Cuiseur à riz"));
             db.addTransaction(new Transaction(40, 5, false, System.currentTimeMillis(), "Remboursement de la banque"));
-            db.addTransaction(new Transaction(40000, 5, true, System.currentTimeMillis(), "Prime de fin d\'année"));
             db.addTransaction(new Transaction(-18, 3, true, System.currentTimeMillis(), "NAS"));
 
 
