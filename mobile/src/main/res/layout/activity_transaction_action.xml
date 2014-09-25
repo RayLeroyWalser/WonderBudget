@@ -80,7 +80,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/blockCategory"
-        android:inputType="numberDecimal"
+        android:inputType="numberDecimal|numberSigned"
         android:hint="@string/euro"
         android:layout_centerHorizontal="true"/>
 

@@ -16,6 +16,7 @@ public class OverviewFragment extends Fragment {
     private static final String TAG = "OverviewFragment";
     private static final int NEW_TRANSACTION = 1;
     private DatabaseHandler db;
+    private TextView totalAmount, realAmount;
 
     public static OverviewFragment newInstance() {
 //        OverviewFragment fragment = ;
@@ -42,8 +43,8 @@ public class OverviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
-        TextView totalAmount = (TextView) view.findViewById(R.id.totalAmount);
-        TextView realAmount = (TextView) view.findViewById(R.id.realAmount);
+        totalAmount = (TextView) view.findViewById(R.id.totalAmount);
+        realAmount = (TextView) view.findViewById(R.id.realAmount);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addButton);
 
         totalAmount.setText(db.getTotalAmount()+"");
@@ -69,9 +70,21 @@ public class OverviewFragment extends Fragment {
         super.onDetach();
     }
 
-    public void createNewTransaction(){
+    private void createNewTransaction(){
         Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
         intent.putExtra("typeOfDialog", TransactionActionActivity.ADD_NEW_TRANSACTIION);
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case TransactionActionActivity.ADD_NEW_TRANSACTIION:
+                totalAmount.setText(db.getTotalAmount()+"");
+                realAmount.setText(db.getRealAmount()+"");
+                break;
+        }
     }
 }
