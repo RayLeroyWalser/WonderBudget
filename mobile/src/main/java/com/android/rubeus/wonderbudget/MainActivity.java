@@ -67,16 +67,17 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
 
             db.deleteAllTransactions();
-            db.addTransaction(new Transaction(-12, 1, true, false, System.currentTimeMillis(), "SuperU"));
-            db.addTransaction(new Transaction(-36, 3, false, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
-            db.addTransaction(new Transaction(-18, 2, true, true, System.currentTimeMillis(), "Cuiseur à riz"));
-            db.addTransaction(new Transaction(40, 5, true, false, System.currentTimeMillis(), "Remboursement de la banque"));
-            db.addTransaction(new Transaction(40000, 5, true, false, System.currentTimeMillis(), "Prime de fin d\'année"));
+            db.addTransaction(new Transaction(-12, 1, true, System.currentTimeMillis(), "SuperU"));
+            db.addTransaction(new Transaction(-36, 3, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
+            db.addTransaction(new Transaction(-18, 2, true, System.currentTimeMillis(), "Cuiseur à riz"));
+            db.addTransaction(new Transaction(40, 5, false, System.currentTimeMillis(), "Remboursement de la banque"));
+            db.addTransaction(new Transaction(40000, 5, true, System.currentTimeMillis(), "Prime de fin d\'année"));
+            db.addTransaction(new Transaction(-18, 3, true, System.currentTimeMillis(), "NAS"));
 
 
             List<Transaction> list = db.getAllTransactions();
             for(Transaction t : list){
-                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Repeat:" + t.isRepeat() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
+                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
                         + "    Category:" + db.getCategory(t.getCategory()).getName());
             }
             List<Category> listCategories = db.getAllCategories();

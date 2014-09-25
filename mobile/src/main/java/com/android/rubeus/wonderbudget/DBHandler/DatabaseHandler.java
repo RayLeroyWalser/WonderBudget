@@ -29,7 +29,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String KEY_AMOUNT = "amount";
     public final static String KEY_CATEGORY = "category";
     public final static String KEY_IS_DONE = "isDone";
-    public final static String KEY_IS_REPEAT = "isRepeat";
     public final static String KEY_DATE = "date";
     public final static String KEY_COMMENTARY = "commentary";
 
@@ -54,7 +53,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + KEY_AMOUNT + " INTEGER, "
                 + KEY_CATEGORY + " INTEGER, "
                 + KEY_IS_DONE + " INTEGER, "
-                + KEY_IS_REPEAT + " INTEGER, "
                 + KEY_DATE + " INTEGER, "
                 + KEY_COMMENTARY + " TEXT, "
                 + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
@@ -84,7 +82,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_AMOUNT, t.getAmount());
         values.put(KEY_CATEGORY, t.getCategory());
         values.put(KEY_IS_DONE, t.isDone());
-        values.put(KEY_IS_REPEAT, t.isRepeat());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
 
@@ -97,7 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_TRANSACTION, new String[] { KEY_ID,
-                        KEY_AMOUNT, KEY_CATEGORY, KEY_IS_DONE, KEY_IS_REPEAT, KEY_DATE , KEY_COMMENTARY}, KEY_ID + "=?",
+                        KEY_AMOUNT, KEY_CATEGORY, KEY_IS_DONE, KEY_DATE , KEY_COMMENTARY}, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -106,9 +103,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 cursor.getInt(1),
                 cursor.getInt(2),
                 cursor.getInt(3)>0?true:false,
-                cursor.getInt(4)>0?true:false,
-                cursor.getInt(5),
-                cursor.getString(6));
+                cursor.getInt(4),
+                cursor.getString(5));
 
         return transaction;
     }
@@ -129,9 +125,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setAmount(cursor.getInt(1));
                 t.setCategory(cursor.getInt(2));
                 t.setDone(cursor.getInt(3)>0?true:false);
-                t.setRepeat(cursor.getInt(4)>0?true:false);
-                t.setDate(cursor.getLong(5));
-                t.setCommentary(cursor.getString(6));
+                t.setDate(cursor.getLong(4));
+                t.setCommentary(cursor.getString(5));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());
@@ -158,7 +153,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_AMOUNT, t.getAmount());
         values.put(KEY_CATEGORY, t.getCategory());
         values.put(KEY_IS_DONE, t.isDone());
-        values.put(KEY_IS_REPEAT, t.isRepeat());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
 
@@ -215,9 +209,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setAmount(cursor.getInt(1));
                 t.setCategory(cursor.getInt(2));
                 t.setDone(cursor.getInt(3)>0?true:false);
-                t.setRepeat(cursor.getInt(4)>0?true:false);
-                t.setDate(cursor.getLong(5));
-                t.setCommentary(cursor.getString(6));
+                t.setDate(cursor.getLong(4));
+                t.setCommentary(cursor.getString(5));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());

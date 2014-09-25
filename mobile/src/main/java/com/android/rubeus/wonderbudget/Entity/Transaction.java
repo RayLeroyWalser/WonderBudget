@@ -8,27 +8,24 @@ public class Transaction {
     private int amount;
     private int category;
     private boolean isDone;
-    private boolean isRepeat;
     private long date;
     private String commentary;
 
     public Transaction(){}
 
-    public Transaction(int id, int amount, int category, boolean isDone, boolean isRepeat, long date, String commentary){
+    public Transaction(int id, int amount, int category, boolean isDone, long date, String commentary){
         this.id = id;
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
-        this.isRepeat = isRepeat;
         this.date = date;
         this.commentary = commentary;
     }
 
-    public Transaction(int amount, int category, boolean isDone, boolean isRepeat, long date, String commentary){
+    public Transaction(int amount, int category, boolean isDone, long date, String commentary){
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
-        this.isRepeat = isRepeat;
         this.date = date;
         this.commentary = commentary;
     }
@@ -63,14 +60,6 @@ public class Transaction {
 
     public void setDone(boolean isDone) {
         this.isDone = isDone;
-    }
-
-    public boolean isRepeat() {
-        return isRepeat;
-    }
-
-    public void setRepeat(boolean isRepeat) {
-        this.isRepeat = isRepeat;
     }
 
     public long getDate() {
