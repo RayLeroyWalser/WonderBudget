@@ -23,6 +23,7 @@ public class TransactionLineAdapter extends BaseAdapter {
     private List<Transaction> list;
     private LayoutInflater inflater;
     private DatabaseHandler db;
+    private String pathDebut;
 
     public TransactionLineAdapter(Context context, List<Transaction> list, DatabaseHandler db){
         this.context = context;
@@ -65,13 +66,19 @@ public class TransactionLineAdapter extends BaseAdapter {
         }
 
         CacheView cache = (CacheView) view.getTag();
-        String pathDebut = "android.resource://" + context.getPackageName() + "/";
-        if(t.isDone()){
-            cache.cleared.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
-        }
-        else{
-            cache.cleared.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
-        }
+        pathDebut = "android.resource://" + context.getPackageName() + "/";
+        updateClearedIcon(cache.cleared,t);
+        cache.cleared.setTag(position);
+        cache.cleared.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Transaction t = getItem((Integer) v.getTag());
+                t.setDone(!t.isDone());
+                db.updateTransaction(t);
+                updateClearedIcon((ImageView)v,t);
+            }
+        });
+
         cache.categoryIcon.setImageURI(Uri.parse(db.getCategory(t.getCategory()).getThumbUrl()));
         cache.category.setText(db.getCategory(t.getCategory()).getName());
         cache.comment.setText(t.getCommentary());
@@ -82,9 +89,18 @@ public class TransactionLineAdapter extends BaseAdapter {
         else{
             cache.amount.setTextColor(context.getResources().getColor(R.color.negative_amount));
         }
-        cache.amount.setText(amount+" €");
+        cache.amount.setText(amount + " €");
 
         return view;
+    }
+
+    private void updateClearedIcon(ImageView v, Transaction t){
+        if(t.isDone()){
+            v.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
+        }
+        else{
+            v.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
+        }
     }
 
     private static class CacheView{
