@@ -73,7 +73,7 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                List<Transaction> transactions = db.getTransactionsOfCategory(itemPosition+1);
+                List<Transaction> transactions = db.getTransactionsOfCategory((int)itemId);
                 TransactionLineAdapter adapter = new TransactionLineAdapter(getActivity(), transactions, db);
                 listView.setAdapter(adapter);
                 return true;
@@ -99,8 +99,8 @@ public class CategoryFragment extends Fragment {
     public void restoreActionBar() {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(fragmentName);
+        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setTitle(fragmentName);
     }
 
 

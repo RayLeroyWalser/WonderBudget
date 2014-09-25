@@ -289,6 +289,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return db.rawQuery(selectQuery, null);
     }
 
+    public void deleteCategory(Category c){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CATEGORY, KEY_ID + " = ?",
+                new String[] { String.valueOf(c.getId()) });
+        db.close();
+    }
+
     public void deleteAllCategories(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CATEGORY, null, null);
