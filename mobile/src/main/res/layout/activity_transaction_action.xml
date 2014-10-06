@@ -70,7 +70,7 @@
 
     <EditText
         android:id="@+id/editAmount"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/blockCategory"
         android:inputType="numberDecimal|numberSigned"
@@ -79,8 +79,18 @@
         style="@style/customEditText.center"
         android:textSize="30sp"/>
 
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/calendar"
+        android:layout_alignLeft="@+id/editComment"
+        android:layout_alignTop="@id/editAmount"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:onClick="showDatePickerDialog"/>
+
     <EditText
-        android:id="@+id/editComment"
+        android:id="@id/editComment"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:hint="Comment"

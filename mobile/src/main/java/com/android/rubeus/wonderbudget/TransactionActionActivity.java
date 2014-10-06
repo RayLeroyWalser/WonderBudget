@@ -1,9 +1,11 @@
 package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +20,11 @@ import android.widget.Toast;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.Utility.DateUtility;
+import com.google.android.gms.ads.internal.rawhtmlad.client.d;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class TransactionActionActivity extends Activity {
@@ -33,7 +40,8 @@ public class TransactionActionActivity extends Activity {
 
     private String commentText, amountText, pathDebut;
     private boolean isCleared;
-    private int category, transactionId;
+    private int category, transactionId, typeOfDialog;
+    public static long transactionDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +50,9 @@ public class TransactionActionActivity extends Activity {
         setContentView(R.layout.activity_transaction_action);
 
         Intent intent = getIntent();
-        int type = intent.getIntExtra("typeOfDialog", 2);
+        typeOfDialog = intent.getIntExtra("typeOfDialog", 2);
         transactionId = (int) intent.getLongExtra("transactionId", 1);
+        transactionDate = System.currentTimeMillis();
 
         pathDebut = "android.resource://" + getPackageName() + "/";
 
@@ -57,10 +66,10 @@ public class TransactionActionActivity extends Activity {
         title = (TextView) findViewById(R.id.title);
         ok = (ImageView) findViewById(R.id.ok);
 
-        initLook(type);
+        initLook();
     }
 
-    private void initLook(int typeOfDialog){
+    private void initLook(){
 
         //Category
         SpinnerAdapter mSpinnerAdapter = new SimpleCursorAdapter(this,
@@ -101,18 +110,21 @@ public class TransactionActionActivity extends Activity {
                     }
                 });
 
-                ok(typeOfDialog);
+                System.out.println("la date par default est " + transactionDate + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
+
+                ok();
 
                 break;
             case VIEW_TRANSACTION:
                 //Disable button OK
                 ok.setVisibility(View.GONE);
 
-                //Set title
-                title.setText(getResources().getString(R.string.view_transaction));
+                Transaction t =  db.getTransaction(transactionId);
+                Log.d(TAG, "Lecture Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
+                        + "    Category:" + db.getCategory(t.getCategory()).getName());
 
                 //Show the transaction status (cleared/not cleared)
-                isCleared = db.getTransaction(transactionId).isDone();
+                isCleared = t.isDone();
                 switchClearedStatus();
                 clearedIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -124,7 +136,7 @@ public class TransactionActionActivity extends Activity {
                 });
 
                 //Show category
-                category = db.getTransaction(transactionId).getCategory();
+                category = t.getCategory();
                 categoryIcon.setImageURI(Uri.parse(db.getCategory(category).getThumbUrl()));
 
                 //Spinner
@@ -145,7 +157,7 @@ public class TransactionActionActivity extends Activity {
                 });
 
                 //Amount
-                editAmount.setText(db.getTransaction(transactionId).getAmount() + "");
+                editAmount.setText(t.getAmount() + "");
                 editAmount.setFocusable(false);
                 editAmount.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -166,7 +178,14 @@ public class TransactionActionActivity extends Activity {
                     }
                 });
 
-                ok(typeOfDialog);
+                //Date
+                transactionDate = t.getDate();
+                System.out.println("dans la DB la date est " + transactionDate + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
+
+                //Title
+                title.setText(DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
+
+                ok();
 
                 break;
             default:
@@ -191,34 +210,42 @@ public class TransactionActionActivity extends Activity {
         editComment.setFocusableInTouchMode(true);
     }
 
-    private void ok(final int type){
+    private void ok(){
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //Choose the amount
-            amountText = editAmount.getText().toString().trim();
+                //Amount
+                amountText = editAmount.getText().toString().trim();
 
-            //Choose the comment
-            commentText = editComment.getText().toString().trim();
+                //Comment
+                commentText = editComment.getText().toString().trim();
 
-            if(amountText.equals("")){
-                Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, System.currentTimeMillis(), commentText);
-                switch (type){
-                    case ADD_NEW_TRANSACTIION:
-                        db.addTransaction(t);
-                        break;
-                    case VIEW_TRANSACTION:
-                        t.setId(transactionId);
-                        db.updateTransaction(t);
-                        TransactionActionActivity.this.setResult(RESULT_OK);
-                        break;
+                if (amountText.equals("")) {
+                    Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
+                } else {
+                    Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
+                    Log.d(TAG, "Ecriture Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
+                            + "    Category:" + db.getCategory(t.getCategory()).getName());
+                    switch (typeOfDialog) {
+                        case ADD_NEW_TRANSACTIION:
+                            db.addTransaction(t);
+                            System.out.println("jajoute dans la DB la date " + t.getDate() + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
+                            break;
+                        case VIEW_TRANSACTION:
+                            t.setId(transactionId);
+                            db.updateTransaction(t);
+                            System.out.println("je mets a jour la date " + transactionDate + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
+                            TransactionActionActivity.this.setResult(RESULT_OK);
+                            break;
+                    }
+                    finish();
                 }
-                finish();
-            }
             }
         });
+    }
+
+    public void showDatePickerDialog(View v) {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 }

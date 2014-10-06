@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.Utility.FontsOverride;
 
 import java.util.List;
 

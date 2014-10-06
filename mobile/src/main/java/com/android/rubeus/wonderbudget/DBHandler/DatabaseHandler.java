@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 cursor.getDouble(1),
                 cursor.getInt(2),
                 cursor.getInt(3)>0?true:false,
-                cursor.getInt(4),
+                cursor.getLong(4),
                 cursor.getString(5));
 
         return transaction;

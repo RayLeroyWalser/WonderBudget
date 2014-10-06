@@ -19,12 +19,6 @@ public class OverviewFragment extends Fragment {
     private TextView totalAmount, realAmount;
 
     public static OverviewFragment newInstance() {
-//        OverviewFragment fragment = ;
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-
         return new OverviewFragment();
     }
     public OverviewFragment() {
