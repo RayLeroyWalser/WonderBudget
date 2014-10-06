@@ -120,8 +120,6 @@ public class TransactionActionActivity extends Activity {
                 ok.setVisibility(View.GONE);
 
                 Transaction t =  db.getTransaction(transactionId);
-                Log.d(TAG, "Lecture Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
-                        + "    Category:" + db.getCategory(t.getCategory()).getName());
 
                 //Show the transaction status (cleared/not cleared)
                 isCleared = t.isDone();
@@ -180,10 +178,9 @@ public class TransactionActionActivity extends Activity {
 
                 //Date
                 transactionDate = t.getDate();
-                System.out.println("dans la DB la date est " + transactionDate + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
 
                 //Title
-                title.setText(DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
+                title.setText(DateUtility.getDate(transactionDate, "EEEE dd MMM yyyy"));
 
                 ok();
 
@@ -224,17 +221,13 @@ public class TransactionActionActivity extends Activity {
                     Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
                 } else {
                     Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
-                    Log.d(TAG, "Ecriture Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
-                            + "    Category:" + db.getCategory(t.getCategory()).getName());
                     switch (typeOfDialog) {
                         case ADD_NEW_TRANSACTIION:
                             db.addTransaction(t);
-                            System.out.println("jajoute dans la DB la date " + t.getDate() + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
                             break;
                         case VIEW_TRANSACTION:
                             t.setId(transactionId);
                             db.updateTransaction(t);
-                            System.out.println("je mets a jour la date " + transactionDate + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
                             TransactionActionActivity.this.setResult(RESULT_OK);
                             break;
                     }
@@ -245,6 +238,7 @@ public class TransactionActionActivity extends Activity {
     }
 
     public void showDatePickerDialog(View v) {
+        switchToEditTransaction();
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.show(getFragmentManager(), "datePicker");
     }
