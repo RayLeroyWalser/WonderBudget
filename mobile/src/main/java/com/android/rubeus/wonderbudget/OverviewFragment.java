@@ -73,7 +73,7 @@ public class OverviewFragment extends Fragment {
     private void createNewTransaction(){
         Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
         intent.putExtra("typeOfDialog", TransactionActionActivity.ADD_NEW_TRANSACTIION);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, TransactionActionActivity.ADD_NEW_TRANSACTIION);
     }
 
     @Override

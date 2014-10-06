@@ -5,5 +5,6 @@
     <color name="negative_amount">#F9525E</color>
     <color name="positive_amount">#39A657</color>
     <color name="blue">#19B5FE</color>
+    <color name="pale_blue">#3A3A4A</color>
     <color name="white">#FFFFFF</color>
 </resources>

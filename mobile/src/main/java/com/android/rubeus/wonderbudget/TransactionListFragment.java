@@ -1,11 +1,13 @@
 package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
@@ -15,6 +17,7 @@ import com.android.rubeus.wonderbudget.Entity.Transaction;
 import java.util.List;
 
 public class TransactionListFragment extends Fragment {
+    private TransactionLineAdapter adapter;
 
     public static TransactionListFragment newInstance() {
         return new TransactionListFragment();
@@ -39,8 +42,18 @@ public class TransactionListFragment extends Fragment {
         DatabaseHandler db = new DatabaseHandler(this.getActivity());
         List<Transaction> list = db.getAllTransactions();
 
-        TransactionLineAdapter adapter = new TransactionLineAdapter(getActivity(), list, db);
+        adapter = new TransactionLineAdapter(getActivity(), list, db);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
+                intent.putExtra("typeOfDialog", TransactionActionActivity.VIEW_TRANSACTION);
+                intent.putExtra("transactionId", adapter.getItemId(position));
+                startActivityForResult(intent, TransactionActionActivity.VIEW_TRANSACTION);
+            }
+        });
 
         return view;
     }

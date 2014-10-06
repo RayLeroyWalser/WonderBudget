@@ -7,4 +7,13 @@
         <item name="android:typeface">sans</item>
     </style>
 
+    <style name="customEditText" parent="android:Widget.EditText">
+        <item name="android:background">@color/pale_blue</item>
+        <item name="android:padding">@dimen/paddingWidget</item>
+    </style>
+
+    <style name="customEditText.center">
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

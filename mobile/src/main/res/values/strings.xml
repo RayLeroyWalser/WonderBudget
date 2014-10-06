@@ -19,6 +19,7 @@
     <string name="cancel">Cancel</string>
     <string name="add_new_transaction">Add new transaction</string>
     <string name="view_transaction">Transaction</string>
+    <string name="edit_transaction">Edit transaction</string>
     <string name="title_activity_add_transaction">Transaction</string>
     <string name="error_edit_amount">Please enter an amount</string>
 

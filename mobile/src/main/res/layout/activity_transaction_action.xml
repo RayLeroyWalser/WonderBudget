@@ -66,30 +66,18 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"></Spinner>
 
-        <TextView
-            android:id="@+id/categoryName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/iconAddTransaction"
-            android:layout_centerVertical="true"/>
-
     </RelativeLayout>
 
     <EditText
         android:id="@+id/editAmount"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/blockCategory"
         android:inputType="numberDecimal|numberSigned"
         android:hint="@string/euro"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/amountText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/blockCategory"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        style="@style/customEditText.center"
+        android:textSize="30sp"/>
 
     <EditText
         android:id="@+id/editComment"
@@ -97,14 +85,8 @@
         android:layout_height="100dp"
         android:hint="Comment"
         android:layout_margin="15dp"
-        android:layout_below="@id/editAmount"/>
-
-    <TextView
-        android:id="@+id/comment"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="15dp"
-        android:layout_below="@id/amountText"/>
+        android:layout_below="@id/editAmount"
+        style="@style/customEditText"/>
 
 
 </RelativeLayout>
