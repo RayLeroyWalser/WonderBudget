@@ -2,6 +2,7 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -28,6 +30,8 @@ public class CategoryFragment extends Fragment {
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private ListView listView;
     private DatabaseHandler db;
+    private TransactionLineAdapter adapter;
+    private int categoryId;
 
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
@@ -73,9 +77,20 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                List<Transaction> transactions = db.getTransactionsOfCategory((int)itemId);
-                TransactionLineAdapter adapter = new TransactionLineAdapter(getActivity(), transactions, db);
+                categoryId = (int)itemId;
+                List<Transaction> transactions = db.getTransactionsOfCategory(categoryId);
+                adapter = new TransactionLineAdapter(getActivity(), transactions, db);
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
+                        intent.putExtra("typeOfDialog", TransactionActionActivity.VIEW_TRANSACTION);
+                        intent.putExtra("transactionId", adapter.getItemId(position));
+                        startActivityForResult(intent, TransactionActionActivity.VIEW_TRANSACTION);
+                    }
+                });
                 return true;
             }
         };
@@ -109,6 +124,18 @@ public class CategoryFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             restoreActionBar();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case TransactionActionActivity.VIEW_TRANSACTION:
+                if(resultCode == getActivity().RESULT_OK){
+                    adapter.refresh(db.getTransactionsOfCategory(categoryId));
+                }
+                break;
         }
     }
 }
