@@ -211,7 +211,9 @@ public class TransactionActionActivity extends Activity {
                         db.addTransaction(t);
                         break;
                     case VIEW_TRANSACTION:
-                        System.out.println("cocuocuocucoucocou    " + db.updateTransaction(t));
+                        t.setId(transactionId);
+                        db.updateTransaction(t);
+                        TransactionActionActivity.this.setResult(RESULT_OK);
                         break;
                 }
                 finish();

@@ -47,6 +47,11 @@ public class TransactionLineAdapter extends BaseAdapter {
         return list.get(position).getId();
     }
 
+    public void refresh(List<Transaction> list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;

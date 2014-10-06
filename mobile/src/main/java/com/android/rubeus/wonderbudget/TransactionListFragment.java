@@ -18,6 +18,7 @@ import java.util.List;
 
 public class TransactionListFragment extends Fragment {
     private TransactionLineAdapter adapter;
+    private DatabaseHandler db;
 
     public static TransactionListFragment newInstance() {
         return new TransactionListFragment();
@@ -39,7 +40,7 @@ public class TransactionListFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
-        DatabaseHandler db = new DatabaseHandler(this.getActivity());
+        db = new DatabaseHandler(this.getActivity());
         List<Transaction> list = db.getAllTransactions();
 
         adapter = new TransactionLineAdapter(getActivity(), list, db);
@@ -66,5 +67,17 @@ public class TransactionListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case TransactionActionActivity.VIEW_TRANSACTION:
+                if(resultCode == getActivity().RESULT_OK){
+                    adapter.refresh(db.getAllTransactions());
+                }
+                break;
+        }
     }
 }
