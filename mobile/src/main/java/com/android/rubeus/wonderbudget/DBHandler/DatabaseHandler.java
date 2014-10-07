@@ -112,7 +112,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public List<Transaction> getAllTransactions(){
         List<Transaction> transactionList = new ArrayList<Transaction>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION;
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " ORDER BY " + KEY_DATE + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -196,7 +196,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public List<Transaction> getTransactionsOfCategory(int id){
         List<Transaction> transactionList = new ArrayList<Transaction>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id;
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id + " ORDER BY " + KEY_DATE + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
