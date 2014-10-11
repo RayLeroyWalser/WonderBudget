@@ -66,6 +66,7 @@ public class TransactionListFragment extends Fragment {
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             private int number = 0;
             private ArrayList<Transaction> listToDelete = new ArrayList<Transaction>();
+            private ArrayList<Integer> checkedPosition = adapter.getCheckedPositions();
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position,
@@ -75,12 +76,15 @@ public class TransactionListFragment extends Fragment {
                 if(checked){
                     number++;
                     listToDelete.add(db.getTransaction((int) id));
+                    checkedPosition.add(position);
                 }
                 else{
                     number--;
                     listToDelete.remove(db.getTransaction((int) id));
+                    checkedPosition.remove(checkedPosition.indexOf(position));
                 }
                 mode.setTitle(number + " selected");
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -88,7 +92,6 @@ public class TransactionListFragment extends Fragment {
                 // Respond to clicks on the actions in the CAB
                 switch (item.getItemId()) {
                     case R.id.deleteTransaction:
-                        //TODO: delete transaction
                         for(int i=0; i<listToDelete.size(); i++){
                             db.deleteTransaction(listToDelete.get(i));
                         }
@@ -112,6 +115,9 @@ public class TransactionListFragment extends Fragment {
             public void onDestroyActionMode(ActionMode mode) {
                 // Here you can make any necessary updates to the activity when
                 // the CAB is removed. By default, selected items are deselected/unchecked.
+                checkedPosition.clear();
+                adapter.notifyDataSetChanged();
+                number=0;
             }
 
             @Override

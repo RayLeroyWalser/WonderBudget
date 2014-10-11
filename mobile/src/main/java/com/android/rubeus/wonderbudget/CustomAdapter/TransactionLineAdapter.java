@@ -13,6 +13,7 @@ import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class TransactionLineAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private DatabaseHandler db;
     private String pathDebut;
+    private ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
 
     public TransactionLineAdapter(Context context, List<Transaction> list, DatabaseHandler db){
         this.context = context;
@@ -50,6 +52,10 @@ public class TransactionLineAdapter extends BaseAdapter {
     public void refresh(List<Transaction> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Integer> getCheckedPositions() {
+        return checkedPositions;
     }
 
     @Override
@@ -95,6 +101,13 @@ public class TransactionLineAdapter extends BaseAdapter {
             cache.amount.setTextColor(context.getResources().getColor(R.color.negative_amount));
         }
         cache.amount.setText(amount + " €");
+
+        if(checkedPositions.contains(position)){
+            view.setBackgroundColor(context.getResources().getColor(R.color.pale_blue));
+        }
+        else{
+            view.setBackgroundColor(context.getResources().getColor(R.color.app_background));
+        }
 
         return view;
     }
