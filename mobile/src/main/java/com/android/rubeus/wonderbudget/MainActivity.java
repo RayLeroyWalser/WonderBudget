@@ -58,18 +58,16 @@ public class MainActivity extends Activity
 
             db.deleteAllCategories();
             db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
-            db.addCategory(new Category("Electroménager", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-            db.addCategory(new Category("Banque", Uri.parse(pathDebut + R.drawable.banque).toString()));
+            db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
+            db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
             db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
-            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-
-            db.deleteAllTransactions();
-            db.addTransaction(new Transaction(-12, 1, true, System.currentTimeMillis(), "SuperU"));
-            db.addTransaction(new Transaction(-36, 3, false, System.currentTimeMillis(), "Batterie pour Galaxy S2"));
-            db.addTransaction(new Transaction(-18, 2, true, System.currentTimeMillis(), "Cuiseur à riz"));
-            db.addTransaction(new Transaction(40, 5, false, System.currentTimeMillis(), "Remboursement de la banque"));
-            db.addTransaction(new Transaction(-18, 3, true, System.currentTimeMillis(), "NAS"));
+            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.media).toString()));
+            db.addCategory(new Category("Logement", Uri.parse(pathDebut + R.drawable.logement).toString()));
+            db.addCategory(new Category("Administration", Uri.parse(pathDebut + R.drawable.administration).toString()));
+            db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
+            db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
+            db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
 
             db.deleteAllRecurringTransactions();
             db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, System.currentTimeMillis(), "Abonnement Freebox", -1, 1, 1));
