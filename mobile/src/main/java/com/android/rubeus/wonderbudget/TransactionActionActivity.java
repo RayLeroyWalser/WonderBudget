@@ -110,8 +110,6 @@ public class TransactionActionActivity extends Activity {
                     }
                 });
 
-                System.out.println("la date par default est " + transactionDate + " qui correspond a " + DateUtility.getDate(transactionDate, "dd/MM/yyyy"));
-
                 ok();
 
                 break;
@@ -228,9 +226,9 @@ public class TransactionActionActivity extends Activity {
                         case VIEW_TRANSACTION:
                             t.setId(transactionId);
                             db.updateTransaction(t);
-                            TransactionActionActivity.this.setResult(RESULT_OK);
                             break;
                     }
+                    TransactionActionActivity.this.setResult(RESULT_OK);
                     finish();
                 }
             }

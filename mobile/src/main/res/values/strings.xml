@@ -23,5 +23,6 @@
     <string name="title_activity_add_transaction">Transaction</string>
     <string name="error_edit_amount">Please enter an amount</string>
     <string name="delete_transaction">Delete transaction(s)</string>
+    <string name="add_upgrade_transaction">Add upgrade transaction</string>
 
 </resources>

@@ -68,6 +68,7 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
             db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
             db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
+            db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
 
             db.deleteAllRecurringTransactions();
             db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, System.currentTimeMillis(), "Abonnement Freebox", -1, 1, 1));

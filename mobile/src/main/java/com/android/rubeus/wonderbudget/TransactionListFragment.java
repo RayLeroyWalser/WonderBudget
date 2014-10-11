@@ -1,5 +1,6 @@
 package com.android.rubeus.wonderbudget;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionListFragment extends Fragment {
+    private final static String fragmentName = "Transactions";
     private TransactionLineAdapter adapter;
     private DatabaseHandler db;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     public static TransactionListFragment newInstance() {
         return new TransactionListFragment();
@@ -43,6 +46,10 @@ public class TransactionListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
+        setHasOptionsMenu(true);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
@@ -144,12 +151,43 @@ public class TransactionListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case TransactionActionActivity.VIEW_TRANSACTION:
-                if(resultCode == getActivity().RESULT_OK){
-                    adapter.refresh(db.getAllTransactions());
-                }
-                break;
+        if(resultCode == getActivity().RESULT_OK){
+            adapter.refresh(db.getAllTransactions());
+        }
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle(fragmentName);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            inflater.inflate(R.menu.transaction_list_menu, menu);
+            restoreActionBar();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.addTransaction:
+                Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
+                intent.putExtra("typeOfDialog", TransactionActionActivity.ADD_NEW_TRANSACTIION);
+                startActivityForResult(intent, TransactionActionActivity.ADD_NEW_TRANSACTIION);
+                return true;
+            case R.id.addUpgradeTransaction:
+                //TODO
+                double currentAmount = db.getRealAmount();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
