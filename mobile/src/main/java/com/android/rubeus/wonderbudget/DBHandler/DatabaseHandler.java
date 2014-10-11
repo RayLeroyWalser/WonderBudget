@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.android.rubeus.wonderbudget.Entity.Category;
+import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static int DATABASE_VERSION = 1;
     public final static String DATABASE_NAME = "WonderBudget";
     public final static String TABLE_TRANSACTION = "transactions";
+    public final static String TABLE_RECURRING_TRANSACTION = "recurringTransactions";
     public final static String TABLE_CATEGORY = "categories";
 
     //Common keys
@@ -31,6 +33,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String KEY_IS_DONE = "isDone";
     public final static String KEY_DATE = "date";
     public final static String KEY_COMMENTARY = "commentary";
+
+    //Recurring transactions
+    public final static String KEY_NUMBER_PAYMENT_LEFT = "numberOfPaymentLeft";
+    public final static String KEY_DISTANCE_REPETITION = "distanceBetweenPayement";
+    public final static String KEY_TYPE_OF_RECURRENT = "typeOfRecurrent";
 
     //Categories
     public final static String KEY_NAME = "name";
@@ -58,13 +65,28 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
                 + ")";
 
+        String createTableRecurringTransaction = "CREATE TABLE " + TABLE_RECURRING_TRANSACTION + "("
+                + KEY_ID + " INTEGER PRIMARY KEY, "
+                + KEY_AMOUNT + " REAL, "
+                + KEY_CATEGORY + " INTEGER, "
+                + KEY_DATE + " INTEGER, "
+                + KEY_COMMENTARY + " TEXT, "
+                + KEY_NUMBER_PAYMENT_LEFT + " INTEGER, "
+                + KEY_DISTANCE_REPETITION + " INTEGER, "
+                + KEY_TYPE_OF_RECURRENT + " INTEGER, "
+                + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
+                + ")";
+
+
         db.execSQL(createTableCategory);
         db.execSQL(createTableTransaction);
+        db.execSQL(createTableRecurringTransaction);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECURRING_TRANSACTION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         onCreate(db);
     }
@@ -211,6 +233,64 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setDone(cursor.getInt(3)>0?true:false);
                 t.setDate(cursor.getLong(4));
                 t.setCommentary(cursor.getString(5));
+                // Adding transaction to list
+                transactionList.add(t);
+            } while (cursor.moveToNext());
+        }
+
+        // return transaction list
+        return transactionList;
+    }
+
+
+    /***********************************************************************************
+
+                                RECURRING TRANSACTIONS
+
+     **********************************************************************************/
+
+    public void addRecurringTransaction(RecurringTransaction t){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_AMOUNT, t.getAmount());
+        values.put(KEY_CATEGORY, t.getCategory());
+        values.put(KEY_DATE, t.getDate());
+        values.put(KEY_COMMENTARY, t.getCommentary());
+        values.put(KEY_NUMBER_PAYMENT_LEFT, t.getNumberOfPaymentLeft());
+        values.put(KEY_DISTANCE_REPETITION, t.getDistanceBetweenPayment());
+        values.put(KEY_TYPE_OF_RECURRENT, t.getTypeOfRecurrent());
+
+        // Inserting Row
+        db.insert(TABLE_RECURRING_TRANSACTION, null, values);
+        db.close(); // Closing database connection
+    }
+
+    public void deleteAllRecurringTransactions(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_RECURRING_TRANSACTION, null, null);
+    }
+
+    public List<RecurringTransaction> getAllRecurringTransactions(){
+        List<RecurringTransaction> transactionList = new ArrayList<RecurringTransaction>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_RECURRING_TRANSACTION + " ORDER BY " + KEY_DATE + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                RecurringTransaction t = new RecurringTransaction();
+                t.setId(cursor.getInt(0));
+                t.setAmount(cursor.getDouble(1));
+                t.setCategory(cursor.getInt(2));
+                t.setDate(cursor.getLong(3));
+                t.setCommentary(cursor.getString(4));
+                t.setNumberOfPaymentLeft(cursor.getInt(5));
+                t.setDistanceBetweenPayment(cursor.getInt(6));
+                t.setTypeOfRecurrent(cursor.getInt(7));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());

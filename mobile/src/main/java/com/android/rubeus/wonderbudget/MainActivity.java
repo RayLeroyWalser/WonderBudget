@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
+import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.FontsOverride;
 
@@ -61,6 +62,7 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
             db.addCategory(new Category("Banque", Uri.parse(pathDebut + R.drawable.banque).toString()));
             db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
+            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
 
             db.deleteAllTransactions();
             db.addTransaction(new Transaction(-12, 1, true, System.currentTimeMillis(), "SuperU"));
@@ -68,6 +70,9 @@ public class MainActivity extends Activity
             db.addTransaction(new Transaction(-18, 2, true, System.currentTimeMillis(), "Cuiseur à riz"));
             db.addTransaction(new Transaction(40, 5, false, System.currentTimeMillis(), "Remboursement de la banque"));
             db.addTransaction(new Transaction(-18, 3, true, System.currentTimeMillis(), "NAS"));
+
+            db.deleteAllRecurringTransactions();
+            db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, System.currentTimeMillis(), "Abonnement Freebox", -1, 1, 1));
 
 
             List<Transaction> list = db.getAllTransactions();
@@ -99,6 +104,9 @@ public class MainActivity extends Activity
                 ft.replace(R.id.container, TransactionListFragment.newInstance());
                 break;
             case 2:
+                ft.replace(R.id.container, RecurringTransactionListFragment.newInstance());
+                break;
+            case 3:
                 ft.replace(R.id.container, CategoryFragment.newInstance());
                 break;
             default:
@@ -118,6 +126,9 @@ public class MainActivity extends Activity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
