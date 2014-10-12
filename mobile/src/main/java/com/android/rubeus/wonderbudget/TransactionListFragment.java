@@ -2,10 +2,15 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.InputType;
 import android.view.ActionMode;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TableLayout;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
@@ -25,6 +32,7 @@ import java.util.List;
 
 public class TransactionListFragment extends Fragment {
     private final static String fragmentName = "Transactions";
+    private final static int ADD_UPGRADE_TRANSACTION = 10;
     private TransactionLineAdapter adapter;
     private DatabaseHandler db;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -152,7 +160,23 @@ public class TransactionListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == getActivity().RESULT_OK){
-            adapter.refresh(db.getAllTransactions());
+            switch (requestCode){
+                case TransactionActionActivity.VIEW_TRANSACTION:
+                    adapter.refresh(db.getAllTransactions());
+                    break;
+                case TransactionActionActivity.ADD_NEW_TRANSACTIION:
+                    adapter.refresh(db.getAllTransactions());
+                    break;
+                case ADD_UPGRADE_TRANSACTION:
+                    if(data != null){
+                        double value = data.getDoubleExtra("value",0);
+                        Transaction t = new Transaction(value, 1, true, System.currentTimeMillis(), "Mise à niveau du montant");
+                        db.addTransaction(t);
+                        adapter.refresh(db.getAllTransactions());
+                    }
+                    break;
+            }
+
         }
     }
 
@@ -182,9 +206,10 @@ public class TransactionListFragment extends Fragment {
                 startActivityForResult(intent, TransactionActionActivity.ADD_NEW_TRANSACTIION);
                 return true;
             case R.id.addUpgradeTransaction:
-                //TODO
                 double currentAmount = db.getRealAmount();
-
+                Intent intent2 = new Intent(getActivity(), AddUpgradeTransactionActivity.class);
+                intent2.putExtra("currentAmount", currentAmount);
+                startActivityForResult(intent2, ADD_UPGRADE_TRANSACTION);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

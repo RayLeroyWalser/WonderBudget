@@ -16,9 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:theme="@android:style/Theme.Holo.Dialog"
+        <activity
             android:name=".TransactionActionActivity"
-            android:label="@string/title_activity_add_transaction" >
+            android:label="@string/title_activity_add_transaction"
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name=".AddUpgradeTransactionActivity"
+            android:label="@string/title_activity_add_upgrade_transaction"
+            android:theme="@android:style/Theme.Holo.Dialog">
         </activity>
     </application>
 

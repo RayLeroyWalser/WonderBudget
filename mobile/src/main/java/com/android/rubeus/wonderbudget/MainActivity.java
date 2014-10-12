@@ -57,7 +57,9 @@ public class MainActivity extends Activity
             String pathDebut = "android.resource://" + getPackageName() + "/";
 
             db.deleteAllCategories();
+            db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
             db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
+            db.addCategory(new Category("Alimentatation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
             db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
             db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
             db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
@@ -68,7 +70,6 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
             db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
             db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
-            db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
 
             db.deleteAllRecurringTransactions();
             db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, System.currentTimeMillis(), "Abonnement Freebox", -1, 1, 1));
