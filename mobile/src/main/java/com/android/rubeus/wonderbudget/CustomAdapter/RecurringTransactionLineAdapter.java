@@ -76,7 +76,6 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
 
         CacheView cache = (CacheView) view.getTag();
         pathDebut = "android.resource://" + context.getPackageName() + "/";
-        cache.cleared.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
 
         cache.categoryIcon.setImageURI(Uri.parse(db.getCategory(t.getCategory()).getThumbUrl()));
         cache.category.setText(db.getCategory(t.getCategory()).getName());
@@ -102,15 +101,6 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
         cache.recurrenceDetail.setText(details);
 
         return view;
-    }
-
-    private void updateClearedIcon(ImageView v, Transaction t){
-        if(t.isDone()){
-            v.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
-        }
-        else{
-            v.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
-        }
     }
 
     private static class CacheView{

@@ -38,7 +38,7 @@ public class TransactionActionActivity extends Activity {
     private EditText editAmount, editComment;
     private DatabaseHandler db;
 
-    private String commentText, amountText, pathDebut;
+    private String commentText, amountText;
     private boolean isCleared;
     private int category, transactionId, typeOfDialog;
     public static long transactionDate;
@@ -53,8 +53,6 @@ public class TransactionActionActivity extends Activity {
         typeOfDialog = intent.getIntExtra("typeOfDialog", 2);
         transactionId = (int) intent.getLongExtra("transactionId", 1);
         transactionDate = System.currentTimeMillis();
-
-        pathDebut = "android.resource://" + getPackageName() + "/";
 
         db = new DatabaseHandler(this);
 
@@ -100,8 +98,8 @@ public class TransactionActionActivity extends Activity {
                 });
 
                 //Choose the transaction status (cleared/not cleared)
-                clearedIcon.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
                 isCleared = false;
+                switchClearedStatus();
                 clearedIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -189,10 +187,10 @@ public class TransactionActionActivity extends Activity {
 
     private void switchClearedStatus(){
         if(isCleared){
-            clearedIcon.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
+            clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
         }
         else{
-            clearedIcon.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
+            clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));
         }
     }
 

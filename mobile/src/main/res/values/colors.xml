@@ -2,8 +2,8 @@
 <resources>
     <color name="app_background">#2C2C38</color>
     <color name="app_text">#EDEDEE</color>
-    <color name="negative_amount">#F9525E</color>
-    <color name="positive_amount">#39A657</color>
+    <color name="negative_amount">#F62459</color>
+    <color name="positive_amount">#87D37C</color>
     <color name="blue">#19B5FE</color>
     <color name="pale_blue">#3A3A4A</color>
     <color name="white">#FFFFFF</color>

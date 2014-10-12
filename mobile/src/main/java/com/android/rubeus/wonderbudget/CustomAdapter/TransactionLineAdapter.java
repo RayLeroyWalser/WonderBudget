@@ -24,7 +24,6 @@ public class TransactionLineAdapter extends BaseAdapter {
     private List<Transaction> list;
     private LayoutInflater inflater;
     private DatabaseHandler db;
-    private String pathDebut;
     private ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
 
     public TransactionLineAdapter(Context context, List<Transaction> list, DatabaseHandler db){
@@ -77,7 +76,6 @@ public class TransactionLineAdapter extends BaseAdapter {
         }
 
         CacheView cache = (CacheView) view.getTag();
-        pathDebut = "android.resource://" + context.getPackageName() + "/";
         updateClearedIcon(cache.cleared,t);
         cache.cleared.setTag(position);
         cache.cleared.setOnClickListener(new View.OnClickListener() {
@@ -114,10 +112,10 @@ public class TransactionLineAdapter extends BaseAdapter {
 
     private void updateClearedIcon(ImageView v, Transaction t){
         if(t.isDone()){
-            v.setImageURI(Uri.parse(pathDebut + R.drawable.cleared));
+            v.setBackground(context.getResources().getDrawable(R.drawable.oval));
         }
         else{
-            v.setImageURI(Uri.parse(pathDebut + R.drawable.not_cleared));
+            v.setBackground(context.getResources().getDrawable(R.drawable.oval_uncleared));
         }
     }
 
