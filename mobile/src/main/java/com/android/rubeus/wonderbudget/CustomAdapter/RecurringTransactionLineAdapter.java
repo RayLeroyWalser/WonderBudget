@@ -63,7 +63,6 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
         if(view == null){
             CacheView cache = new CacheView();
             view = inflater.inflate(R.layout.recurring_transaction_list_row, null);
-            cache.cleared = (ImageView) view.findViewById(R.id.cleared);
             cache.categoryIcon = (ImageView) view.findViewById(R.id.categoryIcon);
             cache.category = (TextView) view.findViewById(R.id.category);
             cache.comment = (TextView) view.findViewById(R.id.comment);
@@ -75,7 +74,6 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
         }
 
         CacheView cache = (CacheView) view.getTag();
-        pathDebut = "android.resource://" + context.getPackageName() + "/";
 
         cache.categoryIcon.setImageURI(Uri.parse(db.getCategory(t.getCategory()).getThumbUrl()));
         cache.category.setText(db.getCategory(t.getCategory()).getName());
@@ -88,7 +86,7 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
             cache.amount.setTextColor(context.getResources().getColor(R.color.negative_amount));
         }
         cache.amount.setText(amount + " €");
-        cache.date.setText(DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
+        cache.date.setText("First payment: " + DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
 
         String details = "Every " + t.getDistanceBetweenPayment();
         switch (t.getTypeOfRecurrent()){
@@ -104,7 +102,6 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
     }
 
     private static class CacheView{
-        public ImageView cleared;
         public ImageView categoryIcon;
         public TextView category;
         public TextView comment;
