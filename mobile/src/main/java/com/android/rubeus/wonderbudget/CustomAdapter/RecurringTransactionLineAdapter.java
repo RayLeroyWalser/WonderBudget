@@ -89,8 +89,8 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
 
         String details = "Every " + t.getDistanceBetweenPayment();
         switch (t.getTypeOfRecurrent()){
-            case RecurringTransaction.MONTH: details += " month(s)"; break;
-            case RecurringTransaction.YEAR: details += " year(s)"; break;
+            case RecurringTransaction.MONTH: details += t.getDistanceBetweenPayment() == 1 ? " month" : " months" ; break;
+            case RecurringTransaction.YEAR: details += t.getDistanceBetweenPayment() == 1 ? " year" : " years" ; break;
         }
         details += "\nPaid: " + t.getNumberOfPaymentPaid() + " of ";
         int total = t.getNumberOfPaymentTotal();
