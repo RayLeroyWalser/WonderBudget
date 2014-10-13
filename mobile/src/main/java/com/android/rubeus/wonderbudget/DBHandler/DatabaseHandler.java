@@ -322,6 +322,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 new String[] { String.valueOf(t.getId()) });
     }
 
+    public void deleteRecurringTransaction(RecurringTransaction t){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_RECURRING_TRANSACTION, KEY_ID + " = ?",
+                new String[] { String.valueOf(t.getId()) });
+        db.close();
+    }
+
     /***********************************************************************************
 
                                     CATEGORIES

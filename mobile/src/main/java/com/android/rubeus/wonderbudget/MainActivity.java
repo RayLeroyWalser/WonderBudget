@@ -123,7 +123,9 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
 
             db.deleteAllRecurringTransactions();
-            db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, DateUtility.dayToMillisecond(1,8,2014), "Abonnement Freebox", 0, 10, 1, 1));
+            db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, DateUtility.dayToMillisecond(1,8,2014), "Abonnement Freebox", 0, 2, 1, 1));
+            db.addRecurringTransaction(new RecurringTransaction(-120, 6, DateUtility.dayToMillisecond(1,8,2014), "Truc", 0, 10, 6, 1));
+            db.addRecurringTransaction(new RecurringTransaction(-2000, 6, DateUtility.dayToMillisecond(1,8,2014), "Impot", 0, -1, 1, 2));
 
 
 //            List<Transaction> list = db.getAllTransactions();
@@ -159,32 +161,40 @@ public class MainActivity extends Activity
         long ms;
         int day, month, year;
 
-        if(currentMonth == (settings.getInt("month",DateUtility.getCurrentMonth()-1)+1)%12){ // we add all the recurring transactions once every month
+        if(currentMonth > settings.getInt("month", currentMonth-1)%12 ||
+                currentYear > settings.getInt("year", currentYear-1)){ // we add all the recurring transactions once every month
+            Log.v(TAG, "A new month: adding all recurring transactions");
             List<RecurringTransaction> list = db.getAllRecurringTransactions();
             for(RecurringTransaction t : list){
                 ms = t.getDate();
                 day = DateUtility.getDay(ms);
 
-                switch (t.getTypeOfRecurrent()){
-                    case RecurringTransaction.MONTH:
-                        month = (DateUtility.getMonth(ms)+ (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment())  % 12;
-                        year = currentYear;
-                        if(currentMonth == month){
-                            addRecurringTransactionOfTheMonth(day, month, year, t);
-                        }
-                        break;
-                    case RecurringTransaction.YEAR:
-                        month = DateUtility.getMonth(ms);
-                        year = DateUtility.getYear(ms) + (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment();
-                        if(currentYear == year && currentMonth == month){
-                            addRecurringTransactionOfTheMonth(day, month, year, t);
-                        }
-                        break;
+                if(t.getNumberOfPaymentTotal()-t.getNumberOfPaymentPaid() > 0 || t.getNumberOfPaymentTotal() == -1){ // if there are payments left
+                    switch (t.getTypeOfRecurrent()){
+                        case RecurringTransaction.MONTH:
+                            month = (DateUtility.getMonth(ms)+ (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment())  % 12;
+                            year = currentYear;
+                            if(currentMonth == month){
+                                addRecurringTransactionOfTheMonth(day, month, year, t);
+                            }
+                            break;
+                        case RecurringTransaction.YEAR:
+                            month = DateUtility.getMonth(ms);
+                            year = DateUtility.getYear(ms) + (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment();
+                            if(currentYear == year && currentMonth == month){
+                                addRecurringTransactionOfTheMonth(day, month, year, t);
+                            }
+                            break;
+                    }
+                }
+                else{
+                    db.deleteRecurringTransaction(t);
                 }
             }
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("month", currentMonth);
+            editor.putInt("year", currentYear);
             editor.commit();
         }
     }
