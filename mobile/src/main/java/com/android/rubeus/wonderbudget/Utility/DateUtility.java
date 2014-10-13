@@ -18,4 +18,38 @@ public class DateUtility {
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
     }
+
+    public static int getMonth(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        return calendar.get(Calendar.MONTH);
+    }
+
+    public static int getDay(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        return calendar.get(Calendar.DATE);
+    }
+
+    public static int getYear(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public static long dayToMillisecond(int day, int month, int year){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, 0, 0, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    public static int getCurrentYear(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public static int getCurrentMonth(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH);
+    }
 }

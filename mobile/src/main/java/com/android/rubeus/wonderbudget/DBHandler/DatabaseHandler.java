@@ -35,7 +35,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String KEY_COMMENTARY = "commentary";
 
     //Recurring transactions
-    public final static String KEY_NUMBER_PAYMENT_LEFT = "numberOfPaymentLeft";
+    public final static String KEY_NUMBER_PAYMENT_PAID = "numberOfPaymentPaid";
+    public final static String KEY_NUMBER_PAYMENT_TOTAL = "numberOfPaymentTotal";
     public final static String KEY_DISTANCE_REPETITION = "distanceBetweenPayement";
     public final static String KEY_TYPE_OF_RECURRENT = "typeOfRecurrent";
 
@@ -71,7 +72,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + KEY_CATEGORY + " INTEGER, "
                 + KEY_DATE + " INTEGER, "
                 + KEY_COMMENTARY + " TEXT, "
-                + KEY_NUMBER_PAYMENT_LEFT + " INTEGER, "
+                + KEY_NUMBER_PAYMENT_PAID + " INTEGER, "
+                + KEY_NUMBER_PAYMENT_TOTAL + " INTEGER, "
                 + KEY_DISTANCE_REPETITION + " INTEGER, "
                 + KEY_TYPE_OF_RECURRENT + " INTEGER, "
                 + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
@@ -257,7 +259,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_CATEGORY, t.getCategory());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
-        values.put(KEY_NUMBER_PAYMENT_LEFT, t.getNumberOfPaymentLeft());
+        values.put(KEY_NUMBER_PAYMENT_PAID, t.getNumberOfPaymentPaid());
+        values.put(KEY_NUMBER_PAYMENT_TOTAL, t.getNumberOfPaymentTotal());
         values.put(KEY_DISTANCE_REPETITION, t.getDistanceBetweenPayment());
         values.put(KEY_TYPE_OF_RECURRENT, t.getTypeOfRecurrent());
 
@@ -288,9 +291,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setCategory(cursor.getInt(2));
                 t.setDate(cursor.getLong(3));
                 t.setCommentary(cursor.getString(4));
-                t.setNumberOfPaymentLeft(cursor.getInt(5));
-                t.setDistanceBetweenPayment(cursor.getInt(6));
-                t.setTypeOfRecurrent(cursor.getInt(7));
+                t.setNumberOfPaymentPaid(cursor.getInt(5));
+                t.setNumberOfPaymentTotal(cursor.getInt(6));
+                t.setDistanceBetweenPayment(cursor.getInt(7));
+                t.setTypeOfRecurrent(cursor.getInt(8));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());
@@ -298,6 +302,24 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
         // return transaction list
         return transactionList;
+    }
+
+    public int updateRecurringTransaction(RecurringTransaction t){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_AMOUNT, t.getAmount());
+        values.put(KEY_CATEGORY, t.getCategory());
+        values.put(KEY_DATE, t.getDate());
+        values.put(KEY_COMMENTARY, t.getCommentary());
+        values.put(KEY_NUMBER_PAYMENT_PAID, t.getNumberOfPaymentPaid());
+        values.put(KEY_NUMBER_PAYMENT_TOTAL, t.getNumberOfPaymentTotal());
+        values.put(KEY_DISTANCE_REPETITION, t.getDistanceBetweenPayment());
+        values.put(KEY_TYPE_OF_RECURRENT, t.getTypeOfRecurrent());
+
+        // updating row
+        return db.update(TABLE_RECURRING_TRANSACTION, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(t.getId()) });
     }
 
     /***********************************************************************************

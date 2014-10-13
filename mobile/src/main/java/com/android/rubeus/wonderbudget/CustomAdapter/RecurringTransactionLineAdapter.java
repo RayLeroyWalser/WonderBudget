@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
-import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.R;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
@@ -90,12 +89,10 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
 
         String details = "Every " + t.getDistanceBetweenPayment();
         switch (t.getTypeOfRecurrent()){
-            case RecurringTransaction.DAY: details += " day(s)"; break;
-            case RecurringTransaction.WEEK: details += " week(s)"; break;
             case RecurringTransaction.MONTH: details += " month(s)"; break;
             case RecurringTransaction.YEAR: details += " year(s)"; break;
         }
-        details += "\n" + t.getNumberOfPaymentLeft() + " payment(s) left";
+        details += "\nPaid: " + t.getNumberOfPaymentPaid() + " of " + t.getNumberOfPaymentTotal() + " payments";
         cache.recurrenceDetail.setText(details);
 
         return view;

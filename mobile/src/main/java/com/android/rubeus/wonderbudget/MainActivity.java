@@ -19,6 +19,7 @@ import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.Utility.DateUtility;
 import com.android.rubeus.wonderbudget.Utility.FontsOverride;
 
 import java.util.List;
@@ -49,46 +50,12 @@ public class MainActivity extends Activity
         //Set custom font for the entire application
         FontsOverride.setDefaultFont(this, "SANS_SERIF", "Roboto-Thin.ttf");
 
-        //Store in Shared Preferences if this is the first time the app is launched
-        SharedPreferences settings = getSharedPreferences(PREF, 0);
+        //Initiate the DB
+        db = new DatabaseHandler(this);
+        initDatabase();
 
-        if(settings.getBoolean("firstLaunch", true)){
-            db = new DatabaseHandler(this);
-            String pathDebut = "android.resource://" + getPackageName() + "/";
-
-            db.deleteAllCategories();
-            db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
-            db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
-            db.addCategory(new Category("Alimentatation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
-            db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
-            db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
-            db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
-            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.media).toString()));
-            db.addCategory(new Category("Logement", Uri.parse(pathDebut + R.drawable.logement).toString()));
-            db.addCategory(new Category("Administration", Uri.parse(pathDebut + R.drawable.administration).toString()));
-            db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
-            db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
-            db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
-
-            db.deleteAllRecurringTransactions();
-            db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, System.currentTimeMillis(), "Abonnement Freebox", -1, 1, 1));
-
-
-            List<Transaction> list = db.getAllTransactions();
-            for(Transaction t : list){
-                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
-                        + "    Category:" + db.getCategory(t.getCategory()).getName());
-            }
-            List<Category> listCategories = db.getAllCategories();
-            for(Category c: listCategories){
-                Log.d(TAG, "Name: "+c.getName()+ "    Path: "+c.getThumbUrl());
-            }
-
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("firstLaunch", false);
-            editor.commit();
-        }
+        //Add recurring transaction of the month
+        createRecurringTransaction();
     }
 
     @Override
@@ -131,6 +98,106 @@ public class MainActivity extends Activity
                 mTitle = getString(R.string.title_section4);
                 break;
         }
+    }
+
+    private void initDatabase(){
+        //Store in Shared Preferences if this is the first time the app is launched
+        SharedPreferences settings = getSharedPreferences(PREF, 0);
+
+        if(settings.getBoolean("firstLaunch", true)){
+            String pathDebut = "android.resource://" + getPackageName() + "/";
+
+            db.deleteAllCategories();
+            db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
+            db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
+            db.addCategory(new Category("Alimentatation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
+            db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
+            db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
+            db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
+            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.media).toString()));
+            db.addCategory(new Category("Logement", Uri.parse(pathDebut + R.drawable.logement).toString()));
+            db.addCategory(new Category("Administration", Uri.parse(pathDebut + R.drawable.administration).toString()));
+            db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
+            db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
+            db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
+
+            db.deleteAllRecurringTransactions();
+            db.addRecurringTransaction(new RecurringTransaction(-29.99, 6, DateUtility.dayToMillisecond(1,8,2014), "Abonnement Freebox", 0, 10, 1, 1));
+
+
+//            List<Transaction> list = db.getAllTransactions();
+//            for(Transaction t : list){
+//                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
+//                        + "    Category:" + db.getCategory(t.getCategory()).getName());
+//            }
+
+//            List<RecurringTransaction> listRecurringTransaction = db.getAllRecurringTransactions();
+//            for(RecurringTransaction t : listRecurringTransaction){
+//                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
+//                        + "    Category:" + db.getCategory(t.getCategory()).getName()
+//                        + "     Paid: " + t.getNumberOfPaymentPaid() + "   Total: "+ t.getNumberOfPaymentTotal());
+//            }
+
+//            List<Category> listCategories = db.getAllCategories();
+//            for(Category c: listCategories){
+//                Log.d(TAG, "Name: "+c.getName()+ "    Path: "+c.getThumbUrl());
+//            }
+
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("firstLaunch", false);
+            editor.commit();
+        }
+
+
+    }
+
+    private void createRecurringTransaction(){
+        SharedPreferences settings = getSharedPreferences(PREF, 0);
+        int currentMonth = DateUtility.getCurrentMonth();
+        int currentYear = DateUtility.getCurrentYear();
+        long ms;
+        int day, month, year;
+
+        if(currentMonth == (settings.getInt("month",DateUtility.getCurrentMonth()-1)+1)%12){ // we add all the recurring transactions once every month
+            List<RecurringTransaction> list = db.getAllRecurringTransactions();
+            for(RecurringTransaction t : list){
+                ms = t.getDate();
+                day = DateUtility.getDay(ms);
+
+                switch (t.getTypeOfRecurrent()){
+                    case RecurringTransaction.MONTH:
+                        month = (DateUtility.getMonth(ms)+ (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment())  % 12;
+                        year = currentYear;
+                        if(currentMonth == month){
+                            addRecurringTransactionOfTheMonth(day, month, year, t);
+                        }
+                        break;
+                    case RecurringTransaction.YEAR:
+                        month = DateUtility.getMonth(ms);
+                        year = DateUtility.getYear(ms) + (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment();
+                        if(currentYear == year && currentMonth == month){
+                            addRecurringTransactionOfTheMonth(day, month, year, t);
+                        }
+                        break;
+                }
+            }
+
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("month", currentMonth);
+            editor.commit();
+        }
+    }
+
+    private void addRecurringTransactionOfTheMonth(int day, int month, int year, RecurringTransaction t){
+        Transaction ts = new Transaction(t.getAmount(), t.getCategory(), false, DateUtility.dayToMillisecond(day,month,year), t.getCommentary());
+        db.addTransaction(ts);
+        Log.d(TAG, "Added :   Id:" + ts.getId() + "   Amount=" + ts.getAmount() + "   Done:" + ts.isDone() + "   Date:" + ts.getDate() + "  Commentary:" + ts.getCommentary()
+                + "    Category:" + db.getCategory(ts.getCategory()).getName());
+
+        // Number of payment paid ++
+        t.setNumberOfPaymentPaid(t.getNumberOfPaymentPaid()+1);
+        db.updateRecurringTransaction(t);
     }
 
     public void restoreActionBar() {
