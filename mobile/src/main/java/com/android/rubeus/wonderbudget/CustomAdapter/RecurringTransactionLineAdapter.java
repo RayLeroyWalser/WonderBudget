@@ -92,7 +92,9 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
             case RecurringTransaction.MONTH: details += " month(s)"; break;
             case RecurringTransaction.YEAR: details += " year(s)"; break;
         }
-        details += "\nPaid: " + t.getNumberOfPaymentPaid() + " of " + t.getNumberOfPaymentTotal() + " payments";
+        details += "\nPaid: " + t.getNumberOfPaymentPaid() + " of ";
+        int total = t.getNumberOfPaymentTotal();
+        details += total == -1 ? "∞ payments" : total + " payments";
         cache.recurrenceDetail.setText(details);
 
         return view;
