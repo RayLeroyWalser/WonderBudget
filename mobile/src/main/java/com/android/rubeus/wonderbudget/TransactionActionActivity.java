@@ -114,24 +114,24 @@ public class TransactionActionActivity extends Activity {
             }
         });
 
+        //Choose the category
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                category = (int) id;
+                categoryIcon.setImageURI(Uri.parse(db.getCategory((int)id).getThumbUrl()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                category = 1;
+            }
+        });
+
         switch (typeOfDialog){
             case ADD_NEW_TRANSACTIION:
                 //Choose title
                 title.setText(getResources().getString(R.string.add_new_transaction));
-
-                //Choose the category
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        category = (int) id;
-                        categoryIcon.setImageURI(Uri.parse(db.getCategory((int)id).getThumbUrl()));
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        category = 1;
-                    }
-                });
 
                 //Choose the transaction status (cleared/not cleared)
                 isCleared = false;
@@ -223,6 +223,7 @@ public class TransactionActionActivity extends Activity {
                 break;
 
             case ADD_NEW_RECURRING_TRANSACTION:
+                title.setText(getResources().getString(R.string.add_new_transaction));
                 recurrenceBlock.setVisibility(View.VISIBLE);
                 numberBlock.setVisibility(View.VISIBLE);
                 clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));

@@ -2,6 +2,7 @@ package com.android.rubeus.wonderbudget;
 
 
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -32,8 +33,10 @@ import java.util.List;
  *
  */
 public class RecurringTransactionListFragment extends Fragment {
+    private static final String fragmentName = "Recurring transactions";
     private RecurringTransactionLineAdapter adapter;
     private DatabaseHandler db;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     public static RecurringTransactionListFragment newInstance() {
         return new RecurringTransactionListFragment();
@@ -53,6 +56,9 @@ public class RecurringTransactionListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recurring_transaction_list, container, false);
         setHasOptionsMenu(true);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
@@ -146,6 +152,36 @@ public class RecurringTransactionListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == getActivity().RESULT_OK){
             adapter.refresh(db.getAllRecurringTransactions());
+        }
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle(fragmentName);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            inflater.inflate(R.menu.recurring_transaction_list_menu, menu);
+            restoreActionBar();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.addTransaction:
+                Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
+                intent.putExtra("typeOfDialog", TransactionActionActivity.ADD_NEW_RECURRING_TRANSACTION);
+                startActivityForResult(intent, TransactionActionActivity.ADD_NEW_RECURRING_TRANSACTION);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
