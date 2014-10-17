@@ -103,11 +103,11 @@ public class TransactionActionActivity extends Activity {
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if(isChecked && typeOfDialog==ADD_NEW_TRANSACTIION){
                     typeOfDialog = ADD_NEW_RECURRING_TRANSACTION;
                     initLook();
                 }
-                else{
+                else if(!isChecked && typeOfDialog==ADD_NEW_RECURRING_TRANSACTION){
                     typeOfDialog = ADD_NEW_TRANSACTIION;
                     initLook();
                 }
@@ -238,6 +238,7 @@ public class TransactionActionActivity extends Activity {
                 clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));
                 clearedIcon.setEnabled(false);
                 checkbox.setChecked(true);
+                checkbox.setEnabled(false);
 
                 RecurringTransaction r = db.getRecurringTransaction(transactionId);
 
@@ -262,6 +263,7 @@ public class TransactionActionActivity extends Activity {
                 }
 
                 ok();
+                break;
         }
     }
 
@@ -287,57 +289,64 @@ public class TransactionActionActivity extends Activity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Amount
-                amountText = editAmount.getText().toString().trim();
+            //Amount
+            amountText = editAmount.getText().toString().trim();
 
-                //Comment
-                commentText = editComment.getText().toString().trim();
+            //Comment
+            commentText = editComment.getText().toString().trim();
 
-                //Recurring distance
-                distanceText = editDistanceRecurrence.getText().toString().trim();
+            //Recurring distance
+            distanceText = editDistanceRecurrence.getText().toString().trim();
 
-                if (amountText.equals("")) {
-                    Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
+            if (amountText.equals("")) {
+                Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
+            }
+            else if(distanceText.equals("") && typeOfDialog==ADD_NEW_RECURRING_TRANSACTION){
+                Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_distance), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                switch (typeOfDialog) {
+                    case ADD_NEW_TRANSACTIION:
+                        Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
+                        db.addTransaction(t);
+                        break;
+                    case VIEW_TRANSACTION:
+                        Transaction t2 = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
+                        t2.setId(transactionId);
+                        db.updateTransaction(t2);
+                        break;
+                    case ADD_NEW_RECURRING_TRANSACTION:
+                        System.out.println("coucouc");
+                        int distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
+                        int numberOfRecurrence = Integer.parseInt(editNumberOfRecurrence.getText().toString());
+
+                        spinnerTypeRecurrence.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                view.setTag(position+1);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                        RecurringTransaction r = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
+                        Transaction tr = new Transaction(Double.parseDouble(amountText), category, false, transactionDate, commentText);
+                        db.addRecurringTransaction(r);
+                        db.addTransaction(tr);
+                        break;
+                    case EDIT_RECURRING_TRANSACTION:
+                        distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
+                        numberOfRecurrence = Integer.parseInt(editNumberOfRecurrence.getText().toString());
+                        RecurringTransaction rEdited = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
+                        rEdited.setId(transactionId);
+                        db.updateRecurringTransaction(rEdited);
+                        break;
                 }
-                else if(distanceText.equals("") && typeOfDialog==ADD_NEW_RECURRING_TRANSACTION){
-                    Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_distance), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    switch (typeOfDialog) {
-                        case ADD_NEW_TRANSACTIION:
-                            Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
-                            db.addTransaction(t);
-                            break;
-                        case VIEW_TRANSACTION:
-                            Transaction t2 = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
-                            t2.setId(transactionId);
-                            db.updateTransaction(t2);
-                            break;
-                        case ADD_NEW_RECURRING_TRANSACTION:
-                            int distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
-                            int numberOfRecurrence = Integer.parseInt(editNumberOfRecurrence.getText().toString());
-                            spinnerTypeRecurrence.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    view.setTag(position+1);
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> parent) {
-
-                                }
-                            });
-                            RecurringTransaction r = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
-                            Transaction tr = new Transaction(Double.parseDouble(amountText), category, false, transactionDate, commentText);
-                            db.addRecurringTransaction(r);
-                            db.addTransaction(tr);
-                            break;
-                        case EDIT_RECURRING_TRANSACTION:
-                            break;
-                    }
-                    TransactionActionActivity.this.setResult(RESULT_OK);
-                    finish();
-                }
+                TransactionActionActivity.this.setResult(RESULT_OK);
+                finish();
+            }
             }
         });
     }
