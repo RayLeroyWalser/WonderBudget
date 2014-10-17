@@ -1,6 +1,7 @@
 package com.android.rubeus.wonderbudget.CustomAdapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,35 +80,36 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
         }
 
         CacheView cache = (CacheView) view.getTag();
+        Resources resources = context.getResources();
 
         cache.categoryIcon.setImageURI(Uri.parse(db.getCategory(t.getCategory()).getThumbUrl()));
         cache.category.setText(db.getCategory(t.getCategory()).getName());
         cache.comment.setText(t.getCommentary());
         double amount = t.getAmount();
         if(amount>=0){
-            cache.amount.setTextColor(context.getResources().getColor(R.color.positive_amount));
+            cache.amount.setTextColor(resources.getColor(R.color.positive_amount));
         }
         else{
-            cache.amount.setTextColor(context.getResources().getColor(R.color.negative_amount));
+            cache.amount.setTextColor(resources.getColor(R.color.negative_amount));
         }
         cache.amount.setText(amount + " €");
-        cache.date.setText("First payment: " + DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
+        cache.date.setText(resources.getString(R.string.first_payment) + " " + DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
 
-        String details = "Every " + t.getDistanceBetweenPayment();
+        String details = resources.getString(R.string.every) + " " + t.getDistanceBetweenPayment();
         switch (t.getTypeOfRecurrent()){
-            case RecurringTransaction.MONTH: details += t.getDistanceBetweenPayment() == 1 ? " month" : " months" ; break;
-            case RecurringTransaction.YEAR: details += t.getDistanceBetweenPayment() == 1 ? " year" : " years" ; break;
+            case RecurringTransaction.MONTH: details += t.getDistanceBetweenPayment() == 1 ? " "+resources.getString(R.string.month) : " "+resources.getString(R.string.months) ; break;
+            case RecurringTransaction.YEAR: details += t.getDistanceBetweenPayment() == 1 ? " "+resources.getString(R.string.year) : " "+resources.getString(R.string.years) ; break;
         }
-        details += "\nPaid: " + t.getNumberOfPaymentPaid() + " of ";
+        details += "\n" + resources.getString(R.string.paid) + " " + t.getNumberOfPaymentPaid() + " " + resources.getString(R.string.of) + " ";
         int total = t.getNumberOfPaymentTotal();
-        details += total == -1 ? "∞ payments" : total + " payments";
+        details += total == -1 ? resources.getString(R.string.infinite_payment) : total + " " + resources.getString(R.string.payments);
         cache.recurrenceDetail.setText(details);
 
         if(checkedPositions.contains(position)){
-            view.setBackgroundColor(context.getResources().getColor(R.color.pale_blue));
+            view.setBackgroundColor(resources.getColor(R.color.pale_blue));
         }
         else{
-            view.setBackgroundColor(context.getResources().getColor(R.color.app_background));
+            view.setBackgroundColor(resources.getColor(R.color.app_background));
         }
 
         return view;
