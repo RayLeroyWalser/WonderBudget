@@ -1,6 +1,7 @@
 package com.android.rubeus.wonderbudget.CustomAdapter;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,11 +112,12 @@ public class TransactionLineAdapter extends BaseAdapter {
     }
 
     private void updateClearedIcon(ImageView v, Transaction t){
+        v.setBackground(context.getResources().getDrawable(R.drawable.oval));
         if(t.isDone()){
-            v.setBackground(context.getResources().getDrawable(R.drawable.oval));
+            ((GradientDrawable)v.getBackground()).setColor(context.getResources().getColor(R.color.blue));
         }
         else{
-            v.setBackground(context.getResources().getDrawable(R.drawable.oval_uncleared));
+            ((GradientDrawable)v.getBackground()).setColor(context.getResources().getColor(R.color.negative_amount));
         }
     }
 

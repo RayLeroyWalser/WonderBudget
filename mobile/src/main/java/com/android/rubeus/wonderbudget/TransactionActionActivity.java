@@ -3,6 +3,7 @@ package com.android.rubeus.wonderbudget;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -227,7 +228,8 @@ public class TransactionActionActivity extends Activity {
                 title.setText(getResources().getString(R.string.add_new_transaction));
                 recurrenceBlock.setVisibility(View.VISIBLE);
                 numberBlock.setVisibility(View.VISIBLE);
-                clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));
+                clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
+                ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.negative_amount));
                 clearedIcon.setEnabled(false);
                 checkbox.setChecked(true);
 
@@ -238,7 +240,8 @@ public class TransactionActionActivity extends Activity {
                 title.setText(getResources().getString(R.string.edit_transaction));
                 recurrenceBlock.setVisibility(View.VISIBLE);
                 numberBlock.setVisibility(View.VISIBLE);
-                clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));
+                clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
+                ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.negative_amount));
                 clearedIcon.setEnabled(false);
                 checkbox.setChecked(true);
                 checkbox.setEnabled(false);
@@ -271,11 +274,12 @@ public class TransactionActionActivity extends Activity {
     }
 
     private void switchClearedStatus(){
+        clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
         if(isCleared){
-            clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
+            ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.blue));
         }
         else{
-            clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));
+            ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.negative_amount));
         }
     }
 
