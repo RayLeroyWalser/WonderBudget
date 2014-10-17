@@ -145,6 +145,7 @@ public class TransactionActionActivity extends Activity {
                 });
 
                 recurrenceBlock.setVisibility(View.GONE);
+                numberBlock.setVisibility(View.GONE);
 
                 ok();
 
@@ -228,6 +229,7 @@ public class TransactionActionActivity extends Activity {
                 numberBlock.setVisibility(View.VISIBLE);
                 clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval_uncleared));
                 clearedIcon.setEnabled(false);
+                checkbox.setChecked(true);
 
                 ok();
                 break;
