@@ -122,11 +122,6 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
             db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
 
-            db.deleteAllRecurringTransactions();
-            db.addRecurringTransaction(new RecurringTransaction(-29.99, 8, DateUtility.dayToMillisecond(1,8,2014), "Abonnement Freebox", 0, 2, 1, 1));
-            db.addRecurringTransaction(new RecurringTransaction(-120, 12, DateUtility.dayToMillisecond(1,8,2014), "Hôpital", 0, 10, 6, 1));
-            db.addRecurringTransaction(new RecurringTransaction(-2060, 10, DateUtility.dayToMillisecond(1,8,2014), "Impôt", 0, -1, 1, 2));
-
 
 //            List<Transaction> list = db.getAllTransactions();
 //            for(Transaction t : list){
