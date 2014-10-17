@@ -3,5 +3,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/deleteTransaction"
         android:title="@string/delete_transaction"
-        android:showAsAction="always" />
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_delete"/>
 </menu>
