@@ -2,11 +2,13 @@ package com.android.rubeus.wonderbudget;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.RecurringTransactionLineAdapter;
@@ -51,6 +53,16 @@ public class RecurringTransactionListFragment extends Fragment {
 
         adapter = new RecurringTransactionLineAdapter(getActivity(), list, db);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
+                intent.putExtra("typeOfDialog", TransactionActionActivity.EDIT_RECURRING_TRANSACTION);
+                intent.putExtra("transactionId", adapter.getItemId(position));
+                startActivityForResult(intent, TransactionActionActivity.EDIT_RECURRING_TRANSACTION);
+            }
+        });
 
         return view;
     }

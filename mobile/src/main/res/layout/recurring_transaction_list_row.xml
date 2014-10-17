@@ -40,10 +40,9 @@
             android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lines="1"
-            android:ellipsize="end"
             android:textSize="22sp"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/blue"
+            android:layout_marginRight="100dp"/>
 
         <TextView
             android:id="@+id/date"

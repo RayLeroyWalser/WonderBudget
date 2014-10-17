@@ -117,9 +117,12 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public Transaction getTransaction(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_TRANSACTION, new String[] { KEY_ID,
-                        KEY_AMOUNT, KEY_CATEGORY, KEY_IS_DONE, KEY_DATE , KEY_COMMENTARY}, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_ID + " =?";
+        Cursor cursor = db.rawQuery(selectQuery, new String[] { String.valueOf(id) });
+
+//        Cursor cursor = db.query(TABLE_TRANSACTION, new String[] { KEY_ID,
+//                        KEY_AMOUNT, KEY_CATEGORY, KEY_IS_DONE, KEY_DATE , KEY_COMMENTARY}, KEY_ID + "=?",
+//                new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -327,6 +330,28 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.delete(TABLE_RECURRING_TRANSACTION, KEY_ID + " = ?",
                 new String[] { String.valueOf(t.getId()) });
         db.close();
+    }
+
+    public RecurringTransaction getRecurringTransaction(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_RECURRING_TRANSACTION + " WHERE " + KEY_ID + " =?";
+        Cursor cursor = db.rawQuery(selectQuery, new String[] { String.valueOf(id) });
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        RecurringTransaction transaction = new RecurringTransaction(cursor.getInt(0),
+                cursor.getDouble(1),
+                cursor.getInt(2),
+                cursor.getLong(3),
+                cursor.getString(4),
+                cursor.getInt(5),
+                cursor.getInt(6),
+                cursor.getInt(7),
+                cursor.getInt(8)
+           );
+
+        return transaction;
     }
 
     /***********************************************************************************

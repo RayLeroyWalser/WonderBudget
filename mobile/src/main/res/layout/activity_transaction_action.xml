@@ -9,7 +9,8 @@
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/blue">
+        android:background="@color/blue"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/title"
@@ -35,7 +36,8 @@
         android:id="@+id/blockCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleBar">
+        android:layout_below="@id/titleBar"
+        android:layout_marginLeft="6dp">
 
         <RelativeLayout
             android:id="@+id/iconAddTransaction"
@@ -99,5 +101,76 @@
         style="@style/customEditText"
         android:inputType="textNoSuggestions"/>
 
+    <CheckBox
+        android:id="@+id/repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repeat"
+        android:layout_below="@id/editComment"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/blockRecurring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/repeat"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/every"
+            android:layout_margin="15dp"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/distanceOfRecurrence"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:hint="1"
+            style="@style/customEditText"
+            android:layout_gravity="center_vertical"
+            android:inputType="number"/>
+
+        <Spinner
+            android:id="@+id/typeOfRecurrence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/blockNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/blockRecurring"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number_of_recurrence"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/numberOfRecurrence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_number_of_recurrence"
+            android:inputType="number"
+            style="@style/customEditText"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
