@@ -14,6 +14,7 @@ import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.R;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private DatabaseHandler db;
     private String pathDebut;
+    private ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
 
     public RecurringTransactionLineAdapter(Context context, List<RecurringTransaction> list, DatabaseHandler db){
         this.context = context;
@@ -51,6 +53,10 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
     public void refresh(List<RecurringTransaction> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Integer> getCheckedPositions() {
+        return checkedPositions;
     }
 
     @Override
@@ -96,6 +102,13 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
         int total = t.getNumberOfPaymentTotal();
         details += total == -1 ? "∞ payments" : total + " payments";
         cache.recurrenceDetail.setText(details);
+
+        if(checkedPositions.contains(position)){
+            view.setBackgroundColor(context.getResources().getColor(R.color.pale_blue));
+        }
+        else{
+            view.setBackgroundColor(context.getResources().getColor(R.color.app_background));
+        }
 
         return view;
     }

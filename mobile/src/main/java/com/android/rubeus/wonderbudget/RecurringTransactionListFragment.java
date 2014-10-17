@@ -5,16 +5,23 @@ package com.android.rubeus.wonderbudget;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.RecurringTransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
+import com.android.rubeus.wonderbudget.Entity.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,6 +52,7 @@ public class RecurringTransactionListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recurring_transaction_list, container, false);
+        setHasOptionsMenu(true);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
@@ -61,6 +69,72 @@ public class RecurringTransactionListFragment extends Fragment {
                 intent.putExtra("typeOfDialog", TransactionActionActivity.EDIT_RECURRING_TRANSACTION);
                 intent.putExtra("transactionId", adapter.getItemId(position));
                 startActivityForResult(intent, TransactionActionActivity.EDIT_RECURRING_TRANSACTION);
+            }
+        });
+
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            private int number = 0;
+            private ArrayList<RecurringTransaction> listToDelete = new ArrayList<RecurringTransaction>();
+            private ArrayList<Integer> checkedPosition = adapter.getCheckedPositions();
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position,
+                                                  long id, boolean checked) {
+                // Here you can do something when items are selected/de-selected,
+                // such as update the title in the CAB
+                if(checked){
+                    number++;
+                    listToDelete.add(db.getRecurringTransaction((int) id));
+                    checkedPosition.add(position);
+                }
+                else{
+                    number--;
+                    listToDelete.remove(db.getRecurringTransaction((int) id));
+                    checkedPosition.remove(checkedPosition.indexOf(position));
+                }
+                mode.setTitle(number + " selected");
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // Respond to clicks on the actions in the CAB
+                switch (item.getItemId()) {
+                    case R.id.deleteTransaction:
+                        for(int i=0; i<listToDelete.size(); i++){
+                            db.deleteRecurringTransaction(listToDelete.get(i));
+                        }
+                        adapter.refresh(db.getAllRecurringTransactions());
+                        mode.finish(); // Action picked, so close the CAB
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // Inflate the menu for the CAB
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.transaction_list_context_menu, menu);
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // Here you can make any necessary updates to the activity when
+                // the CAB is removed. By default, selected items are deselected/unchecked.
+                checkedPosition.clear();
+                adapter.notifyDataSetChanged();
+                number=0;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // Here you can perform updates to the CAB due to
+                // an invalidate() request
+                return false;
             }
         });
 
