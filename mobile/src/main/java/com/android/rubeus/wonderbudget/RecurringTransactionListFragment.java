@@ -158,7 +158,7 @@ public class RecurringTransactionListFragment extends Fragment {
     public void restoreActionBar() {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(fragmentName);
     }
 
