@@ -325,7 +325,8 @@ public class TransactionActionActivity extends Activity {
                     case ADD_NEW_RECURRING_TRANSACTION:
                         System.out.println("coucouc");
                         int distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
-                        int numberOfRecurrence = Integer.parseInt(editNumberOfRecurrence.getText().toString());
+                        String txt = editNumberOfRecurrence.getText().toString();
+                        int numberOfRecurrence = txt.equals("") ? -1 : Integer.parseInt(txt);
 
                         spinnerTypeRecurrence.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
@@ -345,7 +346,8 @@ public class TransactionActionActivity extends Activity {
                         break;
                     case EDIT_RECURRING_TRANSACTION:
                         distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
-                        numberOfRecurrence = Integer.parseInt(editNumberOfRecurrence.getText().toString());
+                        txt = editNumberOfRecurrence.getText().toString();
+                        numberOfRecurrence = txt.equals("") ? -1 : Integer.parseInt(txt);
                         RecurringTransaction rEdited = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
                         rEdited.setId(transactionId);
                         db.updateRecurringTransaction(rEdited);
