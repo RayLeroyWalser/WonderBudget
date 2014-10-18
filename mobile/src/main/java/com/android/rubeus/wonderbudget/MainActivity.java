@@ -111,16 +111,18 @@ public class MainActivity extends Activity
             db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
             db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
             db.addCategory(new Category("Alimentatation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
-            db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
-            db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
-            db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
-            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.media).toString()));
+            db.addCategory(new Category("Transport", Uri.parse(pathDebut + R.drawable.transport).toString()));
             db.addCategory(new Category("Logement", Uri.parse(pathDebut + R.drawable.logement).toString()));
-            db.addCategory(new Category("Administration", Uri.parse(pathDebut + R.drawable.administration).toString()));
+            db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
+            db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
+            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
             db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
+            db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
+            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.media).toString()));
+            db.addCategory(new Category("Administration", Uri.parse(pathDebut + R.drawable.administration).toString()));
             db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
             db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
+            db.addCategory(new Category("Cadeau", Uri.parse(pathDebut + R.drawable.cadeau).toString()));
 
 
 //            List<Transaction> list = db.getAllTransactions();
