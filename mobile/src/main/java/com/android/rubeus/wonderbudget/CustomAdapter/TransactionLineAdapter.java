@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.R;
+import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public class TransactionLineAdapter extends BaseAdapter {
             cache.category = (TextView) view.findViewById(R.id.category);
             cache.comment = (TextView) view.findViewById(R.id.comment);
             cache.amount = (TextView) view.findViewById(R.id.amount);
+            cache.headerSection = (TextView) view.findViewById(R.id.headerSection);
 
             view.setTag(cache);
         }
@@ -108,6 +110,17 @@ public class TransactionLineAdapter extends BaseAdapter {
             view.setBackgroundColor(context.getResources().getColor(R.color.app_background));
         }
 
+        //Section header
+        String date = DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy");
+        String previousDate = position>0? DateUtility.getDate(list.get(position-1).getDate(), "EEEE dd MMM yyyy") : "";
+        if(date.equals(previousDate)){
+            cache.headerSection.setVisibility(View.GONE);
+        }
+        else{
+            cache.headerSection.setVisibility(View.VISIBLE);
+            cache.headerSection.setText(date);
+        }
+
         return view;
     }
 
@@ -127,5 +140,6 @@ public class TransactionLineAdapter extends BaseAdapter {
         public TextView category;
         public TextView comment;
         public TextView amount;
+        public TextView headerSection;
     }
 }
