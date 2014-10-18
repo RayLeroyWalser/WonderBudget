@@ -2,12 +2,14 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
@@ -17,6 +19,7 @@ public class OverviewFragment extends Fragment {
     private static final int NEW_TRANSACTION = 1;
     private DatabaseHandler db;
     private TextView totalAmount, realAmount;
+    private ProgressBar progressBar1, progressBar2;
 
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
@@ -40,6 +43,7 @@ public class OverviewFragment extends Fragment {
         totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         realAmount = (TextView) view.findViewById(R.id.realAmount);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addButton);
+        ((GradientDrawable)addButton.getBackground()).setColor(getResources().getColor(R.color.blue));
 
         totalAmount.setText(db.getTotalAmount()+"");
         realAmount.setText(db.getRealAmount()+"");
