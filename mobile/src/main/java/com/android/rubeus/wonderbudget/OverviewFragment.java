@@ -2,6 +2,7 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -55,7 +56,31 @@ public class OverviewFragment extends Fragment {
             }
         });
 
+        totalAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTransactionFragment();
+            }
+        });
+
+        realAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTransactionFragment();
+            }
+        });
+
         return view;
+    }
+
+    private void openTransactionFragment(){
+        Fragment newFragment = new TransactionListFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.container, newFragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
     }
 
     @Override
