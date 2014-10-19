@@ -133,6 +133,7 @@ public class TransactionListFragment extends Fragment {
                 checkedPosition.clear();
                 adapter.notifyDataSetChanged();
                 number=0;
+                listToDelete.clear();
             }
 
             @Override

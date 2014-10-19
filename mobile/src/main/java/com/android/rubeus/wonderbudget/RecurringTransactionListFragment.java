@@ -134,6 +134,7 @@ public class RecurringTransactionListFragment extends Fragment {
                 checkedPosition.clear();
                 adapter.notifyDataSetChanged();
                 number=0;
+                listToDelete.clear();
             }
 
             @Override
