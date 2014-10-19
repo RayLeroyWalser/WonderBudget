@@ -24,7 +24,11 @@
         <activity
             android:name=".AddUpgradeTransactionActivity"
             android:label="@string/title_activity_add_upgrade_transaction"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name=".CategoryViewActivity"
+            android:label="@string/title_activity_category_view">
         </activity>
     </application>
 

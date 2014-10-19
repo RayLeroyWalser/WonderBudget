@@ -58,8 +58,10 @@ public class CategoryLineAdapter extends BaseAdapter {
         return list.get(position).getId();
     }
 
-    public void refresh(List<Category> list) {
+    public void refresh(List<Category> list, ArrayList<Double> listAmount, ArrayList<Long> listDate) {
         this.list = list;
+        this.listAmount = listAmount;
+        this.listDate = listDate;
         notifyDataSetChanged();
     }
 

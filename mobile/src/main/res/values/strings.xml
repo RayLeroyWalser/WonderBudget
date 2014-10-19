@@ -7,6 +7,7 @@
     <!-- Activity -->
     <string name="title_activity_add_transaction">Transaction</string>
     <string name="title_activity_add_upgrade_transaction">New upgrade transaction</string>
+    <string name="title_activity_category_view">CategoryViewActivity</string>
 
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,7 +49,6 @@
     <!-- Errors -->
     <string name="error_edit_amount">Please enter an amount</string>
     <string name="error_edit_distance">Please enter a number of month/year</string>
-
 
     <string-array name="option_array">
         <item>month</item>

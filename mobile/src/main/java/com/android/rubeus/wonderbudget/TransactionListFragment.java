@@ -185,7 +185,7 @@ public class TransactionListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            inflater.inflate(R.menu.transaction_list_menu, menu);
+            inflater.inflate(R.menu.transaction_list, menu);
             restoreActionBar();
         }
     }
