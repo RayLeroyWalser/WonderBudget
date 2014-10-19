@@ -110,7 +110,7 @@ public class MainActivity extends Activity
             db.deleteAllCategories();
             db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
             db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
-            db.addCategory(new Category("Alimentatation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
+            db.addCategory(new Category("Alimentation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
             db.addCategory(new Category("Transport", Uri.parse(pathDebut + R.drawable.transport).toString()));
             db.addCategory(new Category("Logement", Uri.parse(pathDebut + R.drawable.logement).toString()));
             db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));

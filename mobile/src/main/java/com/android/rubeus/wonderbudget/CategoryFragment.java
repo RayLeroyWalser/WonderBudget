@@ -19,19 +19,19 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.android.rubeus.wonderbudget.CustomAdapter.CategoryLineAdapter;
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryFragment extends Fragment {
-    private String fragmentName = "Categories:";
+    private String fragmentName = "Categories";
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private ListView listView;
     private DatabaseHandler db;
-    private TransactionLineAdapter adapter;
-    private int categoryId;
 
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
@@ -61,42 +61,9 @@ public class CategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        //Retrieve the list view
-        final ListView listView = (ListView) view.findViewById(android.R.id.list);
-
-        //Populate the dropdown menu with the categories' names
-        SpinnerAdapter mSpinnerAdapter = new SimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_1,
-                db.getAllCategoriesCursor(true),
-                new String[] { db.KEY_NAME },
-                new int[] { android.R.id.text1 },
-                0);
-
-        //Add a listener for each item in the list of the dropdown menu
-        ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                categoryId = (int)itemId;
-                List<Transaction> transactions = db.getTransactionsOfCategory(categoryId);
-                adapter = new TransactionLineAdapter(getActivity(), transactions, db);
-                listView.setAdapter(adapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
-                        intent.putExtra("typeOfDialog", TransactionActionActivity.VIEW_TRANSACTION);
-                        intent.putExtra("transactionId", adapter.getItemId(position));
-                        startActivityForResult(intent, TransactionActionActivity.VIEW_TRANSACTION);
-                    }
-                });
-                return true;
-            }
-        };
-
-        /** Setting dropdown items and item navigation listener for the actionbar */
-        getActivity().getActionBar().setListNavigationCallbacks(mSpinnerAdapter, navigationListener);
+        ListView listView = (ListView) view.findViewById(android.R.id.list);
+        CategoryLineAdapter adapter = new CategoryLineAdapter(getActivity(), db.getAllCategories(), db);
+        listView.setAdapter(adapter);
 
         return view;
     }
@@ -113,9 +80,9 @@ public class CategoryFragment extends Fragment {
 
     public void restoreActionBar() {
         ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setTitle(fragmentName);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(fragmentName);
     }
 
 
@@ -124,18 +91,6 @@ public class CategoryFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             restoreActionBar();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case TransactionActionActivity.VIEW_TRANSACTION:
-                if(resultCode == getActivity().RESULT_OK){
-                    adapter.refresh(db.getTransactionsOfCategory(categoryId));
-                }
-                break;
         }
     }
 }

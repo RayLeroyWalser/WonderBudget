@@ -52,4 +52,15 @@ public class DateUtility {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.MONTH);
     }
+
+    public static long getFirstDayOfThisMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+        calendar.clear(Calendar.MINUTE);
+        calendar.clear(Calendar.SECOND);
+        calendar.clear(Calendar.MILLISECOND);
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTimeInMillis();
+    }
 }

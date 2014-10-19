@@ -247,6 +247,44 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return transactionList;
     }
 
+    public Transaction getLastTransactionOfCategory(int id){
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id + " ORDER BY " + KEY_DATE + " DESC LIMIT 1";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            Transaction t = new Transaction();
+            t.setId(cursor.getInt(0));
+            t.setAmount(cursor.getDouble(1));
+            t.setCategory(cursor.getInt(2));
+            t.setDone(cursor.getInt(3) > 0 ? true : false);
+            t.setDate(cursor.getLong(4));
+            t.setCommentary(cursor.getString(5));
+
+            return t;
+        }
+
+        return null;
+    }
+
+    public double getAmountOfCategoryCurrentMonth(int idCategory, long debutDate){
+        ArrayList<Double> listAmount = new ArrayList<Double>();
+
+        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION + " WHERE "
+                + KEY_CATEGORY + " = " + idCategory + " AND "
+                + KEY_DATE + " >= " + debutDate;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getDouble(0);
+        }
+        return 0;
+    }
+
 
     /***********************************************************************************
 
@@ -336,7 +374,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_RECURRING_TRANSACTION + " WHERE " + KEY_ID + " =?";
-        Cursor cursor = db.rawQuery(selectQuery, new String[] { String.valueOf(id) });
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(id)});
         if (cursor != null)
             cursor.moveToFirst();
 
