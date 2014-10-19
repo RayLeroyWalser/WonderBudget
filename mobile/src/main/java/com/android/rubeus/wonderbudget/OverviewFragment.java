@@ -76,6 +76,7 @@ public class OverviewFragment extends Fragment {
     private void openTransactionFragment(){
         Fragment newFragment = new TransactionListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_top, R.anim.enter_from_top, R.anim.exit_to_bottom);
 
         transaction.replace(R.id.container, newFragment);
         transaction.addToBackStack(null);
