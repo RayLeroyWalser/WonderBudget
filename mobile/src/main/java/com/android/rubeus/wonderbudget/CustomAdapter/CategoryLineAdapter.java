@@ -88,12 +88,12 @@ public class CategoryLineAdapter extends BaseAdapter {
         cache.name.setText(c.getName());
 
         double amount = db.getAmountOfCategoryCurrentMonth((int) getItemId(position), DateUtility.getFirstDayOfThisMonth());
-        if(amount != 0)
+        if(amount > 0)
             cache.amount.setText(amount + " " + context.getResources().getString(R.string.euro));
 
         Transaction t = db.getLastTransactionOfCategory(c.getId());
         if(t != null)
-            cache.lastTransaction.setText(context.getResources().getString(R.string.last_transaction) + " " + DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
+            cache.lastTransaction.setText(DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
 
         return view;
     }
