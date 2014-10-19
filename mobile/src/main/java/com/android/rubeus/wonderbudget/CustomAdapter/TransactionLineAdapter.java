@@ -96,10 +96,10 @@ public class TransactionLineAdapter extends BaseAdapter {
         cache.comment.setText(t.getCommentary());
         double amount = t.getAmount();
         if(amount>=0){
-            cache.amount.setTextColor(context.getResources().getColor(R.color.positive_amount));
+            cache.amount.setTextColor(context.getResources().getColor(R.color.green));
         }
         else{
-            cache.amount.setTextColor(context.getResources().getColor(R.color.negative_amount));
+            cache.amount.setTextColor(context.getResources().getColor(R.color.red));
         }
         cache.amount.setText(amount + " €");
 
@@ -130,7 +130,7 @@ public class TransactionLineAdapter extends BaseAdapter {
             ((GradientDrawable)v.getBackground()).setColor(context.getResources().getColor(R.color.blue));
         }
         else{
-            ((GradientDrawable)v.getBackground()).setColor(context.getResources().getColor(R.color.negative_amount));
+            ((GradientDrawable)v.getBackground()).setColor(context.getResources().getColor(R.color.red));
         }
     }
 

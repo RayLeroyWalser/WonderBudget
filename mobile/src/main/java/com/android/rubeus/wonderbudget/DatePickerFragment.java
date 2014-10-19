@@ -3,12 +3,10 @@ package com.android.rubeus.wonderbudget;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {

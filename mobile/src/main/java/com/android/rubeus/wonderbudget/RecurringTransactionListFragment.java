@@ -1,11 +1,10 @@
 package com.android.rubeus.wonderbudget;
 
 
-
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,7 +19,6 @@ import android.widget.ListView;
 import com.android.rubeus.wonderbudget.CustomAdapter.RecurringTransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
-import com.android.rubeus.wonderbudget.Entity.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;

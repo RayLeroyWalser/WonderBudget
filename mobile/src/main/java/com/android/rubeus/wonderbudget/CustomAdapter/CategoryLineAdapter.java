@@ -12,12 +12,13 @@ import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
-import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.R;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by rubeus on 10/19/14.
@@ -30,6 +31,7 @@ public class CategoryLineAdapter extends BaseAdapter {
     private ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
     private ArrayList<Double> listAmount;
     private ArrayList<Long> listDate;
+    private ArrayList<Integer> colors;
 
     public CategoryLineAdapter(Context context, List<Category> list, DatabaseHandler db, ArrayList<Double> listAmount, ArrayList<Long> listDate){
         this.context = context;
@@ -38,6 +40,7 @@ public class CategoryLineAdapter extends BaseAdapter {
         this.listAmount = listAmount;
         this.listDate = listDate;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        colors = new ArrayList<Integer>(Arrays.asList(R.color.blue, R.color.pink, R.color.green, R.color.red, R.color.purple, R.color.orange));
     }
 
     @Override
@@ -83,13 +86,15 @@ public class CategoryLineAdapter extends BaseAdapter {
         }
 
         ViewHolder cache = (ViewHolder) view.getTag();
+        int color = context.getResources().getColor(colors.get(position % colors.size()));
 
         cache.background.setBackground(context.getResources().getDrawable(R.drawable.oval));
-        ((GradientDrawable)cache.background.getBackground()).setColor(context.getResources().getColor(R.color.blue));
+        ((GradientDrawable)cache.background.getBackground()).setColor(color);
 
         cache.icon.setImageURI(Uri.parse(c.getThumbUrl()));
 
         cache.name.setText(c.getName());
+        cache.name.setTextColor(color);
 
         double amount = listAmount.get(position);
         if(amount != 0) {

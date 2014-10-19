@@ -87,10 +87,10 @@ public class RecurringTransactionLineAdapter extends BaseAdapter {
         cache.comment.setText(t.getCommentary());
         double amount = t.getAmount();
         if(amount>=0){
-            cache.amount.setTextColor(resources.getColor(R.color.positive_amount));
+            cache.amount.setTextColor(resources.getColor(R.color.green));
         }
         else{
-            cache.amount.setTextColor(resources.getColor(R.color.negative_amount));
+            cache.amount.setTextColor(resources.getColor(R.color.red));
         }
         cache.amount.setText(amount + " €");
         cache.date.setText(resources.getString(R.string.first_payment) + " " + DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));

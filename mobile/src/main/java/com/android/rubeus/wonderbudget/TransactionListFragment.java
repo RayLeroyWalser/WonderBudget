@@ -2,15 +2,10 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.text.Editable;
-import android.text.InputType;
 import android.view.ActionMode;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TableLayout;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;

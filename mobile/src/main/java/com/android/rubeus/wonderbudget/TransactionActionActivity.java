@@ -1,12 +1,10 @@
 package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -27,10 +25,6 @@ import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
-import com.google.android.gms.ads.internal.rawhtmlad.client.d;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 
 public class TransactionActionActivity extends Activity {
@@ -229,7 +223,7 @@ public class TransactionActionActivity extends Activity {
                 recurrenceBlock.setVisibility(View.VISIBLE);
                 numberBlock.setVisibility(View.VISIBLE);
                 clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
-                ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.negative_amount));
+                ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.red));
                 clearedIcon.setEnabled(false);
                 checkbox.setChecked(true);
 
@@ -241,7 +235,7 @@ public class TransactionActionActivity extends Activity {
                 recurrenceBlock.setVisibility(View.VISIBLE);
                 numberBlock.setVisibility(View.VISIBLE);
                 clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));
-                ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.negative_amount));
+                ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.red));
                 clearedIcon.setEnabled(false);
                 checkbox.setChecked(true);
                 checkbox.setEnabled(false);
@@ -279,7 +273,7 @@ public class TransactionActionActivity extends Activity {
             ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.blue));
         }
         else{
-            ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.negative_amount));
+            ((GradientDrawable)clearedIcon.getBackground()).setColor(getResources().getColor(R.color.red));
         }
     }
 
