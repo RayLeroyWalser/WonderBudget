@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.rubeus.wonderbudget.CustomAdapter.CategoryLineAdapter;
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
@@ -62,7 +63,19 @@ public class CategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
-        CategoryLineAdapter adapter = new CategoryLineAdapter(getActivity(), db.getAllCategories(), db);
+        ArrayList<Double> listAmount = new ArrayList<Double>();
+        ArrayList<Long> listDate = new ArrayList<Long>();
+        List<Category> listCategory = db.getAllCategories();
+        int id;
+        Transaction t;
+
+        for(int i=0; i<listCategory.size(); i++){
+            id = listCategory.get(i).getId();
+            listAmount.add(db.getAmountOfCategoryCurrentMonth(id, DateUtility.getFirstDayOfThisMonth()));
+            t = db.getLastTransactionOfCategory(id);
+            listDate.add(t!=null ? t.getDate() : 0);
+        }
+        CategoryLineAdapter adapter = new CategoryLineAdapter(getActivity(), listCategory, db, listAmount, listDate);
         listView.setAdapter(adapter);
 
         return view;

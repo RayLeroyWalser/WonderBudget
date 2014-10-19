@@ -28,11 +28,15 @@ public class CategoryLineAdapter extends BaseAdapter {
     private List<Category> list;
     private DatabaseHandler db;
     private ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
+    private ArrayList<Double> listAmount;
+    private ArrayList<Long> listDate;
 
-    public CategoryLineAdapter(Context context, List<Category> list, DatabaseHandler db){
+    public CategoryLineAdapter(Context context, List<Category> list, DatabaseHandler db, ArrayList<Double> listAmount, ArrayList<Long> listDate){
         this.context = context;
         this.list = list;
         this.db = db;
+        this.listAmount = listAmount;
+        this.listDate = listDate;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -87,13 +91,21 @@ public class CategoryLineAdapter extends BaseAdapter {
 
         cache.name.setText(c.getName());
 
-        double amount = db.getAmountOfCategoryCurrentMonth((int) getItemId(position), DateUtility.getFirstDayOfThisMonth());
-        if(amount > 0)
+        double amount = listAmount.get(position);
+        if(amount != 0) {
             cache.amount.setText(amount + " " + context.getResources().getString(R.string.euro));
+        }
+        else {
+            cache.amount.setText("");
+        }
 
-        Transaction t = db.getLastTransactionOfCategory(c.getId());
-        if(t != null)
-            cache.lastTransaction.setText(DateUtility.getDate(t.getDate(), "EEEE dd MMM yyyy"));
+        long date = listDate.get(position);
+        if(date != 0) {
+            cache.lastTransaction.setText(context.getResources().getString(R.string.last_transaction) + " " + DateUtility.getDate(date, "EEEE dd MMM yyyy"));
+        }
+        else {
+            cache.lastTransaction.setText("");
+        }
 
         return view;
     }
