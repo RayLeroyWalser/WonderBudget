@@ -48,7 +48,7 @@ public class CategoryFragment extends Fragment {
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         //Initiate the database handler
-        db = new DatabaseHandler(getActivity());
+        db = DatabaseHandler.getInstance(getActivity());
     }
 
     @Override

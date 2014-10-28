@@ -33,7 +33,7 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = new DatabaseHandler(this.getActivity());
+        db = DatabaseHandler.getInstance(this.getActivity());
     }
 
     @Override

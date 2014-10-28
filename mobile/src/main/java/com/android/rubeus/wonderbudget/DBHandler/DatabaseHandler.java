@@ -44,8 +44,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String KEY_NAME = "name";
     public final static String KEY_THUMB_URL = "thumbUrl";
 
-    public DatabaseHandler(Context context){
+    //Singleton
+    private static DatabaseHandler instance;
+
+    private DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static DatabaseHandler getInstance(Context context){
+        if(instance ==  null){
+            instance = new DatabaseHandler(context);
+        }
+        return instance;
     }
 
     @Override

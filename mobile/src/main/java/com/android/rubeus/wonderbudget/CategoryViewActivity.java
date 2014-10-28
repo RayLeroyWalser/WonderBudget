@@ -29,7 +29,7 @@ public class CategoryViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_view);
 
-        db = new DatabaseHandler(this);
+        db = DatabaseHandler.getInstance(this);
 
         Intent intent = getIntent();
         int categoryId = (int) intent.getLongExtra("categoryId", 1);

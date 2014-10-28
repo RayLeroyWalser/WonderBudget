@@ -60,7 +60,7 @@ public class RecurringTransactionListFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
-        db = new DatabaseHandler(this.getActivity());
+        db = DatabaseHandler.getInstance(this.getActivity());
         List<RecurringTransaction> list = db.getAllRecurringTransactions();
 
         adapter = new RecurringTransactionLineAdapter(getActivity(), list, db);

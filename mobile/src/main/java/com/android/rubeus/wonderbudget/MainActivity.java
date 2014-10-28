@@ -50,7 +50,7 @@ public class MainActivity extends Activity
         FontsOverride.setDefaultFont(this, "SANS_SERIF", "Roboto-Thin.ttf");
 
         //Initiate the DB
-        db = new DatabaseHandler(this);
+        db = DatabaseHandler.getInstance(this);
         initDatabase();
 
         //Add recurring transaction of the month

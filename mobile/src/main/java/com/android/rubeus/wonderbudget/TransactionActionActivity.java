@@ -60,7 +60,7 @@ public class TransactionActionActivity extends Activity {
         transactionId = (int) intent.getLongExtra("transactionId", 1);
         transactionDate = System.currentTimeMillis();
 
-        db = new DatabaseHandler(this);
+        db = DatabaseHandler.getInstance(this);
 
         clearedIcon = (ImageView) findViewById(R.id.clearedAddTransaction);
         categoryIcon = (ImageView) findViewById(R.id.categoryIconAddTransaction);
