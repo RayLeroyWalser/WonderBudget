@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.rubeus.wonderbudget.Utility.MathUtility;
+
 
 public class AddUpgradeTransactionActivity extends Activity {
     EditText input;
@@ -32,7 +34,7 @@ public class AddUpgradeTransactionActivity extends Activity {
             @Override
             public void onClick(View v) {
                 double desiredValue = Double.parseDouble(input.getText().toString());
-                double value = desiredValue - (Double) v.getTag();
+                double value = MathUtility.round(desiredValue - (Double) v.getTag(), 2);
 
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("value", value);
