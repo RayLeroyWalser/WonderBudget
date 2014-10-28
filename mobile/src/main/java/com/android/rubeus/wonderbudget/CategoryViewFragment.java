@@ -1,13 +1,16 @@
 package com.android.rubeus.wonderbudget;
 
-import android.app.Activity;
+
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,34 +22,39 @@ import com.android.rubeus.wonderbudget.Entity.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 
+public class CategoryViewFragment extends Fragment {
+    private TransactionLineAdapter adapter;
+    private DatabaseHandler db;
+    private int categoryId;
 
-public class CategoryViewActivity extends Activity {
-    TransactionLineAdapter adapter;
-    DatabaseHandler db;
+    public static CategoryViewFragment newInstance() {
+        return new CategoryViewFragment();
+    }
+    public CategoryViewFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_view);
 
-        db = DatabaseHandler.getInstance(this);
+        db = DatabaseHandler.getInstance(getActivity());
+    }
 
-        Intent intent = getIntent();
-        int categoryId = (int) intent.getLongExtra("categoryId", 1);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_category_view, container, false);
 
-        setTitle(db.getCategory(categoryId).getName());
+        ListView listView = (ListView) view.findViewById(android.R.id.list);
+        List<Transaction> list = db.getTransactionsOfCategory(categoryId);
 
-        ListView listView = (ListView) findViewById(android.R.id.list);
-
-        List<Transaction> list = db.getTransactionsOfCategory((int) categoryId);
-
-        adapter = new TransactionLineAdapter(this, list, db);
+        adapter = new TransactionLineAdapter(getActivity(), list, db);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(CategoryViewActivity.this, TransactionActionActivity.class);
+                Intent intent = new Intent(getActivity(), TransactionActionActivity.class);
                 intent.putExtra("typeOfDialog", TransactionActionActivity.VIEW_TRANSACTION);
                 intent.putExtra("transactionId", adapter.getItemId(position));
                 startActivityForResult(intent, TransactionActionActivity.VIEW_TRANSACTION);
@@ -119,26 +127,18 @@ public class CategoryViewActivity extends Activity {
                 return false;
             }
         });
+
+        return view;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.category_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+    public void updateContent(int categoryId){
+        this.categoryId = categoryId;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == this.RESULT_OK){
+        if(resultCode == getActivity().RESULT_OK){
             switch (requestCode){
                 case TransactionActionActivity.VIEW_TRANSACTION:
                     adapter.refresh(db.getAllTransactions());

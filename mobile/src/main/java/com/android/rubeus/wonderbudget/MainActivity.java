@@ -1,8 +1,6 @@
 package com.android.rubeus.wonderbudget;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
@@ -10,9 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
@@ -25,7 +20,7 @@ import java.util.List;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CategoryFragment.OnCategorySelectedListener {
     private static final String TAG = "MainActivity";
     private static final String PREF = "Preferences";
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -75,8 +70,6 @@ public class MainActivity extends Activity
             case 3:
                 ft.replace(R.id.container, CategoryFragment.newInstance());
                 break;
-            default:
-                ft.replace(R.id.container, PlaceholderFragment.newInstance(position+1));
         }
 
         ft.commit();
@@ -206,14 +199,27 @@ public class MainActivity extends Activity
         db.updateRecurringTransaction(t);
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+
+    @Override
+    public void onCategorySelected(int categoryId) {
+        CategoryViewFragment fragment = CategoryViewFragment.newInstance();
+        fragment.updateContent(categoryId);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 
+//    public void restoreActionBar() {
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setTitle(mTitle);
+//    }
+//
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -238,45 +244,4 @@ public class MainActivity extends Activity
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }
-
 }

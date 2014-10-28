@@ -26,10 +26,6 @@
             android:label="@string/title_activity_add_upgrade_transaction"
             android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
-        <activity
-            android:name=".CategoryViewActivity"
-            android:label="@string/title_activity_category_view">
-        </activity>
     </application>
 
 </manifest>

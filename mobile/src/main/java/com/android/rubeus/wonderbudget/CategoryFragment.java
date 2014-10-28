@@ -31,6 +31,8 @@ public class CategoryFragment extends Fragment {
     private ArrayList<Long> listDate = new ArrayList<Long>();
     private List<Category> listCategory;
 
+    private OnCategorySelectedListener listener;
+
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
         return fragment;
@@ -68,9 +70,7 @@ public class CategoryFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), CategoryViewActivity.class);
-                intent.putExtra("categoryId", adapter.getItemId(position));
-                startActivityForResult(intent, 0);
+                listener.onCategorySelected((int) adapter.getItemId(position));
             }
         });
 
@@ -80,7 +80,6 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("coucocuoc " + resultCode);
         refreshCategoryList();
         adapter.refresh(listCategory, listAmount, listDate);
     }
@@ -114,5 +113,19 @@ public class CategoryFragment extends Fragment {
             t = db.getLastTransactionOfCategory(id);
             listDate.add(t!=null ? t.getDate() : 0);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (OnCategorySelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCategorySelectedListener");
+        }
+    }
+
+    public interface OnCategorySelectedListener{
+        public void onCategorySelected(int categoryId);
     }
 }
