@@ -4,6 +4,7 @@ package com.android.rubeus.wonderbudget;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,7 +46,7 @@ public class CategoryViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_view, container, false);
 
-        getActivity().getActionBar().setTitle(db.getCategory(categoryId).getName());
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(db.getCategory(categoryId).getName());
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
         List<Transaction> list = db.getTransactionsOfCategory(categoryId);

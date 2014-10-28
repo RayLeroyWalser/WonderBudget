@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
@@ -19,7 +20,7 @@ import com.android.rubeus.wonderbudget.Utility.FontsOverride;
 import java.util.List;
 
 
-public class MainActivity extends Activity
+public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CategoryFragment.OnCategorySelectedListener {
     private static final String TAG = "MainActivity";
     private static final String PREF = "Preferences";

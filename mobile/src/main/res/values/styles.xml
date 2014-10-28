@@ -1,10 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColor">@color/app_text</item>
         <item name="android:typeface">sans</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue_dark</item>
+        <item name="colorAccent">@color/pink</item>
     </style>
 
     <style name="customEditText" parent="android:Widget.EditText">
