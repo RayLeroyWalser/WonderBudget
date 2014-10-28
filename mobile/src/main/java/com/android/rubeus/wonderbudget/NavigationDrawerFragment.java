@@ -6,12 +6,14 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.JsonWriter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.android.rubeus.wonderbudget.Utility.JsonUtility;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -247,10 +257,32 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-//        if (item.getItemId() == R.id.action_example) {
-//            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-//            return true;
-//        }
+        switch (item.getItemId()){
+            case R.id.export_data:
+                OutputStream fOut = null;
+                String path = Environment.getExternalStorageDirectory() + "/WonderBudget";
+                File directory = new File(path);
+                if(!directory.exists() && !directory.isDirectory()){
+                    directory.mkdirs();
+                }
+
+                String fileName = "database.json";
+                File file = new File(path, fileName);
+                try {
+                    fOut = new FileOutputStream(file, true);
+                    JsonUtility.writeJsonStream(getActivity(), fOut);
+                    fOut.flush();
+                    fOut.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return true;
+            case R.id.import_data:
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

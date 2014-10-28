@@ -18,12 +18,13 @@
     <string name="title_section4">Categories</string>
 
     <!-- Action bar buttons / Titles -->
-    <string name="action_settings">Settings</string>
     <string name="add_new_transaction">Add new transaction</string>
     <string name="view_transaction">Transaction</string>
     <string name="edit_transaction">Edit transaction</string>
     <string name="delete_transaction">Delete transaction(s)</string>
     <string name="add_upgrade_transaction">Add upgrade transaction</string>
+    <string name="export_data">Export data</string>
+    <string name="import_data">Import data</string>
 
     <!-- Various elements -->
     <string name="done">Done</string>
