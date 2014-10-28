@@ -123,9 +123,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/add_button_margin"
+                android:padding="@dimen/add_button_padding"
                 android:src="@android:drawable/ic_input_add"
                 android:tint="@android:color/white"
-                android:background="@drawable/oval"/>
+                android:background="@drawable/oval"
+                android:elevation="4dp"/>
 
         </RelativeLayout>
 
