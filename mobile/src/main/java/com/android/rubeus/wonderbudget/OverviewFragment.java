@@ -44,7 +44,7 @@ public class OverviewFragment extends Fragment {
         totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         realAmount = (TextView) view.findViewById(R.id.realAmount);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addButton);
-        ((GradientDrawable)addButton.getBackground()).setColor(getResources().getColor(R.color.green));
+        ((GradientDrawable)addButton.getBackground()).setColor(getResources().getColor(R.color.pink));
 
         totalAmount.setText(db.getTotalAmount()+"");
         realAmount.setText(db.getRealAmount()+"");

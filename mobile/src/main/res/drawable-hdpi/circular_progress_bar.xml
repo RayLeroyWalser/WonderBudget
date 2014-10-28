@@ -9,7 +9,7 @@
         android:innerRadiusRatio="2.1"
         android:shape="ring"
         android:thicknessRatio="80.0">
-        <solid android:color="@color/orange"/>
+        <solid android:color="@color/indigo"/>
     </shape>
 
 </rotate>

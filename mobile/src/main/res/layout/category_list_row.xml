@@ -32,7 +32,8 @@
         android:textSize="20sp"
         android:layout_toRightOf="@id/categoryIcon"
         android:layout_toLeftOf="@+id/categoryAmount"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="17dp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@id/categoryAmount"

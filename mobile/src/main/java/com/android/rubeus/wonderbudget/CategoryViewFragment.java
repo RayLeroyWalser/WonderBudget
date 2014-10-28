@@ -45,6 +45,8 @@ public class CategoryViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_view, container, false);
 
+        getActivity().getActionBar().setTitle(db.getCategory(categoryId).getName());
+
         ListView listView = (ListView) view.findViewById(android.R.id.list);
         List<Transaction> list = db.getTransactionsOfCategory(categoryId);
 
@@ -141,7 +143,7 @@ public class CategoryViewFragment extends Fragment {
         if(resultCode == getActivity().RESULT_OK){
             switch (requestCode){
                 case TransactionActionActivity.VIEW_TRANSACTION:
-                    adapter.refresh(db.getAllTransactions());
+                    adapter.refresh(db.getTransactionsOfCategory(categoryId));
                     break;
             }
 

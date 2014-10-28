@@ -95,7 +95,6 @@ public class CategoryLineAdapter extends BaseAdapter {
         cache.icon.setImageURI(Uri.parse(c.getThumbUrl()));
 
         cache.name.setText(c.getName());
-        cache.name.setTextColor(color);
 
         double amount = listAmount.get(position);
         if(amount != 0) {
