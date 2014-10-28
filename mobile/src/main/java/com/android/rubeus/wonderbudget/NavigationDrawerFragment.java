@@ -269,7 +269,7 @@ public class NavigationDrawerFragment extends Fragment {
                 String fileName = "database.json";
                 File file = new File(path, fileName);
                 try {
-                    fOut = new FileOutputStream(file, true);
+                    fOut = new FileOutputStream(file, false);
                     JsonUtility.writeJsonStream(getActivity(), fOut);
                     fOut.flush();
                     fOut.close();
