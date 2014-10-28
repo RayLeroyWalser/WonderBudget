@@ -333,7 +333,7 @@ public class TransactionActionActivity extends Activity {
 
                             }
                         });
-                        RecurringTransaction r = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
+                        RecurringTransaction r = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 1, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
                         Transaction tr = new Transaction(Double.parseDouble(amountText), category, false, transactionDate, commentText);
                         db.addRecurringTransaction(r);
                         db.addTransaction(tr);
