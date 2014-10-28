@@ -99,7 +99,7 @@
         android:layout_margin="15dp"
         android:layout_below="@id/editAmount"
         style="@style/customEditText"
-        android:inputType="textNoSuggestions"/>
+        android:inputType="textNoSuggestions|textCapSentences|textMultiLine"/>
 
     <CheckBox
         android:id="@+id/repeat"
