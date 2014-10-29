@@ -23,13 +23,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
+import org.json.JSONException;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -281,6 +286,20 @@ public class NavigationDrawerFragment extends Fragment {
 
                 return true;
             case R.id.import_data:
+                File exported = new File(Environment.getExternalStorageDirectory() + "/WonderBudget/database.json");
+                if(exported.exists()){
+                    try {
+                        InputStream in = new FileInputStream(exported);
+                        JsonUtility.readJsonToDatabase(getActivity(), in);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    Toast.makeText(getActivity(), "No data has been exported yet", Toast.LENGTH_SHORT).show();
+                }
                 return true;
         }
 
