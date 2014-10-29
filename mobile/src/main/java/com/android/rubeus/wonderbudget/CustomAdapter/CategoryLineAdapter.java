@@ -39,7 +39,7 @@ public class CategoryLineAdapter extends BaseAdapter {
         this.listAmount = listAmount;
         this.listDate = listDate;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        colors = new ArrayList<Integer>(Arrays.asList(R.color.blue, R.color.pink, R.color.green, R.color.red, R.color.purple, R.color.orange));
+        colors = new ArrayList<Integer>(Arrays.asList(R.color.pink, R.color.green, R.color.orange, R.color.purple, R.color.red, R.color.blue));
     }
 
     @Override

@@ -25,30 +25,39 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/categoryName"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_toRightOf="@id/categoryIcon"
-        android:layout_toLeftOf="@+id/categoryAmount"
-        android:layout_marginTop="17dp"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@id/categoryAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_alignParentRight="true"
-        android:layout_margin="15dp"/>
+        android:layout_centerVertical="true">
 
-    <TextView
-        android:id="@+id/lastTransaction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/categoryIcon"
-        android:layout_below="@id/categoryName"
-        android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/categoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/categoryAmount"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@id/categoryAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/lastTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/categoryName"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="italic"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
