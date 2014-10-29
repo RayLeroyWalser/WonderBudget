@@ -3,6 +3,7 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -296,6 +297,9 @@ public class NavigationDrawerFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
                 }
                 else{
                     Toast.makeText(getActivity(), "No data has been exported yet", Toast.LENGTH_SHORT).show();

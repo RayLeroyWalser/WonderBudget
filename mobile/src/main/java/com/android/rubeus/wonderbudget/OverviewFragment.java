@@ -46,8 +46,7 @@ public class OverviewFragment extends Fragment {
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addButton);
         ((GradientDrawable)addButton.getBackground()).setColor(getResources().getColor(R.color.blue));
 
-        totalAmount.setText(db.getTotalAmount()+"");
-        realAmount.setText(db.getRealAmount()+"");
+        refresh();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,9 +105,13 @@ public class OverviewFragment extends Fragment {
 
         switch (requestCode){
             case TransactionActionActivity.ADD_NEW_TRANSACTIION:
-                totalAmount.setText(db.getTotalAmount()+"");
-                realAmount.setText(db.getRealAmount()+"");
+                refresh();
                 break;
         }
+    }
+
+    private void refresh(){
+        totalAmount.setText(db.getTotalAmount()+"");
+        realAmount.setText(db.getRealAmount()+"");
     }
 }
