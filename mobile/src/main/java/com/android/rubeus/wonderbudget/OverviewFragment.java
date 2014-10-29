@@ -1,6 +1,5 @@
 package com.android.rubeus.wonderbudget;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -81,16 +80,6 @@ public class OverviewFragment extends Fragment {
         transaction.addToBackStack(null);
 
         transaction.commit();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private void createNewTransaction(){

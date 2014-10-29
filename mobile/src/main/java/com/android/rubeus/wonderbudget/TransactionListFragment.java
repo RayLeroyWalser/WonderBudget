@@ -1,6 +1,5 @@
 package com.android.rubeus.wonderbudget;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -139,16 +138,6 @@ public class TransactionListFragment extends Fragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
