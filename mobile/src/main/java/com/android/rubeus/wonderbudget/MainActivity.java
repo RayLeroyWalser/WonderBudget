@@ -118,6 +118,7 @@ public class MainActivity extends ActionBarActivity
             db.addCategory(new Category("Cadeau", Uri.parse(pathDebut + R.drawable.cadeau).toString()));
 
             db.addAccount(new Account("Compte courant"));
+            db.addAccount(new Account("Livret A"));
 
 
 //            List<Transaction> list = db.getAllTransactions();

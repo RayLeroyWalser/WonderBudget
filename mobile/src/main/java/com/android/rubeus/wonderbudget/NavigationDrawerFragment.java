@@ -23,10 +23,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.NavigationDrawerAdapter;
+import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 import org.json.JSONException;
 
@@ -63,12 +66,12 @@ public class NavigationDrawerFragment extends Fragment {
     private NavigationDrawerCallbacks mCallbacks;
 
     /**
-     * Helper component that ties the action bar to the navigation drawer.
+     * Helper component that ties the action bamDrawerListViewr to the navigation drawer.
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+    private ListView mDrawerListView, accountListView;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -93,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
+        selectItem(mCurrentSelectedPosition, mDrawerListView, 1);
     }
 
     @Override
@@ -106,11 +109,13 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        mDrawerListView = (ListView) view.findViewById(R.id.nav_item_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
+                selectItem(position, mDrawerListView, 1);
             }
         });
 //        mDrawerListView.setAdapter(new ArrayAdapter<String>(
@@ -128,7 +133,26 @@ public class NavigationDrawerFragment extends Fragment {
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
         mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+
+
+        DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
+        accountListView = (ListView) view.findViewById(R.id.nav_account_list);
+        SimpleCursorAdapter accountAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_1,
+                db.getAllAccountsCursor(),
+                new String[] { db.KEY_NAME },
+                new int[] { android.R.id.text1 },
+                0);
+        accountListView.setAdapter(accountAdapter);
+        accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectItem(position, accountListView, 2);
+                PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(position));
+            }
+        });
+
+        return view;
     }
 
     public boolean isDrawerOpen() {
@@ -208,16 +232,19 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    private void selectItem(int position, ListView view, int typeOfListView) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
+        if (view != null) {
+            view.setItemChecked(position, true);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            switch (typeOfListView){
+                case 1: mCallbacks.onNavigationDrawerItemSelected(position); break;
+                case 2: mCallbacks.onNavigationDrawerItemSelected(0); break;
+            }
         }
     }
 

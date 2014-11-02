@@ -591,4 +591,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
         return account;
     }
+
+    public Cursor getAllAccountsCursor(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String id = KEY_ID +" "+_ID;
+        String columns = id+", "+KEY_NAME;
+        String selectQuery = "SELECT " + columns + " FROM " + TABLE_ACCOUNT;
+        return db.rawQuery(selectQuery, null);
+    }
 }
