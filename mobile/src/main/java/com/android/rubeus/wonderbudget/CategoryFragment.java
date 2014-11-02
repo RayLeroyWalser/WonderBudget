@@ -1,6 +1,7 @@
 package com.android.rubeus.wonderbudget;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,11 +107,12 @@ public class CategoryFragment extends Fragment {
         listDate.clear();
         int id;
         Transaction t;
+        int account = PreferencesUtility.getAccount(getActivity());
 
         for(int i=0; i<listCategory.size(); i++){
             id = listCategory.get(i).getId();
-            listAmount.add(db.getAmountOfCategoryCurrentMonth(id, DateUtility.getFirstDayOfThisMonth()));
-            t = db.getLastTransactionOfCategory(id);
+            listAmount.add(db.getAmountOfCategoryCurrentMonth(id, DateUtility.getFirstDayOfThisMonth(), account));
+            t = db.getLastTransactionOfCategory(id, account);
             listDate.add(t!=null ? t.getDate() : 0);
         }
     }

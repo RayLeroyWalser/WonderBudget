@@ -14,16 +14,16 @@ public class RecurringTransaction extends Transaction {
 
     public RecurringTransaction(){}
 
-    public RecurringTransaction(int id, double amount, int category, long date, String commentary, int numberOfPaymentPaid, int numberOfPaymentTotal, int distanceBetweenPayment, int typeOfRecurrent){
-        super(id,amount,category,true,date,commentary);
+    public RecurringTransaction(int id, double amount, int category, long date, String commentary, int account, int numberOfPaymentPaid, int numberOfPaymentTotal, int distanceBetweenPayment, int typeOfRecurrent){
+        super(id,amount,category,true,date,commentary, account);
         this.numberOfPaymentPaid = numberOfPaymentPaid;
         this.numberOfPaymentTotal = numberOfPaymentTotal;
         this.distanceBetweenPayment = distanceBetweenPayment;
         this.typeOfRecurrent = typeOfRecurrent;
     }
 
-    public RecurringTransaction(double amount, int category, long date, String commentary, int numberOfPaymentPaid, int numberOfPaymentTotal, int distanceBetweenPayment, int typeOfRecurrent){
-        super(amount,category,true,date,commentary);
+    public RecurringTransaction(double amount, int category, long date, String commentary, int account, int numberOfPaymentPaid, int numberOfPaymentTotal, int distanceBetweenPayment, int typeOfRecurrent){
+        super(amount,category,true,date,commentary, account);
         this.numberOfPaymentPaid = numberOfPaymentPaid;
         this.numberOfPaymentTotal = numberOfPaymentTotal;
         this.distanceBetweenPayment = distanceBetweenPayment;

@@ -1,8 +1,10 @@
 package com.android.rubeus.wonderbudget;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ public class TransactionListFragment extends Fragment {
     private TransactionLineAdapter adapter;
     private DatabaseHandler db;
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private int account;
 
     public static TransactionListFragment newInstance() {
         return new TransactionListFragment();
@@ -48,13 +52,18 @@ public class TransactionListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
         setHasOptionsMenu(true);
 
+        //Retrieve account number
+        account = PreferencesUtility.getAccount(getActivity());
+
+        //Navagation drawer
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
+        //List of transactions
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
         db = DatabaseHandler.getInstance(this.getActivity());
-        List<Transaction> list = db.getAllTransactions();
+        List<Transaction> list = db.getAllTransactions(account);
 
         adapter = new TransactionLineAdapter(getActivity(), list, db);
         listView.setAdapter(adapter);
@@ -102,7 +111,7 @@ public class TransactionListFragment extends Fragment {
                         for(int i=0; i<listToDelete.size(); i++){
                             db.deleteTransaction(listToDelete.get(i));
                         }
-                        adapter.refresh(db.getAllTransactions());
+                        adapter.refresh(db.getAllTransactions(account));
                         mode.finish(); // Action picked, so close the CAB
                         return true;
                     default:
@@ -142,20 +151,20 @@ public class TransactionListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == getActivity().RESULT_OK){
+        if(resultCode == FragmentActivity.RESULT_OK){
             switch (requestCode){
                 case TransactionActionActivity.VIEW_TRANSACTION:
-                    adapter.refresh(db.getAllTransactions());
+                    adapter.refresh(db.getAllTransactions(account));
                     break;
                 case TransactionActionActivity.ADD_NEW_TRANSACTIION:
-                    adapter.refresh(db.getAllTransactions());
+                    adapter.refresh(db.getAllTransactions(account));
                     break;
                 case ADD_UPGRADE_TRANSACTION:
                     if(data != null){
                         double value = data.getDoubleExtra("value",0);
-                        Transaction t = new Transaction(value, 1, true, System.currentTimeMillis(), "Mise à niveau du montant");
+                        Transaction t = new Transaction(value, 1, true, System.currentTimeMillis(), "Mise à niveau du montant", account);
                         db.addTransaction(t);
-                        adapter.refresh(db.getAllTransactions());
+                        adapter.refresh(db.getAllTransactions(account));
                     }
                     break;
             }
@@ -188,7 +197,7 @@ public class TransactionListFragment extends Fragment {
                 startActivityForResult(intent, TransactionActionActivity.ADD_NEW_TRANSACTIION);
                 return true;
             case R.id.addUpgradeTransaction:
-                double currentAmount = db.getRealAmount();
+                double currentAmount = db.getRealAmount(account);
                 Intent intent2 = new Intent(getActivity(), AddUpgradeTransactionActivity.class);
                 intent2.putExtra("currentAmount", currentAmount);
                 startActivityForResult(intent2, ADD_UPGRADE_TRANSACTION);

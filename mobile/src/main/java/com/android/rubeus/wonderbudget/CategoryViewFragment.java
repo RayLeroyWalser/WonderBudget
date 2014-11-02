@@ -1,6 +1,7 @@
 package com.android.rubeus.wonderbudget;
 
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ import java.util.List;
 public class CategoryViewFragment extends Fragment {
     private TransactionLineAdapter adapter;
     private DatabaseHandler db;
-    private int categoryId;
+    private int categoryId, account;
 
     public static CategoryViewFragment newInstance() {
         return new CategoryViewFragment();
@@ -46,10 +48,13 @@ public class CategoryViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_view, container, false);
 
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(db.getCategory(categoryId).getName());
+        //Retrieve account number
+        account = PreferencesUtility.getAccount(getActivity());
+
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(db.getCategory(categoryId).getName());
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
-        List<Transaction> list = db.getTransactionsOfCategory(categoryId);
+        List<Transaction> list = db.getTransactionsOfCategory(categoryId, account);
 
         adapter = new TransactionLineAdapter(getActivity(), list, db);
         listView.setAdapter(adapter);
@@ -97,7 +102,7 @@ public class CategoryViewFragment extends Fragment {
                         for(int i=0; i<listToDelete.size(); i++){
                             db.deleteTransaction(listToDelete.get(i));
                         }
-                        adapter.refresh(db.getAllTransactions());
+                        adapter.refresh(db.getAllTransactions(account));
                         mode.finish(); // Action picked, so close the CAB
                         return true;
                     default:
@@ -144,7 +149,7 @@ public class CategoryViewFragment extends Fragment {
         if(resultCode == getActivity().RESULT_OK){
             switch (requestCode){
                 case TransactionActionActivity.VIEW_TRANSACTION:
-                    adapter.refresh(db.getTransactionsOfCategory(categoryId));
+                    adapter.refresh(db.getTransactionsOfCategory(categoryId, account));
                     break;
             }
 

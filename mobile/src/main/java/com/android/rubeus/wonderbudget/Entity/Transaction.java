@@ -10,24 +10,27 @@ public class Transaction {
     private boolean isDone;
     private long date;
     private String commentary;
+    private int account;
 
     public Transaction(){}
 
-    public Transaction(int id, double amount, int category, boolean isDone, long date, String commentary){
+    public Transaction(int id, double amount, int category, boolean isDone, long date, String commentary, int account){
         this.id = id;
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
         this.date = date;
         this.commentary = commentary;
+        this.account = account;
     }
 
-    public Transaction(double amount, int category, boolean isDone, long date, String commentary){
+    public Transaction(double amount, int category, boolean isDone, long date, String commentary, int account){
         this.amount = amount;
         this.category = category;
         this.isDone = isDone;
         this.date = date;
         this.commentary = commentary;
+        this.account = account;
     }
 
     public int getId() {
@@ -76,5 +79,13 @@ public class Transaction {
 
     public void setCommentary(String commentary) {
         this.commentary = commentary;
+    }
+
+    public int getAccount() {
+        return account;
+    }
+
+    public void setAccount(int account) {
+        this.account = account;
     }
 }

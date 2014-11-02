@@ -1,5 +1,6 @@
 package com.android.rubeus.wonderbudget;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 public class OverviewFragment extends Fragment {
     private static final String TAG = "OverviewFragment";
@@ -100,7 +102,9 @@ public class OverviewFragment extends Fragment {
     }
 
     private void refresh(){
-        totalAmount.setText(db.getTotalAmount()+"");
-        realAmount.setText(db.getRealAmount()+"");
+        //Retrieve account number
+        int account = PreferencesUtility.getAccount(getActivity());
+        totalAmount.setText(db.getTotalAmount(account)+"");
+        realAmount.setText(db.getRealAmount(account)+"");
     }
 }

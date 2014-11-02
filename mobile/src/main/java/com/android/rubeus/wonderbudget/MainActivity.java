@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.Entity.Account;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
@@ -22,7 +23,7 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CategoryFragment.OnCategorySelectedListener {
     private static final String TAG = "MainActivity";
-    private static final String PREF = "Preferences";
+    public static final String PREF = "Preferences";
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
     private DatabaseHandler db;
@@ -116,6 +117,8 @@ public class MainActivity extends ActionBarActivity
             db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
             db.addCategory(new Category("Cadeau", Uri.parse(pathDebut + R.drawable.cadeau).toString()));
 
+            db.addAccount(new Account("Compte courant"));
+
 
 //            List<Transaction> list = db.getAllTransactions();
 //            for(Transaction t : list){
@@ -153,7 +156,7 @@ public class MainActivity extends ActionBarActivity
         if(currentMonth > settings.getInt("month", currentMonth-1)%12 ||
                 currentYear > settings.getInt("year", currentYear-1)){ // we add all the recurring transactions once every month
             Log.v(TAG, "A new month: adding all recurring transactions");
-            List<RecurringTransaction> list = db.getAllRecurringTransactions();
+            List<RecurringTransaction> list = db.getAllRecurringTransactions(settings.getInt("account",1));
             for(RecurringTransaction t : list){
                 ms = t.getDate();
                 day = DateUtility.getDay(ms);
@@ -189,10 +192,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void addRecurringTransactionOfTheMonth(int day, int month, int year, RecurringTransaction t){
-        Transaction ts = new Transaction(t.getAmount(), t.getCategory(), false, DateUtility.dayToMillisecond(day,month,year), t.getCommentary());
+        Transaction ts = new Transaction(t.getAmount(), t.getCategory(), false, DateUtility.dayToMillisecond(day,month,year), t.getCommentary(), t.getAccount());
         db.addTransaction(ts);
         Log.d(TAG, "Added :   Id:" + ts.getId() + "   Amount=" + ts.getAmount() + "   Done:" + ts.isDone() + "   Date:" + ts.getDate() + "  Commentary:" + ts.getCommentary()
-                + "    Category:" + db.getCategory(ts.getCategory()).getName());
+                + "    Category:" + db.getCategory(ts.getCategory()).getName() + "   Account:"+db.getAccount(ts.getAccount()).getName());
 
         // Number of payment paid ++
         t.setNumberOfPaymentPaid(t.getNumberOfPaymentPaid()+1);

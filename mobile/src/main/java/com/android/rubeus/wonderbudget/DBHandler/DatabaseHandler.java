@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.android.rubeus.wonderbudget.Entity.Account;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
@@ -22,6 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String TABLE_TRANSACTION = "transactions";
     public final static String TABLE_RECURRING_TRANSACTION = "recurringTransactions";
     public final static String TABLE_CATEGORY = "categories";
+    public final static String TABLE_ACCOUNT = "account";
 
     //Common keys
     public final static String KEY_ID = "id";
@@ -33,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String KEY_IS_DONE = "isDone";
     public final static String KEY_DATE = "date";
     public final static String KEY_COMMENTARY = "commentary";
+    public final static String KEY_ACCOUNT = "account";
 
     //Recurring transactions
     public final static String KEY_NUMBER_PAYMENT_PAID = "numberOfPaymentPaid";
@@ -66,6 +69,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + KEY_THUMB_URL + " TEXT"
                 + ")";
 
+        String createTableAccount = "CREATE TABLE " + TABLE_ACCOUNT + "("
+                + KEY_ID + " INTEGER PRIMARY KEY, "
+                + KEY_NAME + " TEXT"
+                + ")";
+
         String createTableTransaction = "CREATE TABLE " + TABLE_TRANSACTION + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
                 + KEY_AMOUNT + " REAL, "
@@ -73,7 +81,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + KEY_IS_DONE + " INTEGER, "
                 + KEY_DATE + " INTEGER, "
                 + KEY_COMMENTARY + " TEXT, "
+                + KEY_ACCOUNT + " INTEGER, "
                 + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
+                + "FOREIGN KEY (" + KEY_ACCOUNT + ") REFERENCES " + TABLE_ACCOUNT + "(" + KEY_ID + ") "
                 + ")";
 
         String createTableRecurringTransaction = "CREATE TABLE " + TABLE_RECURRING_TRANSACTION + "("
@@ -82,15 +92,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 + KEY_CATEGORY + " INTEGER, "
                 + KEY_DATE + " INTEGER, "
                 + KEY_COMMENTARY + " TEXT, "
+                + KEY_ACCOUNT + " INTEGER, "
                 + KEY_NUMBER_PAYMENT_PAID + " INTEGER, "
                 + KEY_NUMBER_PAYMENT_TOTAL + " INTEGER, "
                 + KEY_DISTANCE_REPETITION + " INTEGER, "
                 + KEY_TYPE_OF_RECURRENT + " INTEGER, "
                 + "FOREIGN KEY (" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORY + "(" + KEY_ID + ") "
+                + "FOREIGN KEY (" + KEY_ACCOUNT + ") REFERENCES " + TABLE_ACCOUNT + "(" + KEY_ID + ") "
                 + ")";
 
 
         db.execSQL(createTableCategory);
+        db.execSQL(createTableAccount);
         db.execSQL(createTableTransaction);
         db.execSQL(createTableRecurringTransaction);
     }
@@ -100,6 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECURRING_TRANSACTION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNT);
         onCreate(db);
     }
 
@@ -118,6 +132,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_IS_DONE, t.isDone());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
+        values.put(KEY_ACCOUNT, t.getAccount());
 
         // Inserting Row
         db.insert(TABLE_TRANSACTION, null, values);
@@ -141,12 +156,41 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 cursor.getInt(2),
                 cursor.getInt(3)>0?true:false,
                 cursor.getLong(4),
-                cursor.getString(5));
+                cursor.getString(5),
+                cursor.getInt(6));
 
         return transaction;
     }
 
-    public List<Transaction> getAllTransactions(){
+    public List<Transaction> getAllTransactions(int account){
+        List<Transaction> transactionList = new ArrayList<Transaction>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_ACCOUNT + "=" + account + " ORDER BY " + KEY_DATE + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Transaction t = new Transaction();
+                t.setId(cursor.getInt(0));
+                t.setAmount(cursor.getDouble(1));
+                t.setCategory(cursor.getInt(2));
+                t.setDone(cursor.getInt(3)>0?true:false);
+                t.setDate(cursor.getLong(4));
+                t.setCommentary(cursor.getString(5));
+                t.setAccount(cursor.getInt(6));
+                // Adding transaction to list
+                transactionList.add(t);
+            } while (cursor.moveToNext());
+        }
+
+        // return transaction list
+        return transactionList;
+    }
+
+    public List<Transaction> getAllTransactionsGlobal(){
         List<Transaction> transactionList = new ArrayList<Transaction>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " ORDER BY " + KEY_DATE + " DESC";
@@ -164,6 +208,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setDone(cursor.getInt(3)>0?true:false);
                 t.setDate(cursor.getLong(4));
                 t.setCommentary(cursor.getString(5));
+                t.setAccount(cursor.getInt(6));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());
@@ -192,6 +237,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_IS_DONE, t.isDone());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
+        values.put(KEY_ACCOUNT, t.getAccount());
 
         // updating row
         return db.update(TABLE_TRANSACTION, values, KEY_ID + " = ?",
@@ -210,8 +256,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.delete(TABLE_TRANSACTION, null, null);
     }
 
-    public double getTotalAmount(){
-        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION;
+    public double getTotalAmount(int account){
+        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION + " WHERE " + KEY_ACCOUNT + "=" + account;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -220,8 +266,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return 0;
     }
 
-    public double getRealAmount(){
-        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION + " WHERE " + KEY_IS_DONE + " = 1";
+    public double getRealAmount(int account){
+        String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION + " WHERE " + KEY_IS_DONE + " = 1 AND " + KEY_ACCOUNT + "=" + account;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -230,10 +276,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return 0;
     }
 
-    public List<Transaction> getTransactionsOfCategory(int id){
+    public List<Transaction> getTransactionsOfCategory(int id, int account){
         List<Transaction> transactionList = new ArrayList<Transaction>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id + " ORDER BY " + KEY_DATE + " DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id + " AND "+ KEY_ACCOUNT + "=" + account +
+                " ORDER BY " + KEY_DATE + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -248,6 +295,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setDone(cursor.getInt(3)>0?true:false);
                 t.setDate(cursor.getLong(4));
                 t.setCommentary(cursor.getString(5));
+                t.setAccount(cursor.getInt(6));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());
@@ -257,8 +305,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return transactionList;
     }
 
-    public Transaction getLastTransactionOfCategory(int id){
-        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id + " ORDER BY " + KEY_DATE + " DESC LIMIT 1";
+    public Transaction getLastTransactionOfCategory(int id, int account){
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_CATEGORY + " = " + id + " AND " + KEY_ACCOUNT + "=" + account +
+                " ORDER BY " + KEY_DATE + " DESC LIMIT 1";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -272,6 +321,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             t.setDone(cursor.getInt(3) > 0 ? true : false);
             t.setDate(cursor.getLong(4));
             t.setCommentary(cursor.getString(5));
+            t.setAccount(cursor.getInt(6));
 
             return t;
         }
@@ -279,12 +329,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return null;
     }
 
-    public double getAmountOfCategoryCurrentMonth(int idCategory, long debutDate){
+    public double getAmountOfCategoryCurrentMonth(int idCategory, long debutDate, int account){
         ArrayList<Double> listAmount = new ArrayList<Double>();
 
         String query = "SELECT ROUND(SUM(" + KEY_AMOUNT + "),2) FROM " + TABLE_TRANSACTION + " WHERE "
                 + KEY_CATEGORY + " = " + idCategory + " AND "
-                + KEY_DATE + " >= " + debutDate;
+                + KEY_DATE + " >= " + debutDate + " AND "
+                + KEY_ACCOUNT + "=" + account;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -310,6 +361,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_CATEGORY, t.getCategory());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
+        values.put(KEY_ACCOUNT, t.getAccount());
         values.put(KEY_NUMBER_PAYMENT_PAID, t.getNumberOfPaymentPaid());
         values.put(KEY_NUMBER_PAYMENT_TOTAL, t.getNumberOfPaymentTotal());
         values.put(KEY_DISTANCE_REPETITION, t.getDistanceBetweenPayment());
@@ -325,10 +377,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.delete(TABLE_RECURRING_TRANSACTION, null, null);
     }
 
-    public List<RecurringTransaction> getAllRecurringTransactions(){
+    public List<RecurringTransaction> getAllRecurringTransactions(int account){
         List<RecurringTransaction> transactionList = new ArrayList<RecurringTransaction>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RECURRING_TRANSACTION + " ORDER BY " + KEY_DATE + " DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_RECURRING_TRANSACTION + " WHERE " + KEY_ACCOUNT + "=" + account
+                +" ORDER BY " + KEY_DATE + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -342,10 +395,42 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 t.setCategory(cursor.getInt(2));
                 t.setDate(cursor.getLong(3));
                 t.setCommentary(cursor.getString(4));
-                t.setNumberOfPaymentPaid(cursor.getInt(5));
-                t.setNumberOfPaymentTotal(cursor.getInt(6));
-                t.setDistanceBetweenPayment(cursor.getInt(7));
-                t.setTypeOfRecurrent(cursor.getInt(8));
+                t.setAccount(cursor.getInt(5));
+                t.setNumberOfPaymentPaid(cursor.getInt(6));
+                t.setNumberOfPaymentTotal(cursor.getInt(7));
+                t.setDistanceBetweenPayment(cursor.getInt(8));
+                t.setTypeOfRecurrent(cursor.getInt(9));
+                // Adding transaction to list
+                transactionList.add(t);
+            } while (cursor.moveToNext());
+        }
+
+        // return transaction list
+        return transactionList;
+    }
+
+    public List<RecurringTransaction> getAllRecurringTransactionsGlobal(){
+        List<RecurringTransaction> transactionList = new ArrayList<RecurringTransaction>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_RECURRING_TRANSACTION +" ORDER BY " + KEY_DATE + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                RecurringTransaction t = new RecurringTransaction();
+                t.setId(cursor.getInt(0));
+                t.setAmount(cursor.getDouble(1));
+                t.setCategory(cursor.getInt(2));
+                t.setDate(cursor.getLong(3));
+                t.setCommentary(cursor.getString(4));
+                t.setAccount(cursor.getInt(5));
+                t.setNumberOfPaymentPaid(cursor.getInt(6));
+                t.setNumberOfPaymentTotal(cursor.getInt(7));
+                t.setDistanceBetweenPayment(cursor.getInt(8));
+                t.setTypeOfRecurrent(cursor.getInt(9));
                 // Adding transaction to list
                 transactionList.add(t);
             } while (cursor.moveToNext());
@@ -363,6 +448,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         values.put(KEY_CATEGORY, t.getCategory());
         values.put(KEY_DATE, t.getDate());
         values.put(KEY_COMMENTARY, t.getCommentary());
+        values.put(KEY_ACCOUNT, t.getAccount());
         values.put(KEY_NUMBER_PAYMENT_PAID, t.getNumberOfPaymentPaid());
         values.put(KEY_NUMBER_PAYMENT_TOTAL, t.getNumberOfPaymentTotal());
         values.put(KEY_DISTANCE_REPETITION, t.getDistanceBetweenPayment());
@@ -396,7 +482,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 cursor.getInt(5),
                 cursor.getInt(6),
                 cursor.getInt(7),
-                cursor.getInt(8)
+                cursor.getInt(8),
+                cursor.getInt(9)
            );
 
         return transaction;
@@ -474,5 +561,34 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public void deleteAllCategories(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CATEGORY, null, null);
+    }
+
+
+
+    /***********************************************************************************
+
+                                    ACCOUNT
+
+     **********************************************************************************/
+
+    public void addAccount(Account a){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, a.getName());
+        db.insert(TABLE_ACCOUNT, null, values);
+        db.close();
+    }
+
+    public Account getAccount(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ACCOUNT, new String[] {KEY_ID, KEY_NAME}, KEY_ID + "=?",
+                new String[] {String.valueOf(id)}, null, null, null, null);
+        if(cursor!=null)
+            cursor.moveToFirst();
+
+        Account account = new Account(cursor.getInt(0), cursor.getString(1));
+
+        return account;
     }
 }

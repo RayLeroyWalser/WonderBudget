@@ -45,7 +45,7 @@ public class JsonUtility {
     public static void writeAllTransactions(JsonWriter writer, Context context) throws IOException {
         writer.beginArray();
         DatabaseHandler db = DatabaseHandler.getInstance(context);
-        List<Transaction> list = db.getAllTransactions();
+        List<Transaction> list = db.getAllTransactionsGlobal();
         for(Transaction t : list){
             writeTransaction(writer, t);
         }
@@ -59,13 +59,14 @@ public class JsonUtility {
         writer.name("isDone").value(t.isDone());
         writer.name("date").value(t.getDate());
         writer.name("commentary").value(t.getCommentary());
+        writer.name("account").value(t.getAccount());
         writer.endObject();
     }
 
     public static void writeAllRecurringTransactions(JsonWriter writer, Context context) throws IOException {
         writer.beginArray();
         DatabaseHandler db = DatabaseHandler.getInstance(context);
-        List<RecurringTransaction> list = db.getAllRecurringTransactions();
+        List<RecurringTransaction> list = db.getAllRecurringTransactionsGlobal();
         for(RecurringTransaction r : list){
             writeRecurringTransaction(writer, r);
         }
@@ -78,6 +79,7 @@ public class JsonUtility {
         writer.name("category").value(r.getCategory());
         writer.name("date").value(r.getDate());
         writer.name("commentary").value(r.getCommentary());
+        writer.name("account").value(r.getAccount());
         writer.name("numberOfPaymentPaid").value(r.getNumberOfPaymentPaid());
         writer.name("numberOfPaymentTotal").value(r.getNumberOfPaymentTotal());
         writer.name("distanceBetweenPayment").value(r.getDistanceBetweenPayment());
@@ -124,7 +126,8 @@ public class JsonUtility {
                     t.getInt("category"),
                     t.getBoolean("isDone"),
                     t.getLong("date"),
-                    t.getString("commentary"));
+                    t.getString("commentary"),
+                    t.getInt("account"));
             db.addTransaction(newTransaction);
         }
 
@@ -136,6 +139,7 @@ public class JsonUtility {
                     t.getInt("category"),
                     t.getLong("date"),
                     t.getString("commentary"),
+                    t.getInt("account"),
                     t.getInt("numberOfPaymentPaid"),
                     t.getInt("numberOfPaymentTotal"),
                     t.getInt("distanceBetweenPayment"),

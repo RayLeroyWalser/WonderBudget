@@ -25,6 +25,7 @@ import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 
 public class TransactionActionActivity extends Activity {
@@ -46,7 +47,7 @@ public class TransactionActionActivity extends Activity {
 
     private String commentText, amountText, distanceText;
     private boolean isCleared;
-    private int category, transactionId, typeOfDialog;
+    private int category, transactionId, typeOfDialog, account;
     public static long transactionDate;
 
     @Override
@@ -299,6 +300,9 @@ public class TransactionActionActivity extends Activity {
             //Recurring distance
             distanceText = editDistanceRecurrence.getText().toString().trim();
 
+            //Account
+            account = PreferencesUtility.getAccount(TransactionActionActivity.this);
+
             if (amountText.equals("")) {
                 Toast.makeText(TransactionActionActivity.this, getResources().getString(R.string.error_edit_amount), Toast.LENGTH_SHORT).show();
             }
@@ -308,11 +312,11 @@ public class TransactionActionActivity extends Activity {
             else {
                 switch (typeOfDialog) {
                     case ADD_NEW_TRANSACTIION:
-                        Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
+                        Transaction t = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText, account);
                         db.addTransaction(t);
                         break;
                     case VIEW_TRANSACTION:
-                        Transaction t2 = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText);
+                        Transaction t2 = new Transaction(Double.parseDouble(amountText), category, isCleared, transactionDate, commentText, account);
                         t2.setId(transactionId);
                         db.updateTransaction(t2);
                         break;
@@ -333,8 +337,8 @@ public class TransactionActionActivity extends Activity {
 
                             }
                         });
-                        RecurringTransaction r = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 1, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
-                        Transaction tr = new Transaction(Double.parseDouble(amountText), category, false, transactionDate, commentText);
+                        RecurringTransaction r = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, account, 1, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
+                        Transaction tr = new Transaction(Double.parseDouble(amountText), category, false, transactionDate, commentText, account);
                         db.addRecurringTransaction(r);
                         db.addTransaction(tr);
                         break;
@@ -342,7 +346,7 @@ public class TransactionActionActivity extends Activity {
                         distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
                         txt = editNumberOfRecurrence.getText().toString();
                         numberOfRecurrence = txt.equals("") ? -1 : Integer.parseInt(txt);
-                        RecurringTransaction rEdited = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
+                        RecurringTransaction rEdited = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, account, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
                         rEdited.setId(transactionId);
                         db.updateRecurringTransaction(rEdited);
                         break;

@@ -1,6 +1,7 @@
 package com.android.rubeus.wonderbudget;
 
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import com.android.rubeus.wonderbudget.CustomAdapter.RecurringTransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
+import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class RecurringTransactionListFragment extends Fragment {
     private RecurringTransactionLineAdapter adapter;
     private DatabaseHandler db;
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private int account;
 
     public static RecurringTransactionListFragment newInstance() {
         return new RecurringTransactionListFragment();
@@ -55,13 +58,16 @@ public class RecurringTransactionListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recurring_transaction_list, container, false);
         setHasOptionsMenu(true);
 
+        //Retrieve account number
+        account = PreferencesUtility.getAccount(getActivity());
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
         db = DatabaseHandler.getInstance(this.getActivity());
-        List<RecurringTransaction> list = db.getAllRecurringTransactions();
+        List<RecurringTransaction> list = db.getAllRecurringTransactions(account);
 
         adapter = new RecurringTransactionLineAdapter(getActivity(), list, db);
         listView.setAdapter(adapter);
@@ -109,7 +115,7 @@ public class RecurringTransactionListFragment extends Fragment {
                         for(int i=0; i<listToDelete.size(); i++){
                             db.deleteRecurringTransaction(listToDelete.get(i));
                         }
-                        adapter.refresh(db.getAllRecurringTransactions());
+                        adapter.refresh(db.getAllRecurringTransactions(account));
                         mode.finish(); // Action picked, so close the CAB
                         return true;
                     default:
@@ -150,7 +156,7 @@ public class RecurringTransactionListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == getActivity().RESULT_OK){
-            adapter.refresh(db.getAllRecurringTransactions());
+            adapter.refresh(db.getAllRecurringTransactions(account));
         }
     }
 
