@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.rubeus.wonderbudget.CustomAdapter.NavigationDrawerAdapter;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
 import org.json.JSONException;
@@ -36,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -104,24 +106,27 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                        getString(R.string.title_section4),
-                }));
+//        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+//                ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext(),
+//                android.R.layout.simple_list_item_activated_1,
+//                android.R.id.text1,
+//                new String[]{
+//                        getString(R.string.title_section1),
+//                        getString(R.string.title_section2),
+//                        getString(R.string.title_section3),
+//                        getString(R.string.title_section4),
+//                }));
+
+        String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
+        mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
