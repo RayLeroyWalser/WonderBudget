@@ -41,6 +41,8 @@ public class CategoryViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setRetainInstance(true);
+
         db = DatabaseHandler.getInstance(getActivity());
     }
 

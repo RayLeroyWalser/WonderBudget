@@ -78,6 +78,9 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private static final int NAV_ITEM = 1;
+    private static final int ACCOUNT_ITEM = 2;
+
     public NavigationDrawerFragment() {
     }
 
@@ -96,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition, mDrawerListView, 1);
+        selectItem(mCurrentSelectedPosition, mDrawerListView, NAV_ITEM);
     }
 
     @Override
@@ -115,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, mDrawerListView, 1);
+                selectItem(position, mDrawerListView, NAV_ITEM);
             }
         });
 //        mDrawerListView.setAdapter(new ArrayAdapter<String>(
@@ -132,7 +135,7 @@ public class NavigationDrawerFragment extends Fragment {
         String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
         mDrawerListView.setAdapter(adapter);
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        selectItem(mCurrentSelectedPosition, mDrawerListView, NAV_ITEM);
 
 
         DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
@@ -147,7 +150,8 @@ public class NavigationDrawerFragment extends Fragment {
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, accountListView, 2);
+                selectItem(position, accountListView, ACCOUNT_ITEM);
+                selectItem(0, mDrawerListView, NAV_ITEM);
                 PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(position));
             }
         });
@@ -233,19 +237,27 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void selectItem(int position, ListView view, int typeOfListView) {
-        mCurrentSelectedPosition = position;
+        switch (typeOfListView){
+            case NAV_ITEM:
+                mCurrentSelectedPosition = position;
+                if (mCallbacks != null) {
+                    mCallbacks.onNavigationDrawerItemSelected(position);
+                }
+                break;
+            case ACCOUNT_ITEM:
+                if (mCallbacks != null) {
+                    mCallbacks.onNavigationDrawerItemSelected(0);
+                }
+                break;
+        }
+
         if (view != null) {
             view.setItemChecked(position, true);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        if (mCallbacks != null) {
-            switch (typeOfListView){
-                case 1: mCallbacks.onNavigationDrawerItemSelected(position); break;
-                case 2: mCallbacks.onNavigationDrawerItemSelected(0); break;
-            }
-        }
+
     }
 
     @Override
