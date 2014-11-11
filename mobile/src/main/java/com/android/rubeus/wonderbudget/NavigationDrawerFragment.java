@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -78,8 +79,8 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    private static final int NAV_ITEM = 1;
-    private static final int ACCOUNT_ITEM = 2;
+    public static final int NAV_ITEM = 1;
+    public static final int ACCOUNT_ITEM = 2;
 
     public NavigationDrawerFragment() {
     }
@@ -237,6 +238,9 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void selectItem(int position, ListView view, int typeOfListView) {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         switch (typeOfListView){
             case NAV_ITEM:
                 mCurrentSelectedPosition = position;
