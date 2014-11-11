@@ -6,16 +6,19 @@ package com.android.rubeus.wonderbudget.Entity;
 public class Account {
     private int id;
     private String name;
+    private String thumbUrl;
 
     public Account(){}
 
-    public Account(int id, String name){
+    public Account(int id, String name, String thumbUrl){
         this.id = id;
         this.name = name;
+        this.thumbUrl = thumbUrl;
     }
 
-    public Account(String name){
+    public Account(String name, String thumbUrl){
         this.name = name;
+        this.thumbUrl = thumbUrl;
     }
 
     public int getId() {
@@ -32,5 +35,13 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
     }
 }

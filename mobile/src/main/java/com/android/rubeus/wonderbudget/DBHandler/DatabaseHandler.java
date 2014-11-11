@@ -71,7 +71,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
         String createTableAccount = "CREATE TABLE " + TABLE_ACCOUNT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
-                + KEY_NAME + " TEXT"
+                + KEY_NAME + " TEXT, "
+                + KEY_THUMB_URL + " TEXT"
                 + ")";
 
         String createTableTransaction = "CREATE TABLE " + TABLE_TRANSACTION + "("
@@ -587,7 +588,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         if(cursor!=null)
             cursor.moveToFirst();
 
-        Account account = new Account(cursor.getInt(0), cursor.getString(1));
+        Account account = new Account(cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2));
 
         return account;
     }
@@ -599,5 +602,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         String columns = id+", "+KEY_NAME;
         String selectQuery = "SELECT " + columns + " FROM " + TABLE_ACCOUNT;
         return db.rawQuery(selectQuery, null);
+    }
+
+    public List<Account> getAllAccounts(){
+        List<Account> list = new ArrayList<Account>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_ACCOUNT;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Account a = new Account();
+                a.setId(cursor.getInt(0));
+                a.setName(cursor.getString(1));
+                a.setThumbUrl(cursor.getString(2));
+
+                list.add(a);
+            }
+            while(cursor.moveToNext());
+        }
+        return list;
     }
 }
