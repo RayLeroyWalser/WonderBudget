@@ -216,8 +216,11 @@ public class MainActivity extends ActionBarActivity
         transaction.commit();
     }
 
+    public NavigationDrawerFragment getmNavigationDrawerFragment() {
+        return mNavigationDrawerFragment;
+    }
 
-//    public void restoreActionBar() {
+    //    public void restoreActionBar() {
 //        ActionBar actionBar = getActionBar();
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 //        actionBar.setDisplayShowTitleEnabled(true);

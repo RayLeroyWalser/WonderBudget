@@ -80,11 +80,12 @@ public class OverviewFragment extends Fragment {
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_top, R.anim.enter_from_top, R.anim.exit_to_bottom);
-
         transaction.replace(R.id.container, newFragment);
         transaction.addToBackStack(null);
-
         transaction.commit();
+
+        // Highlight the Transaction fragment in the navigation drawer
+        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(1, true);
     }
 
     private void createNewTransaction(){

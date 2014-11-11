@@ -100,7 +100,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition, mDrawerListView, NAV_ITEM);
+        selectItem(mCurrentSelectedPosition, NAV_ITEM);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, mDrawerListView, NAV_ITEM);
+                selectItem(position, NAV_ITEM);
             }
         });
 //        mDrawerListView.setAdapter(new ArrayAdapter<String>(
@@ -136,7 +136,7 @@ public class NavigationDrawerFragment extends Fragment {
         String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
         mDrawerListView.setAdapter(adapter);
-        selectItem(mCurrentSelectedPosition, mDrawerListView, NAV_ITEM);
+        selectItem(mCurrentSelectedPosition, NAV_ITEM);
 
 
         DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
@@ -151,13 +151,17 @@ public class NavigationDrawerFragment extends Fragment {
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, accountListView, ACCOUNT_ITEM);
-                selectItem(0, mDrawerListView, NAV_ITEM);
+                selectItem(position, ACCOUNT_ITEM);
+                selectItem(0, NAV_ITEM);
                 PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(position));
             }
         });
 
         return view;
+    }
+
+    public ListView getmDrawerListView() {
+        return mDrawerListView;
     }
 
     public boolean isDrawerOpen() {
@@ -237,8 +241,10 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position, ListView view, int typeOfListView) {
+    public void selectItem(int position, int typeOfListView) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
+
+        // Clear the fragment backstack every time a new fragment is selected
         manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         switch (typeOfListView){
@@ -247,17 +253,21 @@ public class NavigationDrawerFragment extends Fragment {
                 if (mCallbacks != null) {
                     mCallbacks.onNavigationDrawerItemSelected(position);
                 }
+                if (mDrawerListView != null) {
+                    mDrawerListView.setItemChecked(position, true);
+                }
                 break;
             case ACCOUNT_ITEM:
                 if (mCallbacks != null) {
                     mCallbacks.onNavigationDrawerItemSelected(0);
                 }
+                if (accountListView != null) {
+                    accountListView.setItemChecked(position, true);
+                }
                 break;
         }
 
-        if (view != null) {
-            view.setItemChecked(position, true);
-        }
+
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
