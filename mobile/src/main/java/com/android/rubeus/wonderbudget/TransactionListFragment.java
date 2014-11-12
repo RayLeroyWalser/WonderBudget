@@ -1,6 +1,5 @@
 package com.android.rubeus.wonderbudget;
 
-import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,6 +50,9 @@ public class TransactionListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
         setHasOptionsMenu(true);
+
+        // Highlight in the navigation drawer
+        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.TRANSACTION_FRAGMENT, true);
 
         //Retrieve account number
         account = PreferencesUtility.getAccount(getActivity());
@@ -206,4 +208,6 @@ public class TransactionListFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

@@ -62,6 +62,10 @@ public class CategoryFragment extends Fragment {
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
+
+        // Highlight in the navigation drawer
+        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.CATEGORY_FRAGMENT, true);
+
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 
         refreshCategoryList();

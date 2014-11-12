@@ -44,6 +44,10 @@ public class OverviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
+
+        // Highlight in the navigation drawer
+        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.OVERVIEW_FRAGMENT, true);
+
         totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         realAmount = (TextView) view.findViewById(R.id.realAmount);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addButton);
@@ -83,9 +87,6 @@ public class OverviewFragment extends Fragment {
         transaction.replace(R.id.container, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
-        // Highlight the Transaction fragment in the navigation drawer
-        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(1, true);
     }
 
     private void createNewTransaction(){

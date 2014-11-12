@@ -24,6 +24,11 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CategoryFragment.OnCategorySelectedListener {
     private static final String TAG = "MainActivity";
     public static final String PREF = "Preferences";
+    public static final int OVERVIEW_FRAGMENT = 0;
+    public static final int TRANSACTION_FRAGMENT = 1;
+    public static final int RECURRING_TRANSACTION_FRAGMENT = 2;
+    public static final int CATEGORY_FRAGMENT = 3;
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
     private DatabaseHandler db;
