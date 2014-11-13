@@ -155,8 +155,6 @@ public class NavigationDrawerFragment extends Fragment {
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, ACCOUNT_ITEM);
-                selectItem(0, NAV_ITEM);
 
                 //Switch the position between the selected account and the primary account
                 if(position != 0){
@@ -167,8 +165,10 @@ public class NavigationDrawerFragment extends Fragment {
                     listAccount.add(position, tmp);
                     accountAdapter.refresh(listAccount);
                 }
-
-                PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(position));
+                //Go to Overview of this account
+                selectItem(0, NAV_ITEM);
+                //Save ID of the account
+                PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(0));
             }
         });
 
@@ -281,7 +281,6 @@ public class NavigationDrawerFragment extends Fragment {
                 }
                 break;
         }
-
 
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);

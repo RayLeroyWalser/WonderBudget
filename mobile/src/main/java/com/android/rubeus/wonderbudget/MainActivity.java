@@ -124,6 +124,7 @@ public class MainActivity extends ActionBarActivity
 
             db.addAccount(new Account("Compte courant", Uri.parse(pathDebut + R.drawable.animaux).toString()));
             db.addAccount(new Account("Livret A", ""));
+            db.addAccount(new Account("Livret jeune", ""));
 
 
 //            List<Transaction> list = db.getAllTransactions();
