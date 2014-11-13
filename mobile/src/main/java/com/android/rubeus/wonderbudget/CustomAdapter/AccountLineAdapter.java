@@ -43,6 +43,11 @@ public class AccountLineAdapter extends BaseAdapter {
         return list.get(position).getId();
     }
 
+    public void refresh(List<Account> list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;

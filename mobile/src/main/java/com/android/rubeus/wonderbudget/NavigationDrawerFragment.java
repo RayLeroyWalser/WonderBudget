@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.android.rubeus.wonderbudget.CustomAdapter.AccountLineAdapter;
 import com.android.rubeus.wonderbudget.CustomAdapter.NavigationDrawerAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.Entity.Account;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
@@ -148,13 +149,25 @@ public class NavigationDrawerFragment extends Fragment {
 //                new String[] { db.KEY_NAME },
 //                new int[] { android.R.id.text1 },
 //                0);
-        AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), db.getAllAccounts());
+        final List<Account> listAccount = db.getAllAccounts();
+        final AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), listAccount);
         accountListView.setAdapter(accountAdapter);
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position, ACCOUNT_ITEM);
                 selectItem(0, NAV_ITEM);
+
+                //Switch the position between the selected account and the primary account
+                if(position != 0){
+                    Account tmp = listAccount.get(0);
+                    listAccount.remove(0);
+                    listAccount.add(0, listAccount.get(position-1));
+                    listAccount.remove(position);
+                    listAccount.add(position, tmp);
+                    accountAdapter.refresh(listAccount);
+                }
+
                 PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(position));
             }
         });
