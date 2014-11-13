@@ -11,14 +11,13 @@
         android:layout_height="wrap_content"
         android:divider="@null"/>
 
-    <View style="@style/Divider"/>
+    <!--<View style="@style/Divider"/>-->
 
     <ListView
         android:id="@+id/nav_item_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
-        android:listSelector="@drawable/navigation_drawer_selector"
         android:divider="@null"
         tools:context=".NavigationDrawerFragment" />
 </LinearLayout>

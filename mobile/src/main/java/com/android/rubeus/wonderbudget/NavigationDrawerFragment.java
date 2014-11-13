@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.android.rubeus.wonderbudget.CustomAdapter.AccountLineAdapter;
 import com.android.rubeus.wonderbudget.CustomAdapter.NavigationDrawerAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
@@ -141,12 +142,13 @@ public class NavigationDrawerFragment extends Fragment {
 
         DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
         accountListView = (ListView) view.findViewById(R.id.nav_account_list);
-        SimpleCursorAdapter accountAdapter = new SimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_1,
-                db.getAllAccountsCursor(),
-                new String[] { db.KEY_NAME },
-                new int[] { android.R.id.text1 },
-                0);
+//        SimpleCursorAdapter accountAdapter = new SimpleCursorAdapter(getActivity(),
+//                android.R.layout.simple_list_item_1,
+//                db.getAllAccountsCursor(),
+//                new String[] { db.KEY_NAME },
+//                new int[] { android.R.id.text1 },
+//                0);
+        AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), db.getAllAccounts());
         accountListView.setAdapter(accountAdapter);
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

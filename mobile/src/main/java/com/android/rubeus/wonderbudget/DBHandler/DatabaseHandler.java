@@ -576,6 +576,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, a.getName());
+        values.put(KEY_THUMB_URL, a.getThumbUrl());
         db.insert(TABLE_ACCOUNT, null, values);
         db.close();
     }
