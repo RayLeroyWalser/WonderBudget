@@ -151,7 +151,6 @@ public class NavigationDrawerFragment extends Fragment {
 //                0);
         final List<Account> listAccount = db.getAllAccounts();
         final AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), listAccount);
-        accountListView.setAdapter(accountAdapter);
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,6 +170,8 @@ public class NavigationDrawerFragment extends Fragment {
                 PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(0));
             }
         });
+        accountListView.setAdapter(accountAdapter);
+        selectItem(0, ACCOUNT_ITEM);
 
         return view;
     }

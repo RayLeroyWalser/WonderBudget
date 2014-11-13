@@ -1,5 +1,6 @@
 package com.android.rubeus.wonderbudget;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -46,15 +47,6 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
-
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
         //Set custom font for the entire application
         FontsOverride.setDefaultFont(this, "SANS_SERIF", "Roboto-Thin.ttf");
 
@@ -64,6 +56,15 @@ public class MainActivity extends ActionBarActivity
 
         //Add recurring transaction of the month
         createRecurringTransaction();
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mTitle = getTitle();
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @Override
@@ -144,6 +145,9 @@ public class MainActivity extends ActionBarActivity
                     e.printStackTrace();
                 }
             }
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
 
 //            List<Transaction> list = db.getAllTransactions();
 //            for(Transaction t : list){
