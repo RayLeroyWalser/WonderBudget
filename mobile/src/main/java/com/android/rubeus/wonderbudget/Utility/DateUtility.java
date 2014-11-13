@@ -50,7 +50,7 @@ public class DateUtility {
 
     public static int getCurrentMonth(){
         Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.MONTH);
+        return calendar.get(Calendar.MONTH) +1 ;
     }
 
     public static long getFirstDayOfThisMonth(){

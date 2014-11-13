@@ -584,7 +584,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public Account getAccount(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ACCOUNT, new String[] {KEY_ID, KEY_NAME}, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_ACCOUNT, new String[] {KEY_ID, KEY_NAME, KEY_THUMB_URL}, KEY_ID + "=?",
                 new String[] {String.valueOf(id)}, null, null, null, null);
         if(cursor!=null)
             cursor.moveToFirst();

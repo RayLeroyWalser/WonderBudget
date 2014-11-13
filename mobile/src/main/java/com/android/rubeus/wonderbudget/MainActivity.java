@@ -1,5 +1,6 @@
 package com.android.rubeus.wonderbudget;
 
+import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.SharedPreferences;
@@ -16,7 +17,14 @@ import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 import com.android.rubeus.wonderbudget.Utility.FontsOverride;
+import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -105,7 +113,6 @@ public class MainActivity extends ActionBarActivity
         if(settings.getBoolean("firstLaunch", true)){
             String pathDebut = "android.resource://" + getPackageName() + "/";
 
-            db.deleteAllCategories();
             db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
             db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
             db.addCategory(new Category("Alimentation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
@@ -124,8 +131,19 @@ public class MainActivity extends ActionBarActivity
 
             db.addAccount(new Account("Compte courant", Uri.parse(pathDebut + R.drawable.animaux).toString()));
             db.addAccount(new Account("Livret A", ""));
-            db.addAccount(new Account("Livret jeune", ""));
 
+            //Retrieve saved date if exists
+            File exported = new File(Environment.getExternalStorageDirectory() + "/WonderBudget/database.json");
+            if(exported.exists()) {
+                try {
+                    InputStream in = new FileInputStream(exported);
+                    JsonUtility.readJsonToDatabase(this, in);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
 //            List<Transaction> list = db.getAllTransactions();
 //            for(Transaction t : list){
@@ -163,7 +181,7 @@ public class MainActivity extends ActionBarActivity
         if(currentMonth > settings.getInt("month", currentMonth-1)%12 ||
                 currentYear > settings.getInt("year", currentYear-1)){ // we add all the recurring transactions once every month
             Log.v(TAG, "A new month: adding all recurring transactions");
-            List<RecurringTransaction> list = db.getAllRecurringTransactions(settings.getInt("account",1));
+            List<RecurringTransaction> list = db.getAllRecurringTransactionsGlobal();
             for(RecurringTransaction t : list){
                 ms = t.getDate();
                 day = DateUtility.getDay(ms);
