@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.AccountLineAdapter;
@@ -112,6 +113,7 @@ public class NavigationDrawerFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
+        //Nav items list
         mDrawerListView = (ListView) view.findViewById(R.id.nav_item_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -125,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setAdapter(adapter);
         selectItem(mCurrentSelectedPosition, NAV_ITEM);
 
-
+        //Accounts list
         DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
         accountListView = (ListView) view.findViewById(R.id.nav_account_list);
         final List<Account> listAccount = db.getAllAccounts();
@@ -151,6 +153,16 @@ public class NavigationDrawerFragment extends Fragment {
         });
         accountListView.setAdapter(accountAdapter);
         selectItem(0, ACCOUNT_ITEM);
+
+        //Settings
+        TextView settings = (TextView) view.findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
