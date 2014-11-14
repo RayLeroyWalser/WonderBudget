@@ -59,6 +59,10 @@
     <string name="export_data">Export data</string>
     <string name="import_data">Import data</string>
 
+    <!-- Toast -->
+    <string name="data_exported">Data exported successfully</string>
+    <string name="data_imported">Data imported successfully</string>
+
     <string-array name="option_array">
         <item>month</item>
         <item>year</item>

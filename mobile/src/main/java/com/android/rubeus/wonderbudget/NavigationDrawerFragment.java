@@ -314,64 +314,9 @@ public class NavigationDrawerFragment extends Fragment {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
         if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        switch (item.getItemId()){
-            case R.id.export_data:
-                OutputStream fOut = null;
-                String path = Environment.getExternalStorageDirectory() + "/WonderBudget";
-                File directory = new File(path);
-                if(!directory.exists() && !directory.isDirectory()){
-                    directory.mkdirs();
-                }
-
-                String fileName = "database.json";
-                File file = new File(path, fileName);
-                try {
-                    fOut = new FileOutputStream(file, false);
-                    JsonUtility.writeJsonStream(getActivity(), fOut);
-                    fOut.flush();
-                    fOut.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return true;
-            case R.id.import_data:
-                File exported = new File(Environment.getExternalStorageDirectory() + "/WonderBudget/database.json");
-                if(exported.exists()){
-                    try {
-                        InputStream in = new FileInputStream(exported);
-                        JsonUtility.readJsonToDatabase(getActivity(), in);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(getActivity(), "No data has been exported yet", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
