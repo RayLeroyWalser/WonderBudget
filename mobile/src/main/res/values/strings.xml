@@ -26,7 +26,7 @@
     <string name="export_data">Export data</string>
     <string name="import_data">Import data</string>
 
-    <!-- Various elements -->
+    <!-- Various UI elements -->
     <string name="done">Done</string>
     <string name="repeat">Repeat ?</string>
     <string name="euro">€</string>
@@ -50,6 +50,9 @@
     <!-- Errors -->
     <string name="error_edit_amount">Please enter an amount</string>
     <string name="error_edit_distance">Please enter a number of month/year</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
 
     <string-array name="option_array">
         <item>month</item>

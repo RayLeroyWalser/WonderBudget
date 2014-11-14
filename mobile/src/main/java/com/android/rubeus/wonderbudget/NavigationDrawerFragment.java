@@ -45,11 +45,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-/**
- * Fragment used for managing interactions for and presentation of a navigation drawer.
- * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
- * design guidelines</a> for a complete explanation of the behaviors implemented here.
- */
 public class NavigationDrawerFragment extends Fragment {
 
     /**
@@ -124,16 +119,6 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position, NAV_ITEM);
             }
         });
-//        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-//                ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext(),
-//                android.R.layout.simple_list_item_activated_1,
-//                android.R.id.text1,
-//                new String[]{
-//                        getString(R.string.title_section1),
-//                        getString(R.string.title_section2),
-//                        getString(R.string.title_section3),
-//                        getString(R.string.title_section4),
-//                }));
 
         String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
@@ -143,12 +128,6 @@ public class NavigationDrawerFragment extends Fragment {
 
         DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
         accountListView = (ListView) view.findViewById(R.id.nav_account_list);
-//        SimpleCursorAdapter accountAdapter = new SimpleCursorAdapter(getActivity(),
-//                android.R.layout.simple_list_item_1,
-//                db.getAllAccountsCursor(),
-//                new String[] { db.KEY_NAME },
-//                new int[] { android.R.id.text1 },
-//                0);
         final List<Account> listAccount = db.getAllAccounts();
         final AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), listAccount);
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

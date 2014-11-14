@@ -58,10 +58,10 @@ public class AccountLineAdapter extends BaseAdapter {
             ViewHolder cache = new ViewHolder();
 
             if(position == 0){
-                view = inflater.inflate(R.layout.account_row_active, null);
+                view = inflater.inflate(R.layout.account_row_active, parent, false);
             }
             else{
-                view = inflater.inflate(R.layout.account_row_inactive, null);
+                view = inflater.inflate(R.layout.account_row_inactive, parent, false);
             }
 
             cache.name = (TextView) view.findViewById(R.id.name);
