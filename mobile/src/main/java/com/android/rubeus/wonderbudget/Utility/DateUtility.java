@@ -39,7 +39,7 @@ public class DateUtility {
 
     public static long dayToMillisecond(int day, int month, int year){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, 0, 0, 0);
+        calendar.set(year, month-1, day, 0, 0, 0);
         return calendar.getTimeInMillis();
     }
 

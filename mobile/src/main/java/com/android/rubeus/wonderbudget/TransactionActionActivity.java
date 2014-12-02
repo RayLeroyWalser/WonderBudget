@@ -322,7 +322,6 @@ public class TransactionActionActivity extends Activity {
                         db.updateTransaction(t2);
                         break;
                     case ADD_NEW_RECURRING_TRANSACTION:
-                        System.out.println("coucouc");
                         int distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
                         String txt = editNumberOfRecurrence.getText().toString();
                         int numberOfRecurrence = txt.equals("") ? -1 : Integer.parseInt(txt);

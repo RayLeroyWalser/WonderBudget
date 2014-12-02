@@ -176,13 +176,15 @@ public class MainActivity extends ActionBarActivity
     private void createRecurringTransaction(){
         SharedPreferences settings = getSharedPreferences(PREF, 0);
         int currentMonth = DateUtility.getCurrentMonth();
+        int currentMonthModulo = currentMonth % 12;
         int currentYear = DateUtility.getCurrentYear();
         Log.d(TAG, "It's the " + currentMonth + "th month of the year " + currentYear);
+        Log.d(TAG, "In settings, it's the " + settings.getInt("month", currentMonth-1) + "th month of the year " + settings.getInt("year", currentYear-1));
         long ms;
         int day, month, year;
 
-        if(currentMonth > settings.getInt("month", currentMonth-1)%12 ||
-                currentYear > settings.getInt("year", currentYear-1)){ // we add all the recurring transactions once every month
+        if(currentMonth != settings.getInt("month", currentMonth-1) ||
+                currentYear != settings.getInt("year", currentYear-1)){ // we add all the recurring transactions once every month
             Log.d(TAG, "A new month: adding all recurring transactions");
             List<RecurringTransaction> list = db.getAllRecurringTransactionsGlobal();
             for(RecurringTransaction t : list){
@@ -193,16 +195,17 @@ public class MainActivity extends ActionBarActivity
                     switch (t.getTypeOfRecurrent()){
                         case RecurringTransaction.MONTH:
                             month = (DateUtility.getMonth(ms)+ (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment())  % 12;
+                            Log.d(TAG, "Required month is " + month);
                             year = currentYear;
-                            if(currentMonth == month){
-                                addRecurringTransactionOfTheMonth(day, month, year, t);
+                            if(currentMonthModulo == month){
+                                addRecurringTransactionOfTheMonth(day, currentMonth, year, t);
                             }
                             break;
                         case RecurringTransaction.YEAR:
                             month = DateUtility.getMonth(ms);
                             year = DateUtility.getYear(ms) + (t.getNumberOfPaymentPaid()+1)*t.getDistanceBetweenPayment();
-                            if(currentYear == year && currentMonth == month){
-                                addRecurringTransactionOfTheMonth(day, month, year, t);
+                            if(currentYear == year && currentMonthModulo == month){
+                                addRecurringTransactionOfTheMonth(day, currentMonth, year, t);
                             }
                             break;
                     }
@@ -220,9 +223,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void addRecurringTransactionOfTheMonth(int day, int month, int year, RecurringTransaction t){
+        Log.d(TAG, "day "+day+" month "+month+ " year "+year);
         Transaction ts = new Transaction(t.getAmount(), t.getCategory(), false, DateUtility.dayToMillisecond(day,month,year), t.getCommentary(), t.getAccount());
         db.addTransaction(ts);
-        Log.d(TAG, "Added :   Id:" + ts.getId() + "   Amount=" + ts.getAmount() + "   Done:" + ts.isDone() + "   Date:" + ts.getDate() + "  Commentary:" + ts.getCommentary()
+        Log.d(TAG, "Added :   Id:" + ts.getId() + "   Amount=" + ts.getAmount() + "   Done:" + ts.isDone() + "   Date:" + DateUtility.getDate(ts.getDate(), "EEEE dd MMM yyyy") + "  Commentary:" + ts.getCommentary()
                 + "    Category:" + db.getCategory(ts.getCategory()).getName() + "   Account:"+db.getAccount(ts.getAccount()).getName());
 
         // Number of payment paid ++
