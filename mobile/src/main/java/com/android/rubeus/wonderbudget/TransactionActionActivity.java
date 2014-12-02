@@ -47,7 +47,7 @@ public class TransactionActionActivity extends Activity {
 
     private String commentText, amountText, distanceText;
     private boolean isCleared;
-    private int category, transactionId, typeOfDialog, account;
+    private int category, transactionId, typeOfDialog, account, numberPaymentPaid;
     public static long transactionDate;
 
     @Override
@@ -251,6 +251,7 @@ public class TransactionActionActivity extends Activity {
                 editNumberOfRecurrence.setText(r.getNumberOfPaymentTotal() + "");
                 transactionDate = r.getDate();
                 title.setText(DateUtility.getDate(transactionDate, "EEEE dd MMM yyyy"));
+                numberPaymentPaid = r.getNumberOfPaymentPaid();
 
                 editDistanceRecurrence.setText(r.getDistanceBetweenPayment() + "");
                 int type = r.getTypeOfRecurrent();
@@ -346,7 +347,7 @@ public class TransactionActionActivity extends Activity {
                         distanceRecurrence = Integer.parseInt(editDistanceRecurrence.getText().toString());
                         txt = editNumberOfRecurrence.getText().toString();
                         numberOfRecurrence = txt.equals("") ? -1 : Integer.parseInt(txt);
-                        RecurringTransaction rEdited = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, account, 0, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
+                        RecurringTransaction rEdited = new RecurringTransaction(Double.parseDouble(amountText), category, transactionDate, commentText, account, numberPaymentPaid, numberOfRecurrence, distanceRecurrence, spinnerTypeRecurrence.getSelectedItemPosition()+1);
                         rEdited.setId(transactionId);
                         db.updateRecurringTransaction(rEdited);
                         break;

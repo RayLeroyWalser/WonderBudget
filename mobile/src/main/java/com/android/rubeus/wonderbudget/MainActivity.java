@@ -177,12 +177,13 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences settings = getSharedPreferences(PREF, 0);
         int currentMonth = DateUtility.getCurrentMonth();
         int currentYear = DateUtility.getCurrentYear();
+        Log.d(TAG, "It's the " + currentMonth + "th month of the year " + currentYear);
         long ms;
         int day, month, year;
 
         if(currentMonth > settings.getInt("month", currentMonth-1)%12 ||
                 currentYear > settings.getInt("year", currentYear-1)){ // we add all the recurring transactions once every month
-            Log.v(TAG, "A new month: adding all recurring transactions");
+            Log.d(TAG, "A new month: adding all recurring transactions");
             List<RecurringTransaction> list = db.getAllRecurringTransactionsGlobal();
             for(RecurringTransaction t : list){
                 ms = t.getDate();
