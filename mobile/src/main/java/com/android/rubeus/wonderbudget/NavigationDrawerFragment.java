@@ -80,6 +80,8 @@ public class NavigationDrawerFragment extends Fragment {
     public static final int NAV_ITEM = 1;
     public static final int ACCOUNT_ITEM = 2;
 
+    private static final int SETTINGS = 42;
+
     public NavigationDrawerFragment() {
     }
 
@@ -112,24 +114,40 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) view.findViewById(R.id.nav_item_list);
+        accountListView = (ListView) view.findViewById(R.id.nav_account_list);
 
         //Nav items list
-        mDrawerListView = (ListView) view.findViewById(R.id.nav_item_list);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        setupNavItemListView(view);
+
+        //Accounts list
+        setupAccountListView(view);
+
+        //Settings
+        TextView settings = (TextView) view.findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, NAV_ITEM);
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivityForResult(intent, SETTINGS);
             }
         });
 
-        String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
-        mDrawerListView.setAdapter(adapter);
-        selectItem(mCurrentSelectedPosition, NAV_ITEM);
+        return view;
+    }
 
-        //Accounts list
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case SETTINGS:
+                selectItem(mCurrentSelectedPosition, NAV_ITEM);
+                break;
+        }
+    }
+
+    private void setupAccountListView(View view){
         DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
-        accountListView = (ListView) view.findViewById(R.id.nav_account_list);
         final List<Account> listAccount = db.getAllAccounts();
         final AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), listAccount);
         accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -153,18 +171,20 @@ public class NavigationDrawerFragment extends Fragment {
         });
         accountListView.setAdapter(accountAdapter);
         selectItem(0, ACCOUNT_ITEM);
+    }
 
-        //Settings
-        TextView settings = (TextView) view.findViewById(R.id.settings);
-        settings.setOnClickListener(new View.OnClickListener() {
+    private void setupNavItemListView(View view){
+        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectItem(position, NAV_ITEM);
             }
         });
 
-        return view;
+        String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
+        mDrawerListView.setAdapter(adapter);
+        selectItem(mCurrentSelectedPosition, NAV_ITEM);
     }
 
     public ListView getmDrawerListView() {
