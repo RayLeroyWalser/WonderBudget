@@ -1,8 +1,7 @@
 package com.android.rubeus.wonderbudget;
 
 
-import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -65,7 +64,7 @@ public class RecurringTransactionListFragment extends Fragment {
         account = PreferencesUtility.getAccount(getActivity());
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+                getActivity().getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 

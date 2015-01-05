@@ -1,9 +1,9 @@
 package com.android.rubeus.wonderbudget;
 
-import android.support.v4.app.Fragment;
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -153,7 +153,7 @@ public class TransactionListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == FragmentActivity.RESULT_OK){
+        if(resultCode == Activity.RESULT_OK){
             switch (requestCode){
                 case TransactionActionActivity.VIEW_TRANSACTION:
                     adapter.refresh(db.getAllTransactions(account));
