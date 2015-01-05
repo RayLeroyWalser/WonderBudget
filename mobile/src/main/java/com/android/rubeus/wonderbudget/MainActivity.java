@@ -17,7 +17,6 @@ import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
-import com.android.rubeus.wonderbudget.Utility.FontsOverride;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
 import org.json.JSONException;
@@ -46,9 +45,6 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Set custom font for the entire application
-        FontsOverride.setDefaultFont(this, "SANS_SERIF", "Roboto-Thin.ttf");
 
         //Initiate the DB
         db = DatabaseHandler.getInstance(this);
