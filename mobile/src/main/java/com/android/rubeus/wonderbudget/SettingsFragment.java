@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
@@ -20,14 +20,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        Preference myPrefExport = (Preference) findPreference("export_data");
+        Preference myPrefExport = findPreference("export_data");
         myPrefExport.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 exportData();
@@ -35,7 +35,7 @@ public class SettingsActivity extends PreferenceActivity {
             }
         });
 
-        Preference myPrefImport = (Preference) findPreference("import_data");
+        Preference myPrefImport = findPreference("import_data");
         myPrefImport.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 importData();
@@ -45,7 +45,7 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     private void exportData(){
-        AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder newDialog = new AlertDialog.Builder(getActivity());
         newDialog.setTitle("Export data");
         newDialog.setMessage("Exporting data will erase all previously exported data. Proceed?");
 
@@ -64,7 +64,7 @@ public class SettingsActivity extends PreferenceActivity {
                 File file = new File(path, fileName);
                 try {
                     fOut = new FileOutputStream(file, false);
-                    JsonUtility.writeJsonStream(SettingsActivity.this, fOut);
+                    JsonUtility.writeJsonStream(getActivity(), fOut);
                     fOut.flush();
                     fOut.close();
                 } catch (FileNotFoundException e) {
@@ -73,7 +73,7 @@ public class SettingsActivity extends PreferenceActivity {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(SettingsActivity.this, SettingsActivity.this.getResources().getString(R.string.data_exported), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), SettingsFragment.this.getResources().getString(R.string.data_exported), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -90,7 +90,7 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     private void importData(){
-        AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder newDialog = new AlertDialog.Builder(getActivity());
         newDialog.setTitle("Import data");
         newDialog.setMessage("Importing data will erase your current data. Proceed?");
 
@@ -102,20 +102,17 @@ public class SettingsActivity extends PreferenceActivity {
                 if(exported.exists()){
                     try {
                         InputStream in = new FileInputStream(exported);
-                        JsonUtility.readJsonToDatabase(SettingsActivity.this, in);
+                        JsonUtility.readJsonToDatabase(getActivity(), in);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(SettingsActivity.this, SettingsActivity.this.getResources().getString(R.string.data_imported), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
+                    Toast.makeText(getActivity(), SettingsFragment.this.getResources().getString(R.string.data_imported), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(SettingsActivity.this, "No data has been exported yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No data has been exported yet", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -114,22 +114,11 @@ public class NavigationDrawerFragment extends Fragment {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivityForResult(intent, SETTINGS);
+                selectItem(0, SETTINGS);
             }
         });
 
         return view;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case SETTINGS:
-                selectItem(mCurrentSelectedPosition, NAV_ITEM);
-                break;
-        }
     }
 
     private void setupAccountListView(View view){
@@ -276,6 +265,14 @@ public class NavigationDrawerFragment extends Fragment {
                 }
                 if (accountListView != null) {
                     accountListView.setItemChecked(position, true);
+                }
+                break;
+            case SETTINGS:
+                if (mCallbacks != null) {
+                    mCallbacks.onNavigationDrawerItemSelected(MainActivity.SETTINGS);
+                }
+                if (mDrawerListView != null) {
+                    mDrawerListView.setItemChecked(position, true);
                 }
                 break;
         }

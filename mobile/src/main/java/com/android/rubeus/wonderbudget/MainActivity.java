@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity
     public static final int TRANSACTION_FRAGMENT = 1;
     public static final int RECURRING_TRANSACTION_FRAGMENT = 2;
     public static final int CATEGORY_FRAGMENT = 3;
+    public static final int SETTINGS = 4;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
@@ -67,17 +68,20 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         switch (position){
-            case 0:
+            case OVERVIEW_FRAGMENT:
                 ft.replace(R.id.container, OverviewFragment.newInstance());
                 break;
-            case 1:
+            case TRANSACTION_FRAGMENT:
                 ft.replace(R.id.container, TransactionListFragment.newInstance());
                 break;
-            case 2:
+            case RECURRING_TRANSACTION_FRAGMENT:
                 ft.replace(R.id.container, RecurringTransactionListFragment.newInstance());
                 break;
-            case 3:
+            case CATEGORY_FRAGMENT:
                 ft.replace(R.id.container, CategoryFragment.newInstance());
+                break;
+            case SETTINGS:
+                ft.replace(R.id.container, new SettingsFragment());
                 break;
         }
 
@@ -86,18 +90,20 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
+            case OVERVIEW_FRAGMENT:
+                mTitle = getString(R.string.overview);
                 break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
+            case TRANSACTION_FRAGMENT:
+                mTitle = getString(R.string.transactions);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
+            case RECURRING_TRANSACTION_FRAGMENT:
+                mTitle = getString(R.string.recurring_transactions);
                 break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
+            case CATEGORY_FRAGMENT:
+                mTitle = getString(R.string.settings);
                 break;
+            case SETTINGS:
+                mTitle = getString(R.string.settings);
         }
     }
 

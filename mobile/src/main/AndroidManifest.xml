@@ -33,14 +33,6 @@
             android:name="com.android.rubeus.wonderbudget.ManageAccountActivity"
             android:label="@string/title_activity_manage_account" >
         </activity>
-        <activity
-            android:name="com.android.rubeus.wonderbudget.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="com.android.rubeus.wonderbudget.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.android.rubeus.wonderbudget.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

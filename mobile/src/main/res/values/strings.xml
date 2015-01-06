@@ -14,10 +14,11 @@
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_section1">Overview</string>
-    <string name="title_section2">Transactions</string>
-    <string name="title_section3">Recurring transactions</string>
-    <string name="title_section4">Categories</string>
+    <string name="overview">Overview</string>
+    <string name="transactions">Transactions</string>
+    <string name="recurring_transactions">Recurring transactions</string>
+    <string name="categories">Categories</string>
+    <string name="settings">Settings</string>
 
     <!-- Action bar buttons / Titles -->
     <string name="add_new_transaction">Add new transaction</string>
@@ -52,7 +53,6 @@
     <string name="error_edit_distance">Please enter a number of month/year</string>
 
     <!-- Settings -->
-    <string name="settings">Settings</string>
     <string name="accounts">Accounts</string>
     <string name="manage_accounts">Manage your accounts</string>
     <string name="backup">Backup data</string>
