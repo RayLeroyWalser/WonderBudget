@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,18 +34,20 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Retrieve the fragment of the Navigation Drawer
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
         db = DatabaseHandler.getInstance(this.getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Indicate that this fragment uses an ActionBar
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
-
-        //Navagation drawer
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         // Highlight in the navigation drawer
         ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.OVERVIEW_FRAGMENT, true);
@@ -114,16 +117,14 @@ public class OverviewFragment extends Fragment {
     }
 
     public void restoreActionBar() {
-        android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(getString(R.string.title_fragment_transaction));
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.my_toolbar);
+        toolbar.setTitle(getString(R.string.title_fragment_overview));
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            inflater.inflate(R.menu.transaction_list, menu);
             restoreActionBar();
         }
     }

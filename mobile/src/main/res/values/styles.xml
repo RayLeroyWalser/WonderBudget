@@ -1,7 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Replace ActionBar by Toolbar -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+
         <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColor">@color/app_text</item>
         <item name="android:typeface">sans</item>

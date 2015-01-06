@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -174,9 +175,8 @@ public class TransactionListFragment extends Fragment {
     }
 
     public void restoreActionBar() {
-        android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(getString(R.string.title_fragment_transaction));
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.my_toolbar);
+        toolbar.setTitle(getString(R.string.title_fragment_transaction));
     }
 
     @Override

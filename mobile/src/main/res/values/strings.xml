@@ -13,7 +13,7 @@
     <string name="title_fragment_overview">Overview</string>
     <string name="title_fragment_transaction">Transactions</string>
     <string name="title_fragment_recurring_transaction">Recurring transactions</string>
-    <string name="title_fragment_category_view">Categories</string>
+    <string name="title_fragment_category">Categories</string>
 
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
