@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionListFragment extends Fragment {
-    private final static String fragmentName = "Transactions";
     private final static int ADD_UPGRADE_TRANSACTION = 10;
     private TransactionLineAdapter adapter;
     private DatabaseHandler db;
@@ -177,7 +176,7 @@ public class TransactionListFragment extends Fragment {
     public void restoreActionBar() {
         android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(fragmentName);
+        actionBar.setTitle(getString(R.string.title_fragment_transaction));
     }
 
     @Override

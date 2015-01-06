@@ -29,7 +29,6 @@ import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 
 public class TransactionActionActivity extends Activity {
-    public static final String TAG = "TransactionActionActivity";
     public static final int ADD_NEW_TRANSACTIION = 1;
     public static final int VIEW_TRANSACTION = 2;
     public static final int ADD_NEW_RECURRING_TRANSACTION = 3;
@@ -127,7 +126,7 @@ public class TransactionActionActivity extends Activity {
         switch (typeOfDialog){
             case ADD_NEW_TRANSACTIION:
                 //Choose title
-                title.setText(getResources().getString(R.string.add_new_transaction));
+                title.setText(getResources().getString(R.string.title_activity_add_transaction));
 
                 //Choose the transaction status (cleared/not cleared)
                 isCleared = false;
@@ -220,7 +219,7 @@ public class TransactionActionActivity extends Activity {
                 break;
 
             case ADD_NEW_RECURRING_TRANSACTION:
-                title.setText(getResources().getString(R.string.add_new_transaction));
+                title.setText(getResources().getString(R.string.title_activity_add_transaction));
                 recurrenceBlock.setVisibility(View.VISIBLE);
                 numberBlock.setVisibility(View.VISIBLE);
                 clearedIcon.setBackground(getResources().getDrawable(R.drawable.oval));

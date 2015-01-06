@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryFragment extends Fragment {
-    private String fragmentName = "Categories";
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private DatabaseHandler db;
     private CategoryLineAdapter adapter;
@@ -92,7 +91,7 @@ public class CategoryFragment extends Fragment {
     public void restoreActionBar() {
         android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(fragmentName);
+        actionBar.setTitle(getString(R.string.title_fragment_category_view));
     }
 
 

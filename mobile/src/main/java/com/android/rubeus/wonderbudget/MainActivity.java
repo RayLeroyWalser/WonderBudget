@@ -39,7 +39,6 @@ public class MainActivity extends ActionBarActivity
     public static final int SETTINGS = 4;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private CharSequence mTitle;
     private DatabaseHandler db;
 
     @Override
@@ -56,7 +55,6 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -81,30 +79,12 @@ public class MainActivity extends ActionBarActivity
                 ft.replace(R.id.container, CategoryFragment.newInstance());
                 break;
             case SETTINGS:
-                ft.replace(R.id.container, new SettingsFragment());
+                Intent intent = new Intent(this, SettingActivity.class);
+                startActivityForResult(intent, SETTINGS);
                 break;
         }
 
         ft.commit();
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case OVERVIEW_FRAGMENT:
-                mTitle = getString(R.string.overview);
-                break;
-            case TRANSACTION_FRAGMENT:
-                mTitle = getString(R.string.transactions);
-                break;
-            case RECURRING_TRANSACTION_FRAGMENT:
-                mTitle = getString(R.string.recurring_transactions);
-                break;
-            case CATEGORY_FRAGMENT:
-                mTitle = getString(R.string.settings);
-                break;
-            case SETTINGS:
-                mTitle = getString(R.string.settings);
-        }
     }
 
     private void initDatabase(){

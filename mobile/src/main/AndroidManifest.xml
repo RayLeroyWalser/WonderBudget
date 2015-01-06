@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.android.rubeus.wonderbudget.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -20,18 +20,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.rubeus.wonderbudget.TransactionActionActivity"
+            android:name=".TransactionActionActivity"
             android:label="@string/title_activity_add_transaction"
             android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
         <activity
-            android:name="com.android.rubeus.wonderbudget.AddUpgradeTransactionActivity"
+            android:name=".AddUpgradeTransactionActivity"
             android:label="@string/title_activity_add_upgrade_transaction"
             android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
         <activity
-            android:name="com.android.rubeus.wonderbudget.ManageAccountActivity"
+            android:name=".ManageAccountActivity"
             android:label="@string/title_activity_manage_account" >
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:parentActivityName="com.android.rubeus.wonderbudget.MainActivity">
         </activity>
     </application>
 

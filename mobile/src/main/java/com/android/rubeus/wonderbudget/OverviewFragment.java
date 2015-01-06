@@ -5,22 +5,22 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 public class OverviewFragment extends Fragment {
-    private static final String TAG = "OverviewFragment";
-    private static final int NEW_TRANSACTION = 1;
     private DatabaseHandler db;
     private TextView totalAmount, realAmount;
-    private ProgressBar progressBar1, progressBar2;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
@@ -41,6 +41,10 @@ public class OverviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
+
+        //Navagation drawer
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         // Highlight in the navigation drawer
         ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.OVERVIEW_FRAGMENT, true);
@@ -107,5 +111,20 @@ public class OverviewFragment extends Fragment {
         int account = PreferencesUtility.getAccount(getActivity());
         totalAmount.setText(db.getTotalAmount(account)+"");
         realAmount.setText(db.getRealAmount(account)+"");
+    }
+
+    public void restoreActionBar() {
+        android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(getString(R.string.title_fragment_transaction));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            inflater.inflate(R.menu.transaction_list, menu);
+            restoreActionBar();
+        }
     }
 }

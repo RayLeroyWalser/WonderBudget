@@ -13,7 +13,7 @@ import com.android.rubeus.wonderbudget.Utility.MathUtility;
 
 
 public class AddUpgradeTransactionActivity extends Activity {
-    EditText input;
+    private EditText input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class AddUpgradeTransactionActivity extends Activity {
         ImageView ok = (ImageView) findViewById(R.id.ok);
         TextView title = (TextView) findViewById(R.id.title);
 
-        title.setText(getResources().getString(R.string.add_upgrade_transaction));
+        title.setText(getResources().getString(R.string.title_activity_add_upgrade_transaction));
 
         ok.setTag(currentAmount);
         ok.setOnClickListener(new View.OnClickListener() {

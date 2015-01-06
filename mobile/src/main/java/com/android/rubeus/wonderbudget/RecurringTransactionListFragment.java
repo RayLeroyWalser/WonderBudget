@@ -32,7 +32,6 @@ import java.util.List;
  *
  */
 public class RecurringTransactionListFragment extends Fragment {
-    private static final String fragmentName = "Recurring transactions";
     private RecurringTransactionLineAdapter adapter;
     private DatabaseHandler db;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -165,7 +164,7 @@ public class RecurringTransactionListFragment extends Fragment {
     public void restoreActionBar() {
         android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(fragmentName);
+        actionBar.setTitle(getString(R.string.title_fragment_recurring_transaction));
     }
 
     @Override
