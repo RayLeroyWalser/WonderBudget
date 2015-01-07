@@ -51,7 +51,8 @@ public class TransactionListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
         setHasOptionsMenu(true);
 
-        //TODO Highlight in the navigation drawer
+        //Highlight in the navigation drawer
+        NavigationDrawerFragment.setNavItemChecked(MainActivity.TRANSACTION_FRAGMENT);
 
         //Retrieve account number
         account = PreferencesUtility.getAccount(getActivity());

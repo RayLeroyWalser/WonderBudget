@@ -17,8 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="72dp"
-        android:background="@drawable/navigation_drawer_selector"
-        android:textColor="@drawable/navigation_drawer_selector"
         android:textSize="14sp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center_vertical"/>

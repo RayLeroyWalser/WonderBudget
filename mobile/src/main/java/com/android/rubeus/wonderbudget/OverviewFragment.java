@@ -49,7 +49,8 @@ public class OverviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        //TODO Highlight in the navigation drawer
+        //Highlight in the navigation drawer
+        NavigationDrawerFragment.setNavItemChecked(MainActivity.OVERVIEW_FRAGMENT);
 
         totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         realAmount = (TextView) view.findViewById(R.id.realAmount);

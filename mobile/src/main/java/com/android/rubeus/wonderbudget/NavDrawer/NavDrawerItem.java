@@ -1,7 +1,6 @@
 package com.android.rubeus.wonderbudget.NavDrawer;
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 
 /**
  * Created by rubeus on 1/7/15.

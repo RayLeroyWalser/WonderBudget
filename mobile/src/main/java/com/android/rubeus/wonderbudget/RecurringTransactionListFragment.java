@@ -57,7 +57,8 @@ public class RecurringTransactionListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recurring_transaction_list, container, false);
         setHasOptionsMenu(true);
 
-        //TODO Highlight in the navigation drawer
+        //Highlight in the navigation drawer
+        NavigationDrawerFragment.setNavItemChecked(MainActivity.RECURRING_TRANSACTION_FRAGMENT);
 
         //Retrieve account number
         account = PreferencesUtility.getAccount(getActivity());

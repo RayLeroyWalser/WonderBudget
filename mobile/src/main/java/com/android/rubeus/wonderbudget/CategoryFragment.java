@@ -62,7 +62,8 @@ public class CategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        //TODO Highlight in the navigation drawer
+        //Highlight in the navigation drawer
+        NavigationDrawerFragment.setNavItemChecked(MainActivity.CATEGORY_FRAGMENT);
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 

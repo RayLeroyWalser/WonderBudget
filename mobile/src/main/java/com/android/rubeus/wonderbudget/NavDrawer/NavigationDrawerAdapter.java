@@ -1,13 +1,11 @@
 package com.android.rubeus.wonderbudget.NavDrawer;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +19,7 @@ import java.util.List;
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
     private List<NavDrawerItem> list;
     private Context context;
+    private int itemChecked;
 
     public NavigationDrawerAdapter(Context context, List<NavDrawerItem> list){
         this.list = list;
@@ -86,6 +85,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             case NavDrawerItem.ITEM:
                 viewHolder.name.setText(list.get(position).getName());
                 viewHolder.icon.setImageDrawable(list.get(position).getIcon());
+                if(position == itemChecked){
+                    viewHolder.name.setTextColor(context.getResources().getColor(R.color.pink));
+                } else{
+                    viewHolder.name.setTextColor(context.getResources().getColor(R.color.app_text));
+                }
                 break;
         }
     }
@@ -103,5 +107,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     @Override
     public int getItemViewType(int position) {
         return list.get(position).getType();
+    }
+
+    public void setItemChecked(int position){
+        itemChecked = position;
+        notifyDataSetChanged();
     }
 }

@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity
     public static final int TRANSACTION_FRAGMENT = 2;
     public static final int RECURRING_TRANSACTION_FRAGMENT = 3;
     public static final int CATEGORY_FRAGMENT = 4;
-    public static final int SETTINGS_ACTIVITY = 5;
+    public static final int SETTINGS_ACTIVITY = 6;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private DatabaseHandler db;

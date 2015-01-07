@@ -21,15 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.android.rubeus.wonderbudget.CustomAdapter.AccountLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Account;
 import com.android.rubeus.wonderbudget.Listener.RecyclerItemClickListener;
-import com.android.rubeus.wonderbudget.MainActivity;
 import com.android.rubeus.wonderbudget.R;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
@@ -37,31 +32,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationDrawerFragment extends Fragment {
-
-    /**
-     * Remember the position of the selected item.
-     */
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    /**
-     * Per the design guidelines, you should show the drawer on launch until the user manually
-     * expands it. This shared preference tracks this.
-     */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    /**
-     * A pointer to the current callbacks instance (the Activity).
-     */
+
     private NavigationDrawerCallbacks mCallbacks;
-
-    /**
-     * Helper component that ties the action bamDrawerListViewr to the navigation drawer.
-     */
     private ActionBarDrawerToggle mDrawerToggle;
-
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView, accountListView;
     private View mFragmentContainerView;
+    public static NavigationDrawerAdapter adapter;
 
     private int mCurrentSelectedPosition = 1;
     private boolean mFromSavedInstanceState;
@@ -83,9 +62,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -131,14 +107,16 @@ public class NavigationDrawerFragment extends Fragment {
         listItems.add(new NavDrawerItem()); //Divider
         listItems.add(settings);
 
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), listItems);
+        adapter = new NavigationDrawerAdapter(getActivity(), listItems);
         recyclerView.setAdapter(adapter);
+
+        // Select either the default item (0) or the last selected item.
+        selectItem(mCurrentSelectedPosition);
 
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         selectItem(position);
-                        System.out.println("Item clicked: " + position);
                     }
                 })
         );
@@ -159,7 +137,10 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        //TODO selected item must be in red
+    }
+
+    public static void setNavItemChecked(int position){
+        adapter.setItemChecked(position);
     }
 
     public boolean isDrawerOpen() {
