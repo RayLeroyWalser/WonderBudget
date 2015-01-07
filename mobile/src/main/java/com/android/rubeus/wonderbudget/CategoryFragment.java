@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +17,7 @@ import com.android.rubeus.wonderbudget.CustomAdapter.CategoryLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.NavDrawer.NavigationDrawerFragment;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
@@ -62,8 +62,7 @@ public class CategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // Highlight in the navigation drawer
-        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.CATEGORY_FRAGMENT, true);
+        //TODO Highlight in the navigation drawer
 
         ListView listView = (ListView) view.findViewById(android.R.id.list);
 

@@ -64,11 +64,5 @@
         <item>month</item>
         <item>year</item>
     </string-array>
-    <string-array name="nav_items">
-        <item>Overview</item>
-        <item>Transactions</item>
-        <item>Recurring transactions</item>
-        <item>Categories</item>
-    </string-array>
 
 </resources>

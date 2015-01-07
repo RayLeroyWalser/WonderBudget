@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
+import com.android.rubeus.wonderbudget.NavDrawer.NavigationDrawerFragment;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 public class OverviewFragment extends Fragment {
@@ -49,8 +49,7 @@ public class OverviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        // Highlight in the navigation drawer
-        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.OVERVIEW_FRAGMENT, true);
+        //TODO Highlight in the navigation drawer
 
         totalAmount = (TextView) view.findViewById(R.id.totalAmount);
         realAmount = (TextView) view.findViewById(R.id.realAmount);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import android.widget.ListView;
 import com.android.rubeus.wonderbudget.CustomAdapter.TransactionLineAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.NavDrawer.NavigationDrawerFragment;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
 import java.util.ArrayList;
@@ -51,8 +51,7 @@ public class TransactionListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
         setHasOptionsMenu(true);
 
-        // Highlight in the navigation drawer
-        ((MainActivity)getActivity()).getmNavigationDrawerFragment().getmDrawerListView().setItemChecked(MainActivity.TRANSACTION_FRAGMENT, true);
+        //TODO Highlight in the navigation drawer
 
         //Retrieve account number
         account = PreferencesUtility.getAccount(getActivity());

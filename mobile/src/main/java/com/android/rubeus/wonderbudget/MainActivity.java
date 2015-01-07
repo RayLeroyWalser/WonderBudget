@@ -17,6 +17,7 @@ import com.android.rubeus.wonderbudget.Entity.Account;
 import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
+import com.android.rubeus.wonderbudget.NavDrawer.NavigationDrawerFragment;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
@@ -33,11 +34,11 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CategoryFragment.OnCategorySelectedListener {
     private static final String TAG = "MainActivity";
     public static final String PREF = "Preferences";
-    public static final int OVERVIEW_FRAGMENT = 0;
-    public static final int TRANSACTION_FRAGMENT = 1;
-    public static final int RECURRING_TRANSACTION_FRAGMENT = 2;
-    public static final int CATEGORY_FRAGMENT = 3;
-    public static final int SETTINGS = 4;
+    public static final int OVERVIEW_FRAGMENT = 1;
+    public static final int TRANSACTION_FRAGMENT = 2;
+    public static final int RECURRING_TRANSACTION_FRAGMENT = 3;
+    public static final int CATEGORY_FRAGMENT = 4;
+    public static final int SETTINGS_ACTIVITY = 5;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private DatabaseHandler db;
@@ -82,9 +83,9 @@ public class MainActivity extends ActionBarActivity
             case CATEGORY_FRAGMENT:
                 ft.replace(R.id.container, CategoryFragment.newInstance());
                 break;
-            case SETTINGS:
+            case SETTINGS_ACTIVITY:
                 Intent intent = new Intent(this, SettingActivity.class);
-                startActivityForResult(intent, SETTINGS);
+                startActivityForResult(intent, SETTINGS_ACTIVITY);
                 break;
         }
 

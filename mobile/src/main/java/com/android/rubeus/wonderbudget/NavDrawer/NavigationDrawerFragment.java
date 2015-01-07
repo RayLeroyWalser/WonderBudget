@@ -1,21 +1,20 @@
-package com.android.rubeus.wonderbudget;
+package com.android.rubeus.wonderbudget.NavDrawer;
 
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,11 +26,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.rubeus.wonderbudget.CustomAdapter.AccountLineAdapter;
-import com.android.rubeus.wonderbudget.CustomAdapter.NavigationDrawerAdapter;
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.Account;
+import com.android.rubeus.wonderbudget.Listener.RecyclerItemClickListener;
+import com.android.rubeus.wonderbudget.MainActivity;
+import com.android.rubeus.wonderbudget.R;
 import com.android.rubeus.wonderbudget.Utility.PreferencesUtility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationDrawerFragment extends Fragment {
@@ -61,14 +63,9 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView, accountListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-
-    public static final int NAV_ITEM = 1;
-    public static final int ACCOUNT_ITEM = 2;
-
-    private static final int SETTINGS = 42;
 
     public NavigationDrawerFragment() {
     }
@@ -88,7 +85,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition, NAV_ITEM);
+        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -102,70 +99,67 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView = (ListView) view.findViewById(R.id.nav_item_list);
-        accountListView = (ListView) view.findViewById(R.id.nav_account_list);
 
-        //Nav items list
-        setupNavItemListView(view);
+        // Set up the recycler view
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.drawer_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
 
-        //Accounts list
-        setupAccountListView(view);
+        // Create the nav items list
+        List<NavDrawerItem> listItems = new ArrayList<>();
 
-        //Settings
-        TextView settings = (TextView) view.findViewById(R.id.settings);
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectItem(0, SETTINGS);
-            }
-        });
+        // Add account header
+        List<Account> accounts = DatabaseHandler.getInstance(getActivity()).getAllAccounts();
+        Account account = accounts.get(PreferencesUtility.getAccount(getActivity()));
+        NavDrawerItem header = new NavDrawerItem(account.getThumbUrl(), account.getName(), account.getBank());
+
+        // Add nav items
+        NavDrawerItem overview = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_overview));
+        NavDrawerItem trasactions = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_transaction));
+        NavDrawerItem recurringTransactions = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_recurring_transaction));
+        NavDrawerItem category = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_category));
+
+        // Add settings
+        NavDrawerItem settings = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_settings_white_18dp), getResources().getString(R.string.title_activity_setting));
+
+        listItems.add(header);
+        listItems.add(overview);
+        listItems.add(trasactions);
+        listItems.add(recurringTransactions);
+        listItems.add(category);
+        //listItems.add(new NavDrawerItem()); //Divider
+        listItems.add(settings);
+
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), listItems);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        selectItem(position);
+                        System.out.println("Item clicked: " + position);
+                    }
+                })
+        );
 
         return view;
     }
 
-    private void setupAccountListView(View view){
-        DatabaseHandler db = DatabaseHandler.getInstance(getActivity());
-        final List<Account> listAccount = db.getAllAccounts();
-        final AccountLineAdapter accountAdapter = new AccountLineAdapter(getActivity(), listAccount);
-        accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void selectItem(int position) {
+        FragmentManager manager = getActivity().getFragmentManager();
 
-                //Switch the position between the selected account and the primary account
-                if(position != 0){
-                    Account tmp = listAccount.get(0);
-                    listAccount.remove(0);
-                    listAccount.add(0, listAccount.get(position-1));
-                    listAccount.remove(position);
-                    listAccount.add(position, tmp);
-                    accountAdapter.refresh(listAccount);
-                }
-                //Go to Overview of this account
-                selectItem(0, NAV_ITEM);
-                //Save ID of the account
-                PreferencesUtility.saveAccount(getActivity(), (int) parent.getItemIdAtPosition(0));
-            }
-        });
-        accountListView.setAdapter(accountAdapter);
-        selectItem(0, ACCOUNT_ITEM);
-    }
+        // Clear the fragment backstack every time a new fragment is selected
+        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-    private void setupNavItemListView(View view){
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position, NAV_ITEM);
-            }
-        });
-
-        String[] navItems = getActivity().getResources().getStringArray(R.array.nav_items);
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), navItems);
-        mDrawerListView.setAdapter(adapter);
-        selectItem(mCurrentSelectedPosition, NAV_ITEM);
-    }
-
-    public ListView getmDrawerListView() {
-        return mDrawerListView;
+        mCurrentSelectedPosition = position;
+        if (mCallbacks != null) {
+            mCallbacks.onNavigationDrawerItemSelected(position);
+        }
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        }
+        //TODO selected item must be in red
     }
 
     public boolean isDrawerOpen() {
@@ -240,46 +234,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    public void selectItem(int position, int typeOfListView) {
-        FragmentManager manager = getActivity().getFragmentManager();
-
-        // Clear the fragment backstack every time a new fragment is selected
-        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        switch (typeOfListView){
-            case NAV_ITEM:
-                mCurrentSelectedPosition = position;
-                if (mCallbacks != null) {
-                    mCallbacks.onNavigationDrawerItemSelected(position);
-                }
-                if (mDrawerListView != null) {
-                    mDrawerListView.setItemChecked(position, true);
-                }
-                break;
-            case ACCOUNT_ITEM:
-                if (mCallbacks != null) {
-                    mCallbacks.onNavigationDrawerItemSelected(0);
-                }
-                if (accountListView != null) {
-                    accountListView.setItemChecked(position, true);
-                }
-                break;
-            case SETTINGS:
-                if (mCallbacks != null) {
-                    mCallbacks.onNavigationDrawerItemSelected(MainActivity.SETTINGS);
-                }
-                if (mDrawerListView != null) {
-                    mDrawerListView.setItemChecked(position, true);
-                }
-                break;
-        }
-
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -338,10 +292,6 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(R.string.app_name);
-    }
-
-    private ActionBar getActionBar() {
-        return ((ActionBarActivity)getActivity()).getSupportActionBar();
     }
 
     /**

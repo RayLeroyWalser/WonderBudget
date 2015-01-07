@@ -7,6 +7,7 @@ public class Account {
     private int id;
     private String name;
     private String thumbUrl;
+    private String bank = "C'aisse d'epargne";
 
     public Account(){}
 
@@ -43,5 +44,13 @@ public class Account {
 
     public void setThumbUrl(String thumbUrl) {
         this.thumbUrl = thumbUrl;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 }
