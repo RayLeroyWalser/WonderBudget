@@ -63,6 +63,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             case NavDrawerItem.ITEM:
                 v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.nav_drawer_row, viewGroup, false);
                 break;
+            case NavDrawerItem.DIVIDER:
+                v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.divider, viewGroup, false);
+                break;
         }
         return new ViewHolder(v, viewType);
     }

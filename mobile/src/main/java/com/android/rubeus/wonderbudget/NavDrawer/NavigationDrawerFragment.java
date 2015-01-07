@@ -128,7 +128,7 @@ public class NavigationDrawerFragment extends Fragment {
         listItems.add(trasactions);
         listItems.add(recurringTransactions);
         listItems.add(category);
-        //listItems.add(new NavDrawerItem()); //Divider
+        listItems.add(new NavDrawerItem()); //Divider
         listItems.add(settings);
 
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), listItems);
