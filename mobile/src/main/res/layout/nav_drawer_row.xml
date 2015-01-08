@@ -18,7 +18,7 @@
         android:layout_height="48dp"
         android:layout_marginLeft="72dp"
         android:textSize="14sp"
-        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
         android:gravity="center_vertical"/>
 
 </RelativeLayout>

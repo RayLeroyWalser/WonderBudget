@@ -91,13 +91,13 @@ public class NavigationDrawerFragment extends Fragment {
         NavDrawerItem header = new NavDrawerItem(account.getThumbUrl(), account.getName(), account.getBank());
 
         // Add nav items
-        NavDrawerItem overview = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_overview));
-        NavDrawerItem trasactions = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_transaction));
-        NavDrawerItem recurringTransactions = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_recurring_transaction));
-        NavDrawerItem category = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_bookmark_outline_white_18dp), getResources().getString(R.string.title_fragment_category));
+        NavDrawerItem overview = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_assignment_white_24dp), getResources().getString(R.string.title_fragment_overview));
+        NavDrawerItem trasactions = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_assignment_white_24dp), getResources().getString(R.string.title_fragment_transaction));
+        NavDrawerItem recurringTransactions = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_assignment_white_24dp), getResources().getString(R.string.title_fragment_recurring_transaction));
+        NavDrawerItem category = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_assignment_white_24dp), getResources().getString(R.string.title_fragment_category));
 
         // Add settings
-        NavDrawerItem settings = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_settings_white_18dp), getResources().getString(R.string.title_activity_setting));
+        NavDrawerItem settings = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_settings_white_24dp), getResources().getString(R.string.title_activity_setting));
 
     listItems.add(header);
         listItems.add(overview);

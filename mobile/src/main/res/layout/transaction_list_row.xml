@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:background="@color/pale_blue"
         android:textSize="18sp"
+        android:fontFamily="sans-serif-light"
         android:padding="5dp"
         android:gravity="center"/>
 
@@ -51,7 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-light"/>
 
             <TextView
                 android:id="@+id/comment"
@@ -59,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/category"
                 android:lines="1"
-                android:ellipsize="end"/>
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-light"/>
 
         </RelativeLayout>
 
@@ -71,7 +74,8 @@
             android:textSize="24sp"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif-light"/>
 
     </RelativeLayout>
 

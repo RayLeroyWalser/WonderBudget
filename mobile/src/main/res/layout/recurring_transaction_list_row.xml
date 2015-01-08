@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/categoryIcon"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-light"/>
 
     </RelativeLayout>
 
@@ -40,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/blue"
             android:layout_marginRight="100dp"/>
 
@@ -48,13 +50,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/comment"
-            android:textStyle="italic"/>
+            android:textStyle="italic"
+            android:fontFamily="sans-serif-light"/>
 
         <TextView
             android:id="@+id/recurrenceDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/date"/>
+            android:layout_below="@id/date"
+            android:fontFamily="sans-serif-light"/>
 
     </RelativeLayout>
 
@@ -66,6 +70,7 @@
         android:layout_centerVertical="true"
         android:textSize="24sp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp"
+        android:fontFamily="sans-serif-light"/>
 
 </RelativeLayout>
