@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_action_done"
+            android:src="@drawable/ic_done_white_48dp"
             android:layout_margin="8dp"/>
 
     </LinearLayout>
