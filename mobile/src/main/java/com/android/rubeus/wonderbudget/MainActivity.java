@@ -4,29 +4,18 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
-import com.android.rubeus.wonderbudget.Entity.Account;
-import com.android.rubeus.wonderbudget.Entity.Category;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.NavDrawer.NavigationDrawerFragment;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
-import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
-import org.json.JSONException;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -51,9 +40,7 @@ public class MainActivity extends ActionBarActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        //Initiate the DB
         db = DatabaseHandler.getInstance(this);
-        initDatabase();
 
         //Add recurring transaction of the month
         createRecurringTransaction();
@@ -92,76 +79,9 @@ public class MainActivity extends ActionBarActivity
         ft.commit();
     }
 
-    private void initDatabase(){
-        //Store in Shared Preferences if this is the first time the app is launched
-        SharedPreferences settings = getSharedPreferences(PREF, 0);
-
-        if(settings.getBoolean("firstLaunch", true)){
-            String pathDebut = "android.resource://" + getPackageName() + "/";
-
-            db.addCategory(new Category("Uncategorized", Uri.parse(pathDebut + R.drawable.uncategorized).toString()));
-            db.addCategory(new Category("Courses", Uri.parse(pathDebut + R.drawable.courses).toString()));
-            db.addCategory(new Category("Alimentation", Uri.parse(pathDebut + R.drawable.alimentation).toString()));
-            db.addCategory(new Category("Transport", Uri.parse(pathDebut + R.drawable.transport).toString()));
-            db.addCategory(new Category("Logement", Uri.parse(pathDebut + R.drawable.logement).toString()));
-            db.addCategory(new Category("Mobilier", Uri.parse(pathDebut + R.drawable.electromenager).toString()));
-            db.addCategory(new Category("Revenu", Uri.parse(pathDebut + R.drawable.salaire).toString()));
-            db.addCategory(new Category("Gadget", Uri.parse(pathDebut + R.drawable.gadget).toString()));
-            db.addCategory(new Category("Shopping", Uri.parse(pathDebut + R.drawable.shopping).toString()));
-            db.addCategory(new Category("Frais annexe", Uri.parse(pathDebut + R.drawable.banque).toString()));
-            db.addCategory(new Category("Média", Uri.parse(pathDebut + R.drawable.media).toString()));
-            db.addCategory(new Category("Administration", Uri.parse(pathDebut + R.drawable.administration).toString()));
-            db.addCategory(new Category("Santé", Uri.parse(pathDebut + R.drawable.sante).toString()));
-            db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
-            db.addCategory(new Category("Cadeau", Uri.parse(pathDebut + R.drawable.cadeau).toString()));
-
-            db.addAccount(new Account("Compte courant", Uri.parse(pathDebut + R.drawable.animaux).toString()));
-            db.addAccount(new Account("Livret A", ""));
-
-            //Retrieve saved date if exists
-            File exported = new File(Environment.getExternalStorageDirectory() + "/WonderBudget/database.json");
-            if(exported.exists()) {
-                try {
-                    InputStream in = new FileInputStream(exported);
-                    JsonUtility.readJsonToDatabase(this, in);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-//            List<Transaction> list = db.getAllTransactions();
-//            for(Transaction t : list){
-//                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
-//                        + "    Category:" + db.getCategory(t.getCategory()).getName());
-//            }
-
-//            List<RecurringTransaction> listRecurringTransaction = db.getAllRecurringTransactions();
-//            for(RecurringTransaction t : listRecurringTransaction){
-//                Log.d(TAG, "Id:" + t.getId() + "   Amount=" + t.getAmount() + "   Done:" + t.isDone() + "   Date:" + t.getDate() + "  Commentary:" + t.getCommentary()
-//                        + "    Category:" + db.getCategory(t.getCategory()).getName()
-//                        + "     Paid: " + t.getNumberOfPaymentPaid() + "   Total: "+ t.getNumberOfPaymentTotal());
-//            }
-
-//            List<Category> listCategories = db.getAllCategories();
-//            for(Category c: listCategories){
-//                Log.d(TAG, "Name: "+c.getName()+ "    Path: "+c.getThumbUrl());
-//            }
-
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("firstLaunch", false);
-            editor.commit();
-        }
-
-
-    }
-
     private void createRecurringTransaction(){
         SharedPreferences settings = getSharedPreferences(PREF, 0);
+
         int currentMonth = DateUtility.getCurrentMonth();
         int currentMonthModulo = currentMonth % 12;
         int currentYear = DateUtility.getCurrentYear();
@@ -205,7 +125,7 @@ public class MainActivity extends ActionBarActivity
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("month", currentMonth);
             editor.putInt("year", currentYear);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -232,40 +152,4 @@ public class MainActivity extends ActionBarActivity
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
-    public NavigationDrawerFragment getmNavigationDrawerFragment() {
-        return mNavigationDrawerFragment;
-    }
-
-    //    public void restoreActionBar() {
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-//        actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setTitle(mTitle);
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-//            // Only show items in the action bar relevant to this screen
-//            // if the drawer is not showing. Otherwise, let the drawer
-//            // decide what to show in the action bar.
-//            getMenuInflater().inflate(R.menu.overview, menu);
-//            restoreActionBar();
-//            return true;
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }

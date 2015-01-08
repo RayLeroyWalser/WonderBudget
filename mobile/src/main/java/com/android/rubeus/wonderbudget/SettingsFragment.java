@@ -2,6 +2,7 @@ package com.android.rubeus.wonderbudget;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
@@ -98,22 +99,30 @@ public class SettingsFragment extends PreferenceFragment {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                File exported = new File(Environment.getExternalStorageDirectory() + "/WonderBudget/database.json");
-                if(exported.exists()){
-                    try {
-                        InputStream in = new FileInputStream(exported);
-                        JsonUtility.readJsonToDatabase(getActivity(), in);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            File exported = new File(Environment.getExternalStorageDirectory() + "/WonderBudget/database.json");
+            if(exported.exists()){
+                try {
+                    InputStream in = new FileInputStream(exported);
+                    JsonUtility.readJsonToDatabase(getActivity(), in);
+
+                    // Delete the "month" and "year" in preferences, so the add recurring transactions operation would be launched again
+                    SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.PREF, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("month");
+                    editor.remove("year");
+                    editor.commit();
 
                     Toast.makeText(getActivity(), SettingsFragment.this.getResources().getString(R.string.data_imported), Toast.LENGTH_SHORT).show();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else{
-                    Toast.makeText(getActivity(), "No data has been exported yet", Toast.LENGTH_SHORT).show();
-                }
+            }
+            else{
+                Toast.makeText(getActivity(), "No data has been exported yet", Toast.LENGTH_SHORT).show();
+            }
             }
 
         });

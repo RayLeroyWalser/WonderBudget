@@ -87,7 +87,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Add account header
         List<Account> accounts = DatabaseHandler.getInstance(getActivity()).getAllAccounts();
-        Account account = accounts.get(PreferencesUtility.getAccount(getActivity()));
+        Account account = accounts.get(PreferencesUtility.getAccount(getActivity()) - 1);
         NavDrawerItem header = new NavDrawerItem(account.getThumbUrl(), account.getName(), account.getBank());
 
         // Add nav items
@@ -99,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Add settings
         NavDrawerItem settings = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_settings_white_18dp), getResources().getString(R.string.title_activity_setting));
 
-        listItems.add(header);
+    listItems.add(header);
         listItems.add(overview);
         listItems.add(trasactions);
         listItems.add(recurringTransactions);
