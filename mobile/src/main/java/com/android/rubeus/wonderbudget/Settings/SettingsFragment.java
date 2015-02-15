@@ -1,4 +1,4 @@
-package com.android.rubeus.wonderbudget;
+package com.android.rubeus.wonderbudget.Settings;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,6 +9,8 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
+import com.android.rubeus.wonderbudget.MainActivity;
+import com.android.rubeus.wonderbudget.R;
 import com.android.rubeus.wonderbudget.Utility.JsonUtility;
 
 import org.json.JSONException;

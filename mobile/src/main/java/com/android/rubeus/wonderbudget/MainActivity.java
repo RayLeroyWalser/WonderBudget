@@ -14,6 +14,7 @@ import com.android.rubeus.wonderbudget.DBHandler.DatabaseHandler;
 import com.android.rubeus.wonderbudget.Entity.RecurringTransaction;
 import com.android.rubeus.wonderbudget.Entity.Transaction;
 import com.android.rubeus.wonderbudget.NavDrawer.NavigationDrawerFragment;
+import com.android.rubeus.wonderbudget.Settings.SettingActivity;
 import com.android.rubeus.wonderbudget.Utility.DateUtility;
 
 import java.util.List;

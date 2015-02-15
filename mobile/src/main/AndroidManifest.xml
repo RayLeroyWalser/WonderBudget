@@ -25,11 +25,12 @@
             android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
         <activity
-            android:name=".ManageAccountActivity"
-            android:label="@string/title_activity_manage_account" >
+            android:name=".Settings.ManageAccountActivity"
+            android:label="@string/title_activity_manage_account"
+            android:parentActivityName=".Settings.SettingActivity" >
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name=".Settings.SettingActivity"
             android:label="@string/title_activity_setting"
             android:parentActivityName=".MainActivity" >
         </activity>
@@ -42,6 +43,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Settings.ViewAccount"
+            android:label="@string/title_activity_view_account" >
         </activity>
     </application>
 

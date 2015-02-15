@@ -54,6 +54,6 @@ public class SplashScreenActivity extends ActionBarActivity {
         db.addCategory(new Category("Animaux", Uri.parse(pathDebut + R.drawable.animaux).toString()));
         db.addCategory(new Category("Cadeau", Uri.parse(pathDebut + R.drawable.cadeau).toString()));
 
-        db.addAccount(new Account("Compte courant", Uri.parse(pathDebut + R.drawable.ic_face_white_48dp).toString())); // Default account
+        db.addAccount(new Account("Compte courant", "Banque", Uri.parse(pathDebut + R.drawable.no_image).toString())); // Default account
     }
 }

@@ -1,10 +1,12 @@
-package com.android.rubeus.wonderbudget;
+package com.android.rubeus.wonderbudget.Settings;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.android.rubeus.wonderbudget.R;
 
 
 public class SettingActivity extends ActionBarActivity {

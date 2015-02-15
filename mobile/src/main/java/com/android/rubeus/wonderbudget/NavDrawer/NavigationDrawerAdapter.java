@@ -79,7 +79,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 if(imageUri.length() != 0){
                     viewHolder.icon.setImageURI(Uri.parse(list.get(position).getImage()));
                 } else{
-                    viewHolder.icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_face_white_48dp));
+                    viewHolder.icon.setImageDrawable(context.getResources().getDrawable(R.drawable.no_image));
                 }
                 break;
             case NavDrawerItem.ITEM:

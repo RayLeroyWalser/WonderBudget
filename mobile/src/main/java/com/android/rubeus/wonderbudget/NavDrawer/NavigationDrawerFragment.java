@@ -99,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Add settings
         NavDrawerItem settings = new NavDrawerItem(getResources().getDrawable(R.drawable.ic_settings_white_24dp), getResources().getString(R.string.title_activity_setting));
 
-    listItems.add(header);
+        listItems.add(header);
         listItems.add(overview);
         listItems.add(trasactions);
         listItems.add(recurringTransactions);

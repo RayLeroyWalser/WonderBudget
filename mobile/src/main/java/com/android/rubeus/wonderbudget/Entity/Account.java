@@ -7,18 +7,20 @@ public class Account {
     private int id;
     private String name;
     private String thumbUrl;
-    private String bank = "C'aisse d'epargne";
+    private String bank;
 
     public Account(){}
 
-    public Account(int id, String name, String thumbUrl){
+    public Account(int id, String name, String bank, String thumbUrl){
         this.id = id;
         this.name = name;
+        this.bank = bank;
         this.thumbUrl = thumbUrl;
     }
 
-    public Account(String name, String thumbUrl){
+    public Account(String name, String bank, String thumbUrl){
         this.name = name;
+        this.bank = bank;
         this.thumbUrl = thumbUrl;
     }
 

@@ -47,6 +47,9 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public final static String KEY_NAME = "name";
     public final static String KEY_THUMB_URL = "thumbUrl";
 
+    //Account
+    public final static String KEY_BANK = "bank";
+
     //Singleton
     private static DatabaseHandler instance;
 
@@ -72,6 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         String createTableAccount = "CREATE TABLE " + TABLE_ACCOUNT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
                 + KEY_NAME + " TEXT, "
+                + KEY_BANK + " TEXT, "
                 + KEY_THUMB_URL + " TEXT"
                 + ")";
 
@@ -576,6 +580,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, a.getName());
+        values.put(KEY_BANK, a.getBank());
         values.put(KEY_THUMB_URL, a.getThumbUrl());
         db.insert(TABLE_ACCOUNT, null, values);
         db.close();
@@ -584,14 +589,15 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public Account getAccount(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ACCOUNT, new String[] {KEY_ID, KEY_NAME, KEY_THUMB_URL}, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_ACCOUNT, new String[] {KEY_ID, KEY_NAME, KEY_BANK, KEY_THUMB_URL}, KEY_ID + "=?",
                 new String[] {String.valueOf(id)}, null, null, null, null);
         if(cursor!=null)
             cursor.moveToFirst();
 
         Account account = new Account(cursor.getInt(0),
                 cursor.getString(1),
-                cursor.getString(2));
+                cursor.getString(2),
+                cursor.getString(3));
 
         return account;
     }
@@ -617,12 +623,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 Account a = new Account();
                 a.setId(cursor.getInt(0));
                 a.setName(cursor.getString(1));
-                a.setThumbUrl(cursor.getString(2));
+                a.setBank(cursor.getString(2));
+                a.setThumbUrl(cursor.getString(3));
 
                 list.add(a);
             }
             while(cursor.moveToNext());
         }
         return list;
+    }
+
+    public int editAccount(Account a){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, a.getName());
+        values.put(KEY_BANK, a.getBank());
+        values.put(KEY_THUMB_URL, a.getThumbUrl());
+
+        // updating row
+        return db.update(TABLE_ACCOUNT, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(a.getId()) });
     }
 }
